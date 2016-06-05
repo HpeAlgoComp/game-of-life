@@ -16,9 +16,10 @@
 	var color2 = [255, 183, 183]; // red #FFB7B7
 
 	function initGameOfLife() {
-		var i, r, c, canvas;
+		var i, r, c, container, canvas;
 		addCssRules();
-		canvas = createCanvas();
+		container = createContainer();
+		canvas = createCanvas(container);
 		ctx = canvas.getContext('2d');
 		imgData = ctx.createImageData(cols, rows);
 		for (i = 0; i < points; i++) {
@@ -42,21 +43,25 @@
 	function addCssRules() {
 		addCssRule('* {box-sizing: border-box;}');
 		addCssRule('html {height: 100%;}');
-		addCssRule('body {background-color: #222; height: 100%; margin: 0; overflow: hidden;}');
+		addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #222;}');
 		addCssRule('#gol-container {height: 100%; display: flex; justify-content: center; align-items: center;}');
 		addCssRule('#gol-canvas {background-color: #000000;}');
 	}
 
-	function createCanvas() {
-		var container, canvas;
+	function createContainer() {
+		var container = document.createElement('div');
+		container.setAttribute('id', 'gol-container');
+		return document.body.appendChild(container);;
+	}
+
+	function createCanvas(container) {
+		var canvas;
 		addCssRules();
-		container = document.getElementById('gol-container');
 		canvas = document.createElement('canvas');
 		canvas.setAttribute('id', 'gol-canvas');
 		canvas.setAttribute('width', cols + 'px');
 		canvas.setAttribute('height', rows + 'px');
-		container.appendChild(canvas);
-		return canvas;
+		return container.appendChild(canvas);
 	}
 
 //function calcBrightness(hex) {
