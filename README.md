@@ -1,1 +1,1 @@
-# game-of-life
+# HPE Algorithm Competition - Game of Life
