@@ -12,21 +12,41 @@
 	var imgData;
 	var matrices = [[], [], []];
 	var baseColors = [];
-	var color1 = [51, 255, 187]; // green #33FF99
-	var color2 = [255, 183, 183]; // red #FFB7B7
-
+	var colorsRGB = [ [0x33, 0xFF, 0x99], [0xFF, 0xB7, 0xB7] ]; //green and red
+	var armies = [];
+	
 	function initGameOfLife() {
 		var i, r, c, container, canvas;
 		addCssRules();
-		container = createContainer();
-		canvas = createCanvas(container);
+		container = addContainer();
+		addArmy('Green Army');
+		addArmy('Red Army');
+		addArmyLine(container, armies[1]);
+		canvas = addCanvas(container);
+		addArmyLine(container, armies[0]);
 		ctx = canvas.getContext('2d');
 		imgData = ctx.createImageData(cols, rows);
 		for (i = 0; i < points; i++) {
 			matrices[0][i] = matrices[1][i] = matrices[2][i] = 0;
-			baseColors[i] = i < points / 2 ? 2 : 1;
+			baseColors[i] = i < points / 2 ? 1 : 0;
 		}
 		setTimeout(onTick, 0);
+	}
+
+	function Army(index, name, color) {
+		this.index = index;
+		this.name = name;
+		this.color = color;
+	}
+
+	function addArmy(name) {
+		var index = armies.length;
+		var army = new Army(index, name, colorsRGB[index]);
+		armies.push(army);
+	}
+
+	function getColorHex(colorRGBArray) {
+		return colorRGBArray[0].toString(16) + colorRGBArray[1].toString(16) + colorRGBArray[2].toString(16);
 	}
 
 	function addCssRule(cssText) {
@@ -43,20 +63,31 @@
 	function addCssRules() {
 		addCssRule('* {box-sizing: border-box;}');
 		addCssRule('html {height: 100%;}');
-		addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #222;}');
-		addCssRule('#gol-container {height: 100%; display: flex; justify-content: center; align-items: center;}');
+		addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #222; color: #FFF; font-family: monospace; font-size: 15px;}');
+		addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		addCssRule('#gol-canvas {background-color: #000000;}');
+		addCssRule('#gol-army-line-0 {margin: 5px; color: #' + getColorHex(colorsRGB[0]) + ';}');
+		addCssRule('#gol-army-line-1 {margin: 5px; color: #' + getColorHex(colorsRGB[1]) + ';}');
 	}
 
-	function createContainer() {
+	function addContainer() {
 		var container = document.createElement('div');
 		container.setAttribute('id', 'gol-container');
-		return document.body.appendChild(container);;
+		return document.body.appendChild(container);
+		;
 	}
 
-	function createCanvas(container) {
+	function addArmyLine(container, army) {
+		var armyLine;
+		armyLine = document.createElement('div');
+		armyLine.setAttribute('id', 'gol-army-line-' + army.index);
+		var textNode = document.createTextNode(army.name);
+		armyLine.appendChild(textNode);
+		return container.appendChild(armyLine);
+	}
+
+	function addCanvas(container) {
 		var canvas;
-		addCssRules();
 		canvas = document.createElement('canvas');
 		canvas.setAttribute('id', 'gol-canvas');
 		canvas.setAttribute('width', cols + 'px');
@@ -77,9 +108,9 @@
 			for (x = 0; x < cols; x++) {
 				i = y * cols + x;
 				if (curMatrix[i] !== nxtMatrix[i]) {
-					imgData.data[i * 4] = baseColors[i] === 1 ? color1[0] : color2[0];
-					imgData.data[i * 4 + 1] = baseColors[i] === 1 ? color1[1] : color2[1];
-					imgData.data[i * 4 + 2] = baseColors[i] === 1 ? color1[2] : color2[2];
+					imgData.data[i * 4] = baseColors[i] === 0 ? colorsRGB[0][0] : colorsRGB[1][0];
+					imgData.data[i * 4 + 1] = baseColors[i] === 0 ? colorsRGB[0][1] : colorsRGB[1][1];
+					imgData.data[i * 4 + 2] = baseColors[i] === 0 ? colorsRGB[0][2] : colorsRGB[1][2];
 					imgData.data[i * 4 + 3] = Math.trunc(nxtMatrix[i] * 255);
 				}
 			}
@@ -170,26 +201,26 @@
 		for (i = 0; i < points; i++) {
 			n = 0;
 			s = 0;
-			c1 = 0;
+			c0 = 0;
 			adjacents = getAdjacentIndexes(i);
 			for (a = 0; a < adjacents.length; a++) {
 				j = adjacents[a];
 				if (matrix1[j] > minLife) {
 					n++;
 					s += matrix1[j];
-					if (baseColors[j] === 1) {
-						c1++;
+					if (baseColors[j] === 0) {
+						c0++;
 					}
 				}
 			}
 			v = matrix1[i];
 			if (v > 0 && n < 2) {
-				matrix2[i] = (Math.floor(Math.random() * 1000000 + 1) === 1) ? 1 : 0;
+				matrix2[i] = 0;
 			} else if (v > 0 && n > 3) {
-				matrix2[i] = (Math.floor(Math.random() * 1000000 + 1) === 1) ? 1 : 0;
+				matrix2[i] = 0;
 			} else if (v === 0 && n === 3) {
-				matrix2[i] = (Math.floor(Math.random() * 1000000 + 1) === 1) ? 0 : Math.min(1, s / 3 * 1.1);
-				baseColors[i] = (c1 >= 2) ? 1 : 2;
+				matrix2[i] = Math.min(1, s / 3 * 1.1);
+				baseColors[i] = (c0 >= 2) ? 0 : 1;
 			} else {
 				matrix2[i] = v;
 			}
