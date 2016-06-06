@@ -1,7 +1,7 @@
 (function() {
 
-	var cols = 500;
-	var rows = 500;
+	var cols = 400;
+	var rows = 400;
 	var points = cols * rows;
 	var ticks = 0;
 	var timeStamp = (new Date()).getTime();
