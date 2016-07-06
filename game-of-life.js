@@ -334,7 +334,7 @@
 			//todo: throw exception if player.init returned wrong info format
 		}
 
-		that.checkPlayerAnswer = function checkPlayerTurn(playerTurn) {
+		that.checkPlayerAnswer = function checkPlayerAnswer(playerAnswer) {
 			//todo: throw exception if player.turn(...) return wrong move format
 		}
 
