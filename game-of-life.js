@@ -14,8 +14,8 @@
 		var that = this;
 
 		that.colorsRGB = [ [0x33, 0xFF, 0x99], [0xFF, 0xB7, 0xB7] ]; //green and red
-		that.cols = 400;
-		that.rows = 400;
+		that.cols = 100;
+		that.rows = 100;
 	}
 	// Settings ----------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@
 			that.colorsRGB = settings.colorsRGB;
 			that.addCssRules();
 			container = that.addContainer();
-			that.addArmyLine(container, 1, 'Red Army');
+			that.addArmyLine(container, 1, 'Red2 Army');
 			canvas = that.addCanvas(container);
       that.addArmyLine(container, 0, 'Green Army');
 			that.ctx = canvas.getContext('2d');
@@ -259,13 +259,124 @@
 
 
 
+	// player1 -----------------------------------------------------------------------------------------------------------
+
+	function Player1() {
+		var that = this;
+
+		that.init = function init() {
+			return {
+				name: 'GameOfDeath',
+				icon: 'http://files.gamebanana.com/img/ico/sprays/megadethspray.png'
+			}
+		}
+
+		that.turn = function turn(board) {
+			var n, x, y, r, c, matrix;
+			matrix = board.matrices[0];
+
+			if (Math.floor(Math.random() * 10 + 1) === 1) {
+				r = Math.floor(Math.random() * (board.rows - 3) + 2);
+				c = Math.floor(Math.random() * (board.cols - 3) + 2);
+				for (y = r - 2; y <= r + 2; y++) {
+					for (x = c - 2; x <= c + 2; x++) {
+						matrix[y * board.cols + x] = 0;
+					}
+				}
+			}
+		}
+	}
+
+	function Player2() {
+		var that = this;
+
+		that.init = function init() {
+				return {
+					name: 'yuvals team',
+					icon: 'https://cdn4.iconfinder.com/data/icons/popo_emotions_full_png/popo_emotions_addon/hell_boy.png'
+				}
+		}
+
+		that.turn = function turn(board) {
+			var n, x, y, r, c, matrix;
+			matrix = board.matrices[0];
+			if (Math.floor(Math.random() * 10 + 1) === 1) {
+				r = Math.floor(Math.random() * (board.rows - 3) + 2);
+				c = Math.floor(Math.random() * (board.cols - 3) + 2);
+				for (y = r - 2; y <= r + 2; y++) {
+					for (x = c - 2; x <= c + 2; x++) {
+						matrix[y * board.cols + x] = 1;
+					}
+				}
+			}
+		}
+
+	}
+
+	// player1 -----------------------------------------------------------------------------------------------------------
+
+
+	function BotHandler() {
+		var that = this;
+
+		that.init = function init(board) {
+				that.board = board;
+		}
+
+		that.checkPlayer = function checkPlayer(player) {
+			//todo: throw exception if player does not have two methods init and turn;
+		}
+
+		that.checkPlayerInfo = function checkPlayerInfo(playerInfo) {
+			//todo: throw exception if player.init returned wrong info format
+		}
+
+		that.checkPlayerTurn = function checkPlayerTurn(playerTurn) {
+			//todo: throw exception if player.turn(...) return wrong move format
+		}
+
+		that.callPlayerTurn = function callPlayerTurn(player, side) { //side = 'left' or 'right'
+			//todo: check time of move. if move is above 0.2?ms, pass next move
+			var result, playerBoard;
+			try {
+				playerBoard = that.prepareBoardForPlayer(side, that.board)
+				result = player.turn(playerBoard);
+				that.checkPlayerTurn(result);
+			} catch (e) {
+				console.log(e.message);
+			}
+
+			return result;
+		}
+
+		that.callPlayerInit = function callPlayerInit(player) {
+			//todo: check time of move. if move is above 5sec, fail it
+			var result;
+			try {
+				result = player.init();
+				that.checkPlayerInfo(result);
+			} catch (e) {
+				console.log(e.message);
+			}
+
+			return result;
+		}
+
+		that.prepareBoardForPlayer = function prepareBoardForPlayer(side, board) { //side = 'left' or 'right'
+			//todo: return copy of board without other player dots and other player half
+				return board;
+		}
+
+	}
+
 	// Game --------------------------------------------------------------------------------------------------------------
 	function Game() {
 
 		var that = this;
+		that.botHandler = new BotHandler();
 
-		that.init = function init(settings) {
-			var i, container, canvas;
+		that.init = function init(settings, player1, player2) {
+			var i, container, canvas, p1info, p2info;
 
 			that.settings = settings;
 			that.colorsRGB = settings.colorsRGB;
@@ -274,14 +385,24 @@
 			that.turnsPerGeneration = 1000;
 			that.armies = [];
 
-			that.htmlHelper = new HtmlHelper();
-			that.htmlHelper.init(settings);
-
 			that.board = new Board();
 			that.board.init(settings);
 
-			that.addArmy('Green Army');
-			that.addArmy('Red Army');
+			that.player1 = player1;
+			that.player2 = player2;
+
+			that.botHandler.init(that.board);
+			that.botHandler.checkPlayer(that.player1);
+			that.botHandler.checkPlayer(that.player2);
+
+			p1info = that.botHandler.callPlayerInit(that.player1);
+			p2info = that.botHandler.callPlayerInit(that.player2);
+
+			that.htmlHelper = new HtmlHelper();
+			that.htmlHelper.init(settings);
+
+			that.addArmy(p1info.name);
+			that.addArmy(p2info.name);
 		}
 
 		that.addArmy = function addArmy(name) {
@@ -301,8 +422,10 @@
 			var board = that.board;
 			that.ticks++;
 			board.copyMatrixValues(board.matrices[2], board.matrices[0]);
-			board.ageMatrixValues(board.matrices[0]);
-			board.addRandomLife(board.matrices[0]);
+			//board.ageMatrixValues(board.matrices[0]);
+			that.botHandler.callPlayerTurn(that.player1);
+			that.botHandler.callPlayerTurn(that.player2);
+			//board.addRandomLife(board.matrices[0]);
 			board.computeNextState(board.matrices[0], board.matrices[1]);
 			that.htmlHelper.drawMatrixToCanvas(board.matrices[2], board.matrices[1], board.baseColors);
 			board.copyMatrixValues(board.matrices[1], board.matrices[2]);
@@ -321,7 +444,9 @@
 	window.initGameOfLife = function initGameOfLife() {
 		var settings = new Settings();
 		var game = new Game();
-		game.init(settings);
+		var p1 = new Player1();
+		var p2 = new Player2();
+		game.init(settings, p1, p2);
 		game.start();
 	};
 	// Public API --------------------------------------------------------------------------------------------------------
