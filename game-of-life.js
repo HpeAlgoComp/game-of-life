@@ -323,6 +323,7 @@
 
 		that.init = function init(board) {
 				that.board = board;
+				that.checkBoard(board);
 		}
 
 		that.checkPlayer = function checkPlayer(player) {
@@ -455,13 +456,12 @@
 			// init board
 			that.board = new Board();
 			that.board.init(settings);
-			that.botHandler.checkBoard(that.board);
+			that.botHandler.init(that.board);
 
 			// init players
 			that.player1 = player1;
 			that.player2 = player2;
 
-			that.botHandler.init(that.board);
 			that.botHandler.checkPlayer(that.player1);
 			that.botHandler.checkPlayer(that.player2);
 
