@@ -14,8 +14,8 @@
 		var that = this;
 
 		that.colorsRGB = [ [0x33, 0xFF, 0x99], [0xFF, 0xB7, 0xB7] ]; //green and red
-		that.cols = 100;
-		that.rows = 100;
+		that.cols = 200;
+		that.rows = 200;
 	}
 	// Settings ----------------------------------------------------------------------------------------------------------
 
@@ -266,7 +266,7 @@
 
 		that.init = function init() {
 			return {
-				name: 'GameOfDeath',
+				name: 'TEAM 2',
 				icon: 'http://files.gamebanana.com/img/ico/sprays/megadethspray.png'
 			}
 		}
@@ -293,7 +293,7 @@
 
 		that.init = function init() {
 				return {
-					name: 'yuvals team',
+					name: 'TEAM 1',
 					icon: 'https://cdn4.iconfinder.com/data/icons/popo_emotions_full_png/popo_emotions_addon/hell_boy.png'
 				}
 		}
