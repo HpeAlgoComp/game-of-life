@@ -37,23 +37,32 @@
 		}
 		
 		that.onTick = function onTick() {
-			var m1, m2, i, pixels;
+			var m1, m2, pixels;
 			_log('onTick()');
 			that.ticks++;
 			curVector = that.board.vectors[(that.ticks % 2) * (-1) + 1];
 			nxtVector = that.board.vectors[that.ticks % 2];
-			pixels = [];
-			for (i = 0; i < that.armies.length; i++) {
-				pixels[i] = that.armies[0].cb(
-					{
-						cols: that.board.cols,
-						rows: that.board.rows
-					});
-			}
 			that.board.computeNextState(curVector, nxtVector);
+			pixels = that.getNewPixels(curVector);
 			that.board.placeNewPixels(nxtVector, pixels);
 			that.htmlHelper.drawVectorToCanvas(curVector, nxtVector);
 			setTimeout(that.onTick, 0);
+		}
+
+		that.getNewPixels = function getNewPixels(curVector) {
+			var i, pixels;
+			pixels = [];
+			for (i = 0; i < that.armies.length; i++) {
+				that.armies[i].budget++;
+				pixels[i] = that.armies[i].cb(
+					{
+						cols: that.board.cols,
+						rows: that.board.rows,
+						budget: that.armies[i].budget
+					});
+				that.armies[i].budget -= pixels[i].length;
+			}
+			return pixels;	
 		}
 
 	}
