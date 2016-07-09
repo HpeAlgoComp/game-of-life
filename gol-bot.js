@@ -44,7 +44,7 @@
 	function tryPlaceBlocker(data) {
 		var pixels = [];
 		var n, x, y, r, c;		
-		if (data.budget % 5 === 0) {
+		if (data.budget % 3 === 0) {
 			c = Math.floor(Math.random() * (data.cols - 2));
 			r = Math.floor(Math.random() * (data.cols / 2 - 2));
 			pixels.push([c, r+1]);
@@ -53,20 +53,6 @@
 		}
 		return pixels;
 	}
-	
-	// function tryPlaceBlocker(data) {
-	// 	var pixels = [];
-	// 	var n, x, y, r, c;		
-	// 	if (data.budget % 4 === 0) {
-	// 		c = Math.floor(Math.random() * (data.cols - 1));
-	// 		r = Math.floor(Math.random() * (data.cols / 2 - 1));
-	// 		pixels.push([c, r]);
-	// 		pixels.push([c+1, r]);
-	// 		pixels.push([c, r+1]);
-	// 		pixels.push([c+1, r+1]);			
-	// 	}
-	// 	return pixels;
-	// }
 
 	function tryPlaceGlider(data) {
 		var pixels = [];
