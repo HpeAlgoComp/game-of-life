@@ -47,7 +47,7 @@
 				pixels[i] = that.armies[0].cb(
 					{
 						cols: that.board.cols,
-						rows: that.board.rows / 2
+						rows: that.board.rows
 					});
 			}
 			that.board.computeNextState(curVector, nxtVector);
