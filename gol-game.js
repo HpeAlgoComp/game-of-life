@@ -45,11 +45,12 @@
 			that.board.computeNextState(curVector, nxtVector);
 			pixels = that.getNewPixels(curVector);
 			that.board.placeNewPixels(nxtVector, pixels);
-			that.htmlHelper.drawVectorToCanvas(curVector, nxtVector);
+			that.htmlHelper.drawVectorToCanvas(nxtVector);
+			that.handleScore(nxtVector);
 			setTimeout(that.onTick, 0);
 		}
 
-		that.getNewPixels = function getNewPixels(curVector) {
+		that.getNewPixels = function getNewPixels(vector) {
 			var i, pixels;
 			pixels = [];
 			for (i = 0; i < that.armies.length; i++) {
@@ -63,6 +64,16 @@
 				that.armies[i].budget -= pixels[i].length;
 			}
 			return pixels;	
+		}
+
+		that.handleScore = function handleScore(vector) {
+			var winningPixels = that.board.handleWinningPixels(vector);
+			if (winningPixels[0] !== 0 || winningPixels[1] != 0) {
+				that.armies[0].score += winningPixels[0];
+				that.armies[1].score += winningPixels[1];
+				_log('score: ' + that.armies[0].score + ':' + that.armies[1].score);
+				that.htmlHelper.updateScores(that.armies);
+			}
 		}
 
 	}

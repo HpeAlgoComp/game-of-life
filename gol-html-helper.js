@@ -56,7 +56,7 @@ function GolHtmlHelper() {
 		var textNode, armyLine;
 		armyLine = document.createElement('div');
 		armyLine.setAttribute('id', 'gol-army-line-' + index);
-		textNode = document.createTextNode(army.name);
+		textNode = document.createTextNode(army.name + ' : ' + army.score);
 		armyLine.appendChild(textNode);
 		return container.appendChild(armyLine);
 	}
@@ -70,25 +70,30 @@ function GolHtmlHelper() {
 		return container.appendChild(canvas);
 	}
 
-	that.drawVectorToCanvas = function drawVectorToCanvas(curVector, nxtVector) {
+	that.drawVectorToCanvas = function drawVectorToCanvas(vector) {
 		var i, x, y, val, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		for (y = 0; y < that.rows; y++) {
 			for (x = 0; x < that.cols; x++) {
 				i = y * that.cols + x;
-				//if (curVector[i] !== nxtVector[i]) {
-					if (nxtVector[i] === -1) {
-						imgData.data[i * 4] = imgData.data[i * 4 + 1] = imgData.data[i * 4 + 2] = 0;
-					} else {
-						imgData.data[i * 4] = that.colorsRGB[nxtVector[i]][0];
-						imgData.data[i * 4 + 1] = that.colorsRGB[nxtVector[i]][1];
-						imgData.data[i * 4 + 2] = that.colorsRGB[nxtVector[i]][2];
-					}
-					imgData.data[i * 4 + 3] = 255;
-				//}
+				if (vector[i] === -1) {
+					imgData.data[i * 4] = imgData.data[i * 4 + 1] = imgData.data[i * 4 + 2] = 0;
+				} else {
+					imgData.data[i * 4] = that.colorsRGB[vector[i]][0];
+					imgData.data[i * 4 + 1] = that.colorsRGB[vector[i]][1];
+					imgData.data[i * 4 + 2] = that.colorsRGB[vector[i]][2];
+				}
+				imgData.data[i * 4 + 3] = 255;
 			}
 		}
 		that.ctx.putImageData(imgData, 0, 0);
+	}
+
+	that.updateScores = function updateScores(armies) {
+		var i;
+		for (i = 0; i < armies.length; i++) {
+			document.getElementById('gol-army-line-' + i).innerHTML = armies[i].name + ' : ' + armies[i].score;		
+		}
 	}
 
 }

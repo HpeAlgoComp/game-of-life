@@ -1,7 +1,7 @@
 (function() {
 
 	window.registerArmy({
-		name: 'Army 0',
+		name: 'User',
 		icon: '',
 		cb: cb
 	})

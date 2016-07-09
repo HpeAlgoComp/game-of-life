@@ -8,4 +8,5 @@ function GolArmy(index, name, color, icon, cb) {
 	that.icon = icon;
 	that.cb = cb;
 	that.budget = 0;
+	that.score = 0;
 }

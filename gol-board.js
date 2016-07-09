@@ -136,4 +136,22 @@ function GolBoard() {
 		}
 	}
 
+	that.handleWinningPixels = function handleWinningPixels(vector) {
+		var c;
+		var winningPixels = [0, 0];
+		for (c = 0; c < that.cols; c++) {
+			if (vector[that.getIndex(c, 0)] === 0) {
+				winningPixels[0]++;
+				vector[that.getIndex(c, 0)] = -1;	
+			}
+		}
+		for (c = 0; c < that.cols; c++) {
+			if (vector[that.getIndex(c, that.rows - 1)] === 1) {
+				winningPixels[1]++;
+				vector[that.getIndex(c, that.rows - 1)] = -1;	
+			}
+		}
+		return winningPixels;
+	}
+
 }
