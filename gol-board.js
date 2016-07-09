@@ -127,7 +127,11 @@ function GolBoard() {
 				v = (i == 0)
 				? that.getIndex(pixels[i][j][0], that.rows / 2 + pixels[i][j][1])
 				: that.getIndex(pixels[i][j][0], that.rows / 2 - pixels[i][j][1]);
-				vector[v] = i; 
+				if (v < 0 || v > that.points) {
+					_err('new pixel out of range');
+				} else {
+					vector[v] = i; 
+				}
 			}	
 		}
 	}

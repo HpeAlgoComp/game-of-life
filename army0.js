@@ -42,7 +42,7 @@
 		var n, x, y, r, c;		
 		if (data.budget % 5 === 0) {
 			c = Math.floor(Math.random() * (data.cols - 2));
-			r = Math.floor(Math.random() * (data.cols - 2));
+			r = Math.floor(Math.random() * (data.cols / 2 - 2));
 			pixels.push([c, r+1]);
 			pixels.push([c+1, r+1]);
 			pixels.push([c+2, r+1]);			
