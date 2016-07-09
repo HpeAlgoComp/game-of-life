@@ -11,13 +11,14 @@
 	setTimeout(registerArmy, 0);
 
 	var plan = [
-		'blocker',
+		'spaceship',
+		'spaceship',
+		'spaceship',
+		'spaceship',
+		'spaceship',
 		//'glider', 
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship'
+		'blocker',
+		'interceptor'
 	];
 	var planIndex = 0;
 
@@ -25,6 +26,8 @@
 		var pixels = [];
 		if (plan[planIndex] === 'blocker') {
 			pixels = tryPlaceBlocker(data);
+		} else if (plan[planIndex] === 'interceptor') {
+			pixels = tryPlaceInterceptor(data);
 		} else if (plan[planIndex] === 'glider') {
 			pixels = tryPlaceGlider(data);
 		} else if (plan[planIndex] === 'spaceship') {
@@ -41,11 +44,24 @@
 		var n, x, y, r, c;		
 		if (data.budget % 4 === 0) {
 			c = Math.floor(Math.random() * (data.cols - 1));
-			r = Math.floor(Math.random() * (data.rows - 1));
+			r = Math.floor(Math.random() * 60) + 20;
 			pixels.push([c, r]);
 			pixels.push([c, r+1]);
 			pixels.push([c+1, r]);
 			pixels.push([c+1, r+1]);			
+		}
+		return pixels;
+	}
+
+	function tryPlaceInterceptor(data) {
+		var pixels = [];
+		var n, x, y, r, c;		
+		if (data.budget % 3 === 0) {
+			c = Math.floor(Math.random() * (data.cols - 2));
+			r = data.rows - 3;
+			pixels.push([c, r]);
+			pixels.push([c+1, r]);
+			pixels.push([c+2, r]);				
 		}
 		return pixels;
 	}
@@ -71,15 +87,27 @@
 		if (data.budget % 9 === 0) {
 			c = Math.floor(Math.random() * (data.cols - 3));
 			r = 0;
-			pixels.push([c+1, r]);
-			pixels.push([c+2, r]);
-			pixels.push([c+3, r]);
-			pixels.push([c, r+1]);
-			pixels.push([c+3, r+1]);
-			pixels.push([c+3, r+2]);
-			pixels.push([c+3, r+3]);
-			pixels.push([c, r+4]);
-			pixels.push([c+2, r+4]);
+			if (c < data.cols / 2) {
+				pixels.push([c+1, r]);
+				pixels.push([c+2, r]);
+				pixels.push([c+3, r]);
+				pixels.push([c, r+1]);
+				pixels.push([c+3, r+1]);
+				pixels.push([c+3, r+2]);
+				pixels.push([c+3, r+3]);
+				pixels.push([c, r+4]);
+				pixels.push([c+2, r+4]);
+			} else {
+				pixels.push([c, r]);
+				pixels.push([c+1, r]);
+				pixels.push([c+2, r]);
+				pixels.push([c, r+1]);
+				pixels.push([c+3, r+1]);
+				pixels.push([c, r+2]);
+				pixels.push([c, r+3]);
+				pixels.push([c+1, r+4]);
+				pixels.push([c+3, r+4]);				
+			}
 		}
 		return pixels;
 	}
