@@ -57,6 +57,7 @@
 				that.armies[i].budget++;
 				pixels[i] = that.armies[i].cb(
 					{
+						ticks: that.ticks,
 						cols: that.board.cols,
 						rows: that.board.rows / 2,
 						budget: that.armies[i].budget
