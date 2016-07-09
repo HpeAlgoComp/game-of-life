@@ -120,6 +120,12 @@ function GolBoard() {
 		}
 	}
 
+	that.makeRandomChange = function makeRandomChange(vector) {
+		for (var i = 0; i < 100; i++) {
+			vector[Math.floor(Math.random(that.points))] = -1;	
+		}
+	}
+
 	that.placeNewPixels = function placeNewPixels(vector, pixels) {
 		var i, j, v;
 		for (i = 0; i < pixels.length; i++) {
