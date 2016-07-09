@@ -1,27 +1,14 @@
 (function() {
 
-	function registerArmy() {
-		window.registerArmy({
-			name: 'BOT',
-			icon: '',
-			cb: cb
-		});
-	}
-
-	setTimeout(registerArmy, 0);
+	window.registerArmy({
+		name: 'User',
+		icon: '',
+		cb: cb
+	})
 
 	var plan = [
-		'blocker',
-		'glider', 
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship',
+		'blocker', 
+		'glider',
 		'spaceship'
 	];
 	var planIndex = 0;
