@@ -57,7 +57,7 @@
 				pixels[i] = that.armies[i].cb(
 					{
 						cols: that.board.cols,
-						rows: that.board.rows,
+						rows: that.board.rows / 2,
 						budget: that.armies[i].budget
 					});
 				that.armies[i].budget -= pixels[i].length;
