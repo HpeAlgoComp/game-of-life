@@ -76,7 +76,7 @@ function GolHtmlHelper() {
 		for (y = 0; y < that.rows; y++) {
 			for (x = 0; x < that.cols; x++) {
 				i = y * that.cols + x;
-				if (curVector[i] !== nxtVector[i]) {
+				//if (curVector[i] !== nxtVector[i]) {
 					if (nxtVector[i] === -1) {
 						imgData.data[i * 4] = imgData.data[i * 4 + 1] = imgData.data[i * 4 + 2] = 0;
 					} else {
@@ -85,7 +85,7 @@ function GolHtmlHelper() {
 						imgData.data[i * 4 + 2] = that.colorsRGB[nxtVector[i]][2];
 					}
 					imgData.data[i * 4 + 3] = 255;
-				}
+				//}
 			}
 		}
 		that.ctx.putImageData(imgData, 0, 0);
