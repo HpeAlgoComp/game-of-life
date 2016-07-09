@@ -58,7 +58,7 @@
 		var n, x, y, r, c;		
 		if (data.budget % 3 === 0) {
 			c = Math.floor(Math.random() * (data.cols - 2));
-			r = data.rows - 3;
+			r = data.rows - 2;
 			pixels.push([c, r]);
 			pixels.push([c+1, r]);
 			pixels.push([c+2, r]);				
