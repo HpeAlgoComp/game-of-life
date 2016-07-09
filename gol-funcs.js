@@ -1,9 +1,9 @@
 function _log(msg) {
-	console.log('gameOfLife MSG ' + msg);
+	console.log('LOG ' + msg);
 }
 
 function _err(msg) {
-	console.log('gameOfLife ERR ' + msg);
+	console.log('ERR ' + msg);
 }
 
 function calcBrightness(hex) {
