@@ -59,8 +59,8 @@ function GolBoard() {
 
 	that.getAdjacentIndexes = function getAdjacentIndexes(index) {
 		var indices = [],
-			x = that.getX(index),
-			y = that.getY(index),
+			x = index % that.cols,
+			y = Math.floor(index / that.cols),
 			cols = that.cols,
 			rows = that.rows;
 		if ((y - 1) >= 0 && (x - 1) >= 0) {
@@ -120,11 +120,11 @@ function GolBoard() {
 		}
 	};
 
-	that.makeRandomChange = function makeRandomChange(vector) {
-		for (var i = 0; i < 100; i++) {
-			vector[Math.floor(Math.random() * that.points)] = -1;	
-		}
-	};
+	// that.makeRandomChange = function makeRandomChange(vector) {
+	// 	for (var i = 0; i < 100; i++) {
+	// 		vector[Math.floor(Math.random() * that.points)] = -1;	
+	// 	}
+	// };
 
 	that.adjustNewPixels = function adjustNewPixels(pixels) {
 		var i, j, v, x, y, adjustedPixels;
