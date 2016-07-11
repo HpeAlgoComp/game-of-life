@@ -31,6 +31,7 @@
 				setTimeout(that.startGame, 1000);
 			} else {
 				that.htmlHelper.drawUserInterface(that.armies);
+				console.log(window.onload);
 				that.ticks = 0;
 				setTimeout(that.onTick, 1000);
 			}
