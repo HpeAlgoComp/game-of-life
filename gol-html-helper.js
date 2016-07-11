@@ -39,7 +39,7 @@ function GolHtmlHelper() {
 		var colorsHex = [that.getColorHexStr(that.colorsRGB[0]), that.getColorHexStr(that.colorsRGB[1])];
 		that.addCssRule('* {box-sizing: border-box;}');
 		that.addCssRule('html {height: 100%;}');
-		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #222; color: #FFF; font-family: monospace; font-size: 15px;}');
+		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #222; color: #FFF; font-family: consolas, monospace, sans-serif; font-size: 15px;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000000; border-bottom: 1px solid #' + colorsHex[0] + '; border-top: 1px solid #' + colorsHex[1] + ';}');
 		that.addCssRule('#gol-army-line-0 {margin: 5px; color: #' + colorsHex[0] + ';}');
