@@ -43,8 +43,10 @@
 			curVector = that.board.vectors[(that.ticks % 2) * (-1) + 1];
 			nxtVector = that.board.vectors[that.ticks % 2];			
 			that.board.computeNextState(curVector, nxtVector);
-			//that.board.makeRandomChange(nxtVector);			
-			that.addNewPixels(nxtVector);
+			//that.board.makeRandomChange(nxtVector);
+			if (that.ticks % 3 === 0) {
+				that.addNewPixels(nxtVector);
+			}
 			that.htmlHelper.drawVectorToCanvas(nxtVector);
 			that.handleScore(nxtVector);
 			setTimeout(that.onTick, 0);

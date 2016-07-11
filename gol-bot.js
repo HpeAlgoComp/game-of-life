@@ -42,7 +42,7 @@
 	function tryPlaceBlocker(data) {
 		var pixels = [];
 		var r, c;
-		if (data.budget % 4 === 0) {
+		if (data.budget >= 4) {
 			c = Math.floor(Math.random() * (data.cols - 1));
 			r = Math.floor(Math.random() * 60) + 20;
 			pixels.push([c, r]);
@@ -56,7 +56,7 @@
 	function tryPlaceInterceptor(data) {
 		var pixels = [];
 		var r, c;
-		if (data.budget % 3 === 0) {
+		if (data.budget >= 3) {
 			c = Math.floor(Math.random() * (data.cols - 2));
 			r = data.rows - 2;
 			pixels.push([c, r]);
@@ -69,7 +69,7 @@
 	function tryPlaceGlider(data) {
 		var pixels = [];
 		var r, c;
-		if (data.budget % 5 === 0) {
+		if (data.budget >= 5) {
 			c = Math.floor(Math.random() * (data.cols - 2));
 			r = 0;
 			pixels.push([c, r]);
@@ -84,7 +84,7 @@
 	function tryPlaceSpaceship(data) {
 		var pixels = [];
 		var r, c;
-		if (data.budget % 9 === 0) {
+		if (data.budget >= 9) {
 			c = Math.floor(Math.random() * (data.cols - 3));
 			r = 0;
 			if (c < data.cols / 2) {

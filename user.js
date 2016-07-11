@@ -28,7 +28,7 @@
 	function tryPlaceBlocker(data) {
 		var pixels = [];
 		var r, c;		
-		if (data.budget % 4 === 0) {
+		if (data.budget >= 4) {
 			c = Math.floor(Math.random() * (data.cols - 1));
 			r = Math.floor(Math.random() * (data.rows - 1));
 			pixels.push([c, r]);
@@ -42,7 +42,7 @@
 	function tryPlaceGlider(data) {
 		var pixels = [];
 		var r, c;		
-		if (data.budget % 5 === 0) {
+		if (data.budget >= 5) {
 			c = Math.floor(Math.random() * (data.cols - 2));
 			r = 0;
 			pixels.push([c, r]);
