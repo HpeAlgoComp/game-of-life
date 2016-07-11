@@ -4,7 +4,7 @@
 		name: 'User',
 		icon: '',
 		cb: cb
-	})
+	});
 
 	var plan = [
 		'blocker', 
@@ -27,7 +27,7 @@
 
 	function tryPlaceBlocker(data) {
 		var pixels = [];
-		var n, x, y, r, c;		
+		var r, c;		
 		if (data.budget % 4 === 0) {
 			c = Math.floor(Math.random() * (data.cols - 1));
 			r = Math.floor(Math.random() * (data.rows - 1));
@@ -41,7 +41,7 @@
 
 	function tryPlaceGlider(data) {
 		var pixels = [];
-		var n, x, y, r, c;		
+		var r, c;		
 		if (data.budget % 5 === 0) {
 			c = Math.floor(Math.random() * (data.cols - 2));
 			r = 0;

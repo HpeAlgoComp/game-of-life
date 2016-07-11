@@ -14,7 +14,7 @@
 			that.armies = [];
 			window.registerArmy = that.registerArmy;
 			window.startGame = that.startGame;
-		}
+		};
 
 		that.registerArmy = function registerArmy(data) {
 			var army = new GolArmy(that.armies.length, data.name, that.settings.colorsRGB[that.armies.length], data.icon, data.cb);
@@ -22,7 +22,7 @@
 			_log('name: ' + data.name + ', icon: ' + data.icon);
 			that.armies.push(army);
 			_log('number of armies: ' + that.armies.length);
-		}
+		};
 
 		that.startGame = function startGame() {
 			_log('startGame()');
@@ -34,10 +34,10 @@
 				that.ticks = 0;
 				setTimeout(that.onTick, 1000);
 			}
-		}
+		};
 		
 		that.onTick = function onTick() {
-			var m1, m2, pixels;
+			var curVector, nxtVector;
 			//_log('onTick()');
 			that.ticks++;
 			curVector = that.board.vectors[(that.ticks % 2) * (-1) + 1];
@@ -48,7 +48,7 @@
 			that.htmlHelper.drawVectorToCanvas(nxtVector);
 			that.handleScore(nxtVector);
 			setTimeout(that.onTick, 0);
-		}
+		};
 
 		that.addNewPixels = function addNewPixels(vector) {
 			var i, pixels;
@@ -67,7 +67,7 @@
 			if (pixels[0].length || pixels[1].length) {
 				that.board.placeNewPixels(vector, pixels);
 			}
-		}
+		};
 
 		that.handleScore = function handleScore(vector) {
 			var winningPixels = that.board.handleWinningPixels(vector);

@@ -12,14 +12,14 @@ function GolBoard() {
 		for (i = 0; i < that.points; i++) {
 			that.vectors[0][i] = that.vectors[1][i] = -1;
 		}
-	}
+	};
 
 	that.copyVectorValues = function copyVectorValues(srcVector, dstVector) {
 		var i;
 		for (i = 0; i < that.points; i++) {
 			dstVector[i] = srcVector[i];
 		}
-	}
+	};
 
 	// that.ageVectorValues = function ageVectorValues(vector) {
 	// 	var i;
@@ -47,15 +47,15 @@ function GolBoard() {
 
 	that.getIndex = function getIndex(x, y) {
 		return y * that.cols + x;
-	}
+	};
 
 	that.getX = function getX(index) {
 		return index % that.cols;
-	}
+	};
 
 	that.getY = function getY(index) {
-		return Math.trunc(index / that.cols);
-	}
+		return Math.floor(index / that.cols);
+	};
 
 	that.getAdjacentIndexes = function getAdjacentIndexes(index) {
 		var indices = [],
@@ -88,14 +88,14 @@ function GolBoard() {
 			indices.push((y + 1) * cols + (x + 1));
 		}
 		return indices;
-	}
+	};
 
 	that.getAdjacentIndexesByXY = function getAdjacentIndexesByXY(x, y) {
 		return that.getAdjacentIndexes(y * that.cols + x);
-	}
+	};
 
 	that.computeNextState = function computeNextState(vector1, vector2) {
-		var i, a, j, x, y, n, v, n, c0, adjacents;
+		var i, a, j, n, v, c0, adjacents;
 		for (i = 0; i < that.points; i++) {
 			n = 0;
 			c0 = 0;
@@ -118,13 +118,13 @@ function GolBoard() {
 				vector2[i] = v;
 			}
 		}
-	}
+	};
 
 	that.makeRandomChange = function makeRandomChange(vector) {
 		for (var i = 0; i < 100; i++) {
-			vector[Math.floor(Math.random(that.points))] = -1;	
+			vector[Math.floor(Math.random() * that.points)] = -1;	
 		}
-	}
+	};
 
 	that.placeNewPixels = function placeNewPixels(vector, pixels) {
 		var i, j, v;
@@ -140,7 +140,7 @@ function GolBoard() {
 				}
 			}	
 		}
-	}
+	};
 
 	that.handleWinningPixels = function handleWinningPixels(vector) {
 		var c;
@@ -158,6 +158,6 @@ function GolBoard() {
 			}
 		}
 		return winningPixels;
-	}
+	};
 
 }

@@ -8,7 +8,7 @@ function GolHtmlHelper() {
 		that.rows = settings.rows;
 		that.colorsRGB = settings.colorsRGB;
 		that.addCssRules();
-	}
+	};
 
 	that.drawUserInterface = function drawUserInterface(armies) {
 		var container, canvas;
@@ -17,11 +17,11 @@ function GolHtmlHelper() {
 		canvas = that.addCanvas(container);
   		that.addArmyLine(container, 0, armies[0]);
 		that.ctx = canvas.getContext('2d');
-	}
+	};
 
 	that.getColorHexStr = function getColorHexStr(colorRGBArray) {
 		return colorRGBArray[0].toString(16) + colorRGBArray[1].toString(16) + colorRGBArray[2].toString(16);
-	}
+	};
 
 	that.addCssRule = function addCssRule(cssText) {
 		var style;
@@ -33,7 +33,7 @@ function GolHtmlHelper() {
 			style.appendChild(document.createTextNode(cssText));
 		}
 		document.head.appendChild(style);
-	}
+	};
 
 	that.addCssRules = function addCssRules() {
 		that.addCssRule('* {box-sizing: border-box;}');
@@ -43,14 +43,14 @@ function GolHtmlHelper() {
 		that.addCssRule('#gol-canvas {background-color: #000000;}');
 		that.addCssRule('#gol-army-line-0 {margin: 5px; color: #' + that.getColorHexStr(that.colorsRGB[0]) + ';}');
 		that.addCssRule('#gol-army-line-1 {margin: 5px; color: #' + that.getColorHexStr(that.colorsRGB[1]) + ';}');
-	}
+	};
 
 	that.addContainer = function addContainer() {
 		var container;
 		container = document.createElement('div');
 		container.setAttribute('id', 'gol-container');
 		return document.body.appendChild(container);
-	}
+	};
 
 	that.addArmyLine = function addArmyLine(container, index, army) {
 		var textNode, armyLine;
@@ -59,7 +59,7 @@ function GolHtmlHelper() {
 		textNode = document.createTextNode(army.name + ' : ' + army.score);
 		armyLine.appendChild(textNode);
 		return container.appendChild(armyLine);
-	}
+	};
 
 	that.addCanvas = function addCanvas(container) {
 		var canvas;
@@ -68,10 +68,10 @@ function GolHtmlHelper() {
 		canvas.setAttribute('width', that.cols + 'px');
 		canvas.setAttribute('height', that.rows + 'px');
 		return container.appendChild(canvas);
-	}
+	};
 
 	that.drawVectorToCanvas = function drawVectorToCanvas(vector) {
-		var i, x, y, val, imgData;
+		var i, x, y, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		for (y = 0; y < that.rows; y++) {
 			for (x = 0; x < that.cols; x++) {
@@ -87,13 +87,13 @@ function GolHtmlHelper() {
 			}
 		}
 		that.ctx.putImageData(imgData, 0, 0);
-	}
+	};
 
 	that.updateScores = function updateScores(armies) {
 		var i;
 		for (i = 0; i < armies.length; i++) {
 			document.getElementById('gol-army-line-' + i).innerHTML = armies[i].name + ' : ' + armies[i].score;		
 		}
-	}
+	};
 
 }
