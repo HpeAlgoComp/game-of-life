@@ -38,7 +38,7 @@
 		
 		that.onTick = function onTick() {
 			var m1, m2, pixels;
-			_log('onTick()');
+			//_log('onTick()');
 			that.ticks++;
 			curVector = that.board.vectors[(that.ticks % 2) * (-1) + 1];
 			nxtVector = that.board.vectors[that.ticks % 2];			
