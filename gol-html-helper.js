@@ -70,8 +70,8 @@ function GolHtmlHelper() {
 		return container.appendChild(canvas);
 	};
 
-	that.drawVectorToCanvas = function drawVectorToCanvas(vector) {
-		var i, x, y, imgData;
+	that.drawVectorToCanvas = function drawVectorToCanvas(vector, newPixels) {
+		var i, j, x, y, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		for (y = 0; y < that.rows; y++) {
 			for (x = 0; x < that.cols; x++) {
@@ -84,6 +84,15 @@ function GolHtmlHelper() {
 					imgData.data[i * 4 + 2] = that.colorsRGB[vector[i]][2];
 				}
 				imgData.data[i * 4 + 3] = 255;
+			}
+		}
+		for (i = 0; i < newPixels.length; i++) {
+			for (j = 0; j < newPixels[i].length; j++) {
+				index = newPixels[i][j][1] * that.cols + newPixels[i][j][0];
+				imgData.data[index * 4] = 255;
+				imgData.data[index * 4 + 1] = 255;
+				imgData.data[index * 4 + 2] = 255;
+				imgData.data[index * 4 + 3] = 255;	
 			}
 		}
 		that.ctx.putImageData(imgData, 0, 0);

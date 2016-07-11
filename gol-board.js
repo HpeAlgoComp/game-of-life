@@ -14,12 +14,12 @@ function GolBoard() {
 		}
 	};
 
-	that.copyVectorValues = function copyVectorValues(srcVector, dstVector) {
-		var i;
-		for (i = 0; i < that.points; i++) {
-			dstVector[i] = srcVector[i];
-		}
-	};
+	// that.copyVectorValues = function copyVectorValues(srcVector, dstVector) {
+	// 	var i;
+	// 	for (i = 0; i < that.points; i++) {
+	// 		dstVector[i] = srcVector[i];
+	// 	}
+	// };
 
 	// that.ageVectorValues = function ageVectorValues(vector) {
 	// 	var i;
@@ -126,8 +126,26 @@ function GolBoard() {
 		}
 	};
 
-	that.placeNewPixels = function placeNewPixels(vector, pixels) {
-		var i, j, v;
+	that.adjustNewPixels = function adjustNewPixels(pixels) {
+		var i, j, v, x, y, adjustedPixels;
+		adjustedPixels = [[],[]];
+		for (i = 0; i < pixels.length; i++) {
+			for (j = 0; j < pixels[i].length; j++) {
+				x = pixels[i][j][0];
+				y = i === 0 ? that.rows / 2 + pixels[i][j][1] : that.rows / 2 - 1 - pixels[i][j][1];
+				if (x < 0 || x >= that.cols || y < 0 || y >= that.rows) {
+					_err('New pixel out of range! ArmyIndex: ' + i + ', X: ' + pixels[i][j][0] + ', Y: ' + pixels[i][j][1]);	
+				} else {
+					adjustedPixels[i].push([x,y]);
+				}
+			}	
+		}
+		return adjustedPixels;
+	};
+
+	that.getNewPixelIndices = function getNewPixelIndices(pixels) {
+		var i, j, v, pixelIndices;
+		pixelIndices = [[],[]];
 		for (i = 0; i < pixels.length; i++) {
 			for (j = 0; j < pixels[i].length; j++) {
 				v = (i == 0)
@@ -136,11 +154,21 @@ function GolBoard() {
 				if (v < 0 || v > that.points) {
 					_err('new pixel out of range');
 				} else {
-					vector[v] = i; 
+					pixelIndices[i][j] = v; 
 				}
 			}	
 		}
+		return pixelIndices;
 	};
+
+	that.placeNewPixelsOnBoard = function placeNewPixelsOnBoard(vector, pixels) {
+		var i, j;
+		for (i = 0; i < pixels.length; i++) {
+			for (j = 0; j < pixels[i].length; j++) {
+				vector[pixels[i][j][1] * that.cols + pixels[i][j][0]] = i;	
+			}
+		}	
+	}
 
 	that.handleWinningPixels = function handleWinningPixels(vector) {
 		var c;
