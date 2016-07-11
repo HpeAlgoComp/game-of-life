@@ -71,7 +71,7 @@ function GolHtmlHelper() {
 	};
 
 	that.drawVectorToCanvas = function drawVectorToCanvas(vector, newPixels) {
-		var i, j, x, y, index, imgData;
+		var i, j, k, x, y, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		for (y = 0; y < that.rows; y++) {
 			for (x = 0; x < that.cols; x++) {
@@ -88,11 +88,20 @@ function GolHtmlHelper() {
 		}
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
-				index = newPixels[i][j][1] * that.cols + newPixels[i][j][0];
-				imgData.data[index * 4] = 255;
-				imgData.data[index * 4 + 1] = 255;
-				imgData.data[index * 4 + 2] = 255;
-				imgData.data[index * 4 + 3] = 255;	
+				for (k = 0; k < that.rows; k++) {
+					index = k * that.cols + newPixels[i][j][0];
+					imgData.data[index * 4] = that.colorsRGB[i][0];
+					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+					imgData.data[index * 4 + 3] = 255;
+				}
+				for (k = 0; k < that.cols; k++) {
+					index = newPixels[i][j][1] * that.cols + k;
+					imgData.data[index * 4] = that.colorsRGB[i][0];
+					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+					imgData.data[index * 4 + 3] = 255;
+				}	
 			}
 		}
 		that.ctx.putImageData(imgData, 0, 0);
