@@ -10,13 +10,17 @@
 
 	setTimeout(registerArmy, 0);
 
-	var plan = [
+	var plan1 = [
+		'spaceship'
+	];
+	var plan2 = [
+		'interceptor'
+	];
+	var plan3 = [
 		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		'spaceship',
-		//'glider', 
+		'glider', 
+		'blocker',
+		'blocker',
 		'blocker',
 		'interceptor'
 	];
@@ -24,6 +28,14 @@
 
 	function cb(data) {
 		var pixels = [];
+		var plan;
+		if (data.ticks < 200) {
+			plan = plan1;
+		} else if (data.ticks < 600) {
+			plan = plan2;
+		} else {
+			plan = plan3;
+		}
 		if (plan[planIndex] === 'blocker') {
 			pixels = tryPlaceBlocker(data);
 		} else if (plan[planIndex] === 'interceptor') {
@@ -57,8 +69,8 @@
 		var pixels = [];
 		var r, c;
 		if (data.budget >= 3) {
-			c = Math.floor(Math.random() * (data.cols - 2));
-			r = data.rows - 2;
+			c = Math.floor(Math.random() * data.cols / 4) * 4;
+			r = data.rows - 10;
 			pixels.push([c, r]);
 			pixels.push([c+1, r]);
 			pixels.push([c+2, r]);				
