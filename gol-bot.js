@@ -20,8 +20,6 @@
 		'spaceship',
 		'glider', 
 		'blocker',
-		'blocker',
-		'blocker',
 		'interceptor'
 	];
 	var planIndex = 0;
@@ -70,7 +68,7 @@
 		var r, c;
 		if (data.budget >= 3) {
 			c = Math.floor(Math.random() * data.cols / 4) * 4;
-			r = data.rows - 10;
+			r = data.rows - 15;
 			pixels.push([c, r]);
 			pixels.push([c+1, r]);
 			pixels.push([c+2, r]);				
