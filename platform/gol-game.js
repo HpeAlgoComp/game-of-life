@@ -56,7 +56,7 @@
 			pixels = [];
 			adjustedPixels = [[],[]];
 			for (i = 0; i < 2; i++) {
-				that.armies[i].budget++;
+				that.armies[i].budget += that.settings.budgetTickQuantum;
 				pixels[i] = that.armies[i].cb(
 					{
 						ticks: that.ticks,
@@ -73,20 +73,23 @@
 		};
 
 		that.handleScore = function handleScore(vector) {
+			that.armies[0].power -= that.settings.powerTickQuantum;
+			that.armies[1].power -= that.settings.powerTickQuantum;
 			var winningPixels = that.board.handleWinningPixels(vector);
 			if (winningPixels[0] !== 0 || winningPixels[1] !== 0) {
-				that.armies[1].power -= winningPixels[0] * that.settings.powerQuantum;
-				that.armies[1].power = Math.max(that.armies[1].power, 0);
-				that.armies[0].power -= winningPixels[1] * that.settings.powerQuantum;
-				that.armies[0].power = Math.max(that.armies[0].power, 0);
-				_log('power: ' + that.armies[0].power + ':' + that.armies[1].power);
+				that.armies[1].power -= winningPixels[0] * that.settings.powerPixelQuantum;
+				that.armies[0].power -= winningPixels[1] * that.settings.powerPixelQuantum;
 				if (winningPixels[0] !== 0) {
-					that.htmlHelper.updateScore(that.armies[1]);	
+					_log(that.armies[0].name + ' scores');	
 				}
 				if (winningPixels[1] !== 0) {
-					that.htmlHelper.updateScore(that.armies[0]);	
+					_log(that.armies[1].name + ' scores');		
 				}
 			}
+			that.armies[0].power = Math.max(that.armies[0].power, 0);
+			that.armies[1].power = Math.max(that.armies[1].power, 0);
+			that.htmlHelper.updateScore(that.armies[0]);
+			that.htmlHelper.updateScore(that.armies[1]);
 		}
 
 	}
