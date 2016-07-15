@@ -100,18 +100,22 @@ function GolHtmlHelper() {
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
 				for (k = 0; k < that.rows; k++) {
-					index = k * that.cols + newPixels[i][j][0];
-					imgData.data[index * 4] = that.colorsRGB[i][0];
-					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-					imgData.data[index * 4 + 3] = 128;
+					if (Math.abs(k - newPixels[i][j][1]) < 10) {
+						index = k * that.cols + newPixels[i][j][0];
+						imgData.data[index * 4] = that.colorsRGB[i][0];
+						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+						imgData.data[index * 4 + 3] = 128;
+					}
 				}
 				for (k = 0; k < that.cols; k++) {
-					index = newPixels[i][j][1] * that.cols + k;
-					imgData.data[index * 4] = that.colorsRGB[i][0];
-					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-					imgData.data[index * 4 + 3] = 128;
+					if (Math.abs(k - newPixels[i][j][0]) < 10) {
+						index = newPixels[i][j][1] * that.cols + k;
+						imgData.data[index * 4] = that.colorsRGB[i][0];
+						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+						imgData.data[index * 4 + 3] = 128;
+					}
 				}	
 			}
 		}
