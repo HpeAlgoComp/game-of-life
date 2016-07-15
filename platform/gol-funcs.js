@@ -2,6 +2,14 @@ function _log(msg) {
 	console.log('LOG ' + msg);
 }
 
+function _dbg(msg) {
+	console.log('DBG ' + msg);
+}
+
+function _wrn(msg) {
+	console.log('WRN ' + msg);
+}
+
 function _err(msg) {
 	console.log('ERR ' + msg);
 }

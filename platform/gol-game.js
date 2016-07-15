@@ -5,7 +5,7 @@
 		var that = this;
 		
 		that.init = function init(settings) {
-			_log('init()');
+			_dbg('init()');
 			that.settings = settings;
 			that.htmlHelper = new GolHtmlHelper();
 			that.htmlHelper.init(settings);
@@ -18,14 +18,14 @@
 
 		that.registerArmy = function registerArmy(data) {
 			var army = new GolArmy(that.armies.length, data.name, that.settings.colorsRGB[that.armies.length], data.icon, data.cb);
-			_log('registerArmy()');
-			_log('name: ' + data.name + ', icon: ' + data.icon);
+			_dbg('registerArmy()');
+			_log('army name: ' + data.name + ', icon: ' + data.icon);
 			that.armies.push(army);
-			_log('number of armies: ' + that.armies.length);
+			_dbg('number of armies: ' + that.armies.length);
 		};
 
 		that.startGame = function startGame() {
-			_log('startGame()');
+			_dbg('startGame()');
 			if (that.armies.length < 2) {
 				_log('waiting for armies...');
 				setTimeout(that.startGame, 1000);

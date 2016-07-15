@@ -139,7 +139,7 @@ function GolBoard() {
 		for (a = 0; a < 2; a++) {
 			r = a === 0 ? 0 : that.rows - 1;
 			for (c = 0; c < that.cols; c++) {
-				i = that.getIndex(c, r);
+				i = r * that.cols + c;
 				if (vector[i] === a) {
 					winningPixels[a]++;
 					vector[i] = -1;
