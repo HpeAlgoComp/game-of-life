@@ -41,7 +41,7 @@ function GolHtmlHelper() {
 		that.addCssRule('html {height: 100%;}');
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #222; color: #FFF; font-family: consolas, monospace, sans-serif; font-size: 16px;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
-		that.addCssRule('#gol-canvas {background-color: #000000; border-bottom: 1px solid #' + colorsHex[0] + '; border-top: 1px solid #' + colorsHex[1] + ';}');
+		that.addCssRule('#gol-canvas {background-color: #000000; cursor: crosshair;}');
 		that.addCssRule('#gol-army-line-0 {margin: 5px; color: #' + colorsHex[0] + ';}');
 		that.addCssRule('#gol-army-line-1 {margin: 5px; color: #' + colorsHex[1] + ';}');
 	};
@@ -72,7 +72,7 @@ function GolHtmlHelper() {
 	};
 
 	that.drawVectorToCanvas = function drawVectorToCanvas(vector, newPixels) {
-		var i, j, k, x, y, index, imgData;
+		var i, j, k, x, y, b, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		for (y = 0; y < that.rows; y++) {
 			for (x = 0; x < that.cols; x++) {
@@ -85,6 +85,16 @@ function GolHtmlHelper() {
 					imgData.data[i * 4 + 2] = that.colorsRGB[vector[i]][2];
 				}
 				imgData.data[i * 4 + 3] = 255;
+			}
+		}		
+		for (i = 0; i < 2; i++) {
+			y = (i === 0) ? that.rows-1 : 0;
+			for (x = 0; x < that.cols; x++) {
+				index = y * that.cols + x;
+				imgData.data[index * 4] = that.colorsRGB[i][0];
+				imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+				imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+				imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
 			}
 		}
 		for (i = 0; i < newPixels.length; i++) {
