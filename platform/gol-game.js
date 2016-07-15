@@ -56,7 +56,7 @@
 			pixels = [];
 			adjustedPixels = [[],[]];
 			for (i = 0; i < that.armies.length; i++) {
-				that.armies[i].budget += 1;
+				that.armies[i].budget++;
 				pixels[i] = that.armies[i].cb(
 					{
 						ticks: that.ticks,
@@ -74,11 +74,16 @@
 
 		that.handleScore = function handleScore(vector) {
 			var winningPixels = that.board.handleWinningPixels(vector);
-			if (winningPixels[0] !== 0 || winningPixels[1] != 0) {
+			if (winningPixels[0] !== 0 || winningPixels[1] !== 0) {
 				that.armies[0].score += winningPixels[0];
 				that.armies[1].score += winningPixels[1];
 				_log('score: ' + that.armies[0].score + ':' + that.armies[1].score);
-				that.htmlHelper.updateScores(that.armies);
+				if (winningPixels[0] !== 0) {
+					that.htmlHelper.updateScore(that.armies[0]);	
+				}
+				if (winningPixels[1] !== 0) {
+					that.htmlHelper.updateScore(that.armies[1]);	
+				}
 			}
 		}
 
