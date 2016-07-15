@@ -44,8 +44,8 @@ function GolHtmlHelper() {
 		that.addCssRule('#gol-canvas {background-color: #000000; cursor: crosshair; margin: 5px;}');
 		that.addCssRule('#gol-army-line-0 {display: flex; justify-content: space-between; align-items: center; width: ' + that.cols + 'px; color: #' + colorsHex[0] + ';}');
 		that.addCssRule('#gol-army-line-1 {display: flex; justify-content: space-between; align-items: center; width: ' + that.cols + 'px; color: #' + colorsHex[1] + ';}');
-		that.addCssRule('#gol-army-power-0 {height: 2px; background-color: #' + colorsHex[0] + '; transition: 1s width ease}');
-		that.addCssRule('#gol-army-power-1 {height: 2px; background-color: #' + colorsHex[1] + '; transition: 1s width ease}');
+		that.addCssRule('#gol-army-power-0 {height: 2px; background-color: #' + colorsHex[0] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[0] +';}');
+		that.addCssRule('#gol-army-power-1 {height: 2px; background-color: #' + colorsHex[1] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[1] +';}');
 	};
 
 	that.addContainer = function addContainer() {
