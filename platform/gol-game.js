@@ -75,14 +75,16 @@
 		that.handleScore = function handleScore(vector) {
 			var winningPixels = that.board.handleWinningPixels(vector);
 			if (winningPixels[0] !== 0 || winningPixels[1] !== 0) {
-				that.armies[0].score += winningPixels[0];
-				that.armies[1].score += winningPixels[1];
-				_log('score: ' + that.armies[0].score + ':' + that.armies[1].score);
+				that.armies[1].power -= winningPixels[0] * that.settings.powerQuantum;
+				that.armies[1].power = Math.max(that.armies[1].power, 0);
+				that.armies[0].power -= winningPixels[1] * that.settings.powerQuantum;
+				that.armies[0].power = Math.max(that.armies[0].power, 0);
+				_log('power: ' + that.armies[0].power + ':' + that.armies[1].power);
 				if (winningPixels[0] !== 0) {
-					that.htmlHelper.updateScore(that.armies[0]);	
+					that.htmlHelper.updateScore(that.armies[1]);	
 				}
 				if (winningPixels[1] !== 0) {
-					that.htmlHelper.updateScore(that.armies[1]);	
+					that.htmlHelper.updateScore(that.armies[0]);	
 				}
 			}
 		}
