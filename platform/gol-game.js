@@ -55,7 +55,7 @@
 			var i, pixels, adjustedPixels;
 			pixels = [];
 			adjustedPixels = [[],[]];
-			for (i = 0; i < that.armies.length; i++) {
+			for (i = 0; i < 2; i++) {
 				that.armies[i].budget++;
 				pixels[i] = that.armies[i].cb(
 					{
