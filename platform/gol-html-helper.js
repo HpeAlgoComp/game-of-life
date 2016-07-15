@@ -42,8 +42,8 @@ function GolHtmlHelper() {
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #222; color: #FFF; font-family: consolas, monospace, sans-serif; font-size: 16px;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000000; cursor: crosshair;}');
-		that.addCssRule('#gol-army-line-0 {margin: 5px; color: #' + colorsHex[0] + ';}');
-		that.addCssRule('#gol-army-line-1 {margin: 5px; color: #' + colorsHex[1] + ';}');
+		that.addCssRule('#gol-army-line-0 {margin-top: 5px; width: ' + that.cols + 'px; color: #' + colorsHex[0] + ';}');
+		that.addCssRule('#gol-army-line-1 {margin-bottom: 5px; width: ' + that.cols + 'px; color: #' + colorsHex[1] + ';}');
 	};
 
 	that.addContainer = function addContainer() {
