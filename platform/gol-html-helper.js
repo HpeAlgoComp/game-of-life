@@ -14,7 +14,7 @@ function GolHtmlHelper() {
 		var container, canvas;
 		container = that.addContainer();
 		that.addArmyLine(container, 1, armies[1]);
-		canvas = that.addCanvas(container);
+		canvas = that.addCanvas(container, 'gol-canvas', that.cols, that.rows);
   		that.addArmyLine(container, 0, armies[0]);
 		that.ctx = canvas.getContext('2d');
 	};
@@ -62,12 +62,12 @@ function GolHtmlHelper() {
 		return container.appendChild(armyLine);
 	};
 
-	that.addCanvas = function addCanvas(container) {
+	that.addCanvas = function addCanvas(container, id, width, height) {
 		var canvas;
 		canvas = document.createElement('canvas');
-		canvas.setAttribute('id', 'gol-canvas');
-		canvas.setAttribute('width', that.cols + 'px');
-		canvas.setAttribute('height', that.rows + 'px');
+		canvas.setAttribute('id', id);
+		canvas.setAttribute('width', width + 'px');
+		canvas.setAttribute('height', height + 'px');
 		return container.appendChild(canvas);
 	};
 
