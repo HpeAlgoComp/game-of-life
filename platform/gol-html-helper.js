@@ -94,14 +94,14 @@ function GolHtmlHelper() {
 					imgData.data[index * 4] = that.colorsRGB[i][0];
 					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
 					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-					imgData.data[index * 4 + 3] = 64;
+					imgData.data[index * 4 + 3] = 128;
 				}
 				for (k = 0; k < that.cols; k++) {
 					index = newPixels[i][j][1] * that.cols + k;
 					imgData.data[index * 4] = that.colorsRGB[i][0];
 					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
 					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-					imgData.data[index * 4 + 3] = 64;
+					imgData.data[index * 4 + 3] = 128;
 				}	
 			}
 		}
