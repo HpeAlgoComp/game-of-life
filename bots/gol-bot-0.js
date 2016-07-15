@@ -8,7 +8,7 @@
 		});
 	}
 
-	setTimeout(registerArmy, 0);
+	setTimeout(registerArmy, 1000);
 
 	var plan = [
 		'blocker', 
