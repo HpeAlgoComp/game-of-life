@@ -43,10 +43,12 @@ function GolHtmlHelper() {
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #FFF; font-family: consolas, monospace, sans-serif; font-size: 16px;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000000; cursor: crosshair; margin: 5px;}');
-		that.addCssRule('#gol-army-line-0 {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px;}');
-		that.addCssRule('#gol-army-line-1 {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px;}');
+		that.addCssRule('#gol-army-line-0 {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px; position:relative;}');
+		that.addCssRule('#gol-army-line-1 {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px; position:relative;}');
 		that.addCssRule('#gol-army-name-0 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[0] + ';}');
 		that.addCssRule('#gol-army-name-1 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[1] + ';}');
+		that.addCssRule('#gol-army-final-0 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; position: absolute; left:50%; opacity: 0; transition: 5s opacity ease;}');
+		that.addCssRule('#gol-army-final-1 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; position: absolute; left:50%; opacity: 0; transition: 5s opacity ease;}');
 		that.addCssRule('#gol-army-power-0 {height: 2px; background-color: #' + colorsHex[0] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[0] +';}');
 		that.addCssRule('#gol-army-power-1 {height: 2px; background-color: #' + colorsHex[1] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[1] +';}');
 	};
@@ -59,7 +61,7 @@ function GolHtmlHelper() {
 	};
 
 	that.addArmyLine = function addArmyLine(container, index, army) {
-		var textNode, armyLine, armyName, armyPower;
+		var textNode, armyLine, armyName, armyFinal, armyPower;
 		armyLine = document.createElement('div');
 		armyLine.setAttribute('id', 'gol-army-line-' + index);
 
@@ -68,6 +70,10 @@ function GolHtmlHelper() {
 		textNode = document.createTextNode(army.name);
 		armyName.appendChild(textNode);
 		armyLine.appendChild(armyName);
+
+		armyFinal = document.createElement('div');
+		armyFinal.setAttribute('id', 'gol-army-final-' + index);
+		armyLine.appendChild(armyFinal);
 
 		armyPower = document.createElement('div');
 		armyPower.setAttribute('id', 'gol-army-power-' + index);
@@ -127,15 +133,13 @@ function GolHtmlHelper() {
 			}
 		}
 		for (i = 0; i < 2; i++) {
-			if (Math.random() > 0.05) {
-				y = (i === 0) ? that.rows-1 : 0;
-				for (x = 0; x < that.cols; x++) {
-					index = y * that.cols + x;
-					imgData.data[index * 4] = that.colorsRGB[i][0];
-					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-					imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
-				}
+			y = (i === 0) ? that.rows-1 : 0;
+			for (x = 0; x < that.cols; x++) {
+				index = y * that.cols + x;
+				imgData.data[index * 4] = that.colorsRGB[i][0];
+				imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+				imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+				imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
 			}
 		}
 		that.ctx.putImageData(imgData, 0, 0);
@@ -143,6 +147,11 @@ function GolHtmlHelper() {
 
 	that.updateScore = function updateScore(army) {
 		document.getElementById('gol-army-power-' + army.index).style['width'] = Math.floor(army.power / 100 * that.powerBarMaxWidth) + 'px';
+	};
+
+	that.updateFinal = function updateFinal(army, text) {
+		document.getElementById('gol-army-final-' + army.index).innerHTML = text;
+		document.getElementById('gol-army-final-' + army.index).style['opacity'] = 1;
 	};
 
 }

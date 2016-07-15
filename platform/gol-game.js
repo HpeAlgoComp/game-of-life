@@ -48,7 +48,11 @@
 			that.htmlHelper.drawVectorToCanvas(nxtVector, newPixels);
 			that.board.placeNewPixelsOnBoard(nxtVector, newPixels);
 			that.handleScore(nxtVector);
-			setTimeout(that.onTick, 0);
+			if (that.armies[0].power > 0 && that.armies[1].power > 0) {
+				setTimeout(that.onTick, 0);
+			} else {
+				that.handleWin();
+			}
 		};
 
 		that.getNewPixels = function getNewPixels(vector) {
@@ -90,6 +94,22 @@
 			that.armies[1].power = Math.max(that.armies[1].power, 0);
 			that.htmlHelper.updateScore(that.armies[0]);
 			that.htmlHelper.updateScore(that.armies[1]);
+		}
+
+		that.handleWin = function handleWin() {
+			if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
+				_log('draw');
+				that.htmlHelper.updateFinal(that.armies[0], 'DRAW');
+				that.htmlHelper.updateFinal(that.armies[1], 'DRAW');
+			} else if (that.armies[1].power <= 0) {
+				_log(that.armies[0].name + ' wins');
+				that.htmlHelper.updateFinal(that.armies[0], 'WINNER');
+				that.htmlHelper.updateFinal(that.armies[1], 'LOSER');
+			} else if (that.armies[0].power <= 0) {
+				_log(that.armies[1].name + ' wins');
+				that.htmlHelper.updateFinal(that.armies[1], 'WINNER');
+				that.htmlHelper.updateFinal(that.armies[0], 'LOSER');
+			}
 		}
 
 	}
