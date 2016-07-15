@@ -47,10 +47,10 @@ function GolHtmlHelper() {
 		that.addCssRule('#gol-army-line-1 {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px; position:relative;}');
 		that.addCssRule('#gol-army-name-0 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[0] + ';}');
 		that.addCssRule('#gol-army-name-1 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[1] + ';}');
-		that.addCssRule('#gol-army-final-0 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[0] + '; position: absolute; left:50%; opacity: 0; transition: 3s opacity ease;}');
-		that.addCssRule('#gol-army-final-1 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[1] + '; position: absolute; left:50%; opacity: 0; transition: 3s opacity ease;}');
-		that.addCssRule('#gol-army-power-0 {height: 2px; background-color: #' + colorsHex[0] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[0] +';}');
-		that.addCssRule('#gol-army-power-1 {height: 2px; background-color: #' + colorsHex[1] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[1] +';}');
+		that.addCssRule('#gol-army-final-0 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[0] + '; position: absolute; left:50%; opacity: 0; transition: 5s opacity ease;}');
+		that.addCssRule('#gol-army-final-1 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[1] + '; position: absolute; left:50%; opacity: 0; transition: 5s opacity ease;}');
+		that.addCssRule('#gol-army-power-0 {height: 2px; background-color: #' + colorsHex[0] + '; transition: 1s width linear; box-shadow: 0px 0px 10px #' + colorsHex[0] +';}');
+		that.addCssRule('#gol-army-power-1 {height: 2px; background-color: #' + colorsHex[1] + '; transition: 1s width linear; box-shadow: 0px 0px 10px #' + colorsHex[1] +';}');
 	};
 
 	that.addContainer = function addContainer() {
