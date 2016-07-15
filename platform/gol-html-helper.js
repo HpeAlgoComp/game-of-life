@@ -43,8 +43,10 @@ function GolHtmlHelper() {
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #FFF; font-family: consolas, monospace, sans-serif; font-size: 16px;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000000; cursor: crosshair; margin: 5px;}');
-		that.addCssRule('#gol-army-line-0 {display: flex; justify-content: space-between; align-items: center; width: ' + that.cols + 'px; color: #' + colorsHex[0] + ';}');
-		that.addCssRule('#gol-army-line-1 {display: flex; justify-content: space-between; align-items: center; width: ' + that.cols + 'px; color: #' + colorsHex[1] + ';}');
+		that.addCssRule('#gol-army-line-0 {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px;}');
+		that.addCssRule('#gol-army-line-1 {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px;}');
+		that.addCssRule('#gol-army-name-0 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[0] + ';}');
+		that.addCssRule('#gol-army-name-1 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[1] + ';}');
 		that.addCssRule('#gol-army-power-0 {height: 2px; background-color: #' + colorsHex[0] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[0] +';}');
 		that.addCssRule('#gol-army-power-1 {height: 2px; background-color: #' + colorsHex[1] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[1] +';}');
 	};
