@@ -1,16 +1,16 @@
 function GolPlatform() {
 
 	var i,
-		elm;
+		elm,
 		PREFIX ='https://rawgit.com/HpeAlgoComp/game-of-life/master/',
 		sources = [
-		'gol-funcs.js',
-		'gol-html-helper.js',
-		'gol-settings.js',
-		'gol-army.js',
-		'gol-board.js',
-		'gol-game.js'		
-	];
+			'gol-funcs.js',
+			'gol-html-helper.js',
+			'gol-settings.js',
+			'gol-army.js',
+			'gol-board.js',
+			'gol-game.js'		
+		];
 
 	for (i = 0; i < sources.length; i++) {
 		elm = document.createElement('script');
