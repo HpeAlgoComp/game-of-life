@@ -2,7 +2,7 @@
 
 	var i,
 		elm,
-		PREFIX ='https://rawgit.com/HpeAlgoComp/game-of-life/master/',
+		PREFIX ='https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/',
 		sources = [
 			'gol-funcs.js',
 			'gol-html-helper.js',
