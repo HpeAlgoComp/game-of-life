@@ -1,10 +1,9 @@
 function GolPlatform() {
 
-	var i elm;
-
-	var PREFIX ='https://rawgit.com/HpeAlgoComp/game-of-life/master/';
-
-	var sources = [
+	var i,
+		elm;
+		PREFIX ='https://rawgit.com/HpeAlgoComp/game-of-life/master/',
+		sources = [
 		'gol-funcs.js',
 		'gol-html-helper.js',
 		'gol-settings.js',
