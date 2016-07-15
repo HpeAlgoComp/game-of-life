@@ -14,37 +14,6 @@ function GolBoard() {
 		}
 	};
 
-	// that.copyVectorValues = function copyVectorValues(srcVector, dstVector) {
-	// 	var i;
-	// 	for (i = 0; i < that.points; i++) {
-	// 		dstVector[i] = srcVector[i];
-	// 	}
-	// };
-
-	// that.ageVectorValues = function ageVectorValues(vector) {
-	// 	var i;
-	// 	for (i = 0; i < that.points; i++) {
-	// 		if (vector[i] > that.ageQuantum) {
-	// 			vector[i] -= that.ageQuantum;
-	// 		} else {
-	// 			vector[i] = 0;
-	// 		}
-	// 	}
-	// }
-
-	// that.addRandomLife = function addRandomLife(vector) {
-	// 	var n, x, y, r, c;
-	// 	if (Math.floor(Math.random() * 10 + 1) === 1) {
-	// 		r = Math.floor(Math.random() * (that.rows - 3) + 2);
-	// 		c = Math.floor(Math.random() * (that.cols - 3) + 2);
-	// 		for (y = r - 2; y <= r + 2; y++) {
-	// 			for (x = c - 2; x <= c + 2; x++) {
-	// 				vector[y * that.cols + x] = (Math.floor(Math.random() * 2 + 1) === 1) ? 1 : 0;
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	that.getIndex = function getIndex(x, y) {
 		return y * that.cols + x;
 	};
@@ -119,12 +88,6 @@ function GolBoard() {
 			}
 		}
 	};
-
-	// that.makeRandomChange = function makeRandomChange(vector) {
-	// 	for (var i = 0; i < 100; i++) {
-	// 		vector[Math.floor(Math.random() * that.points)] = -1;	
-	// 	}
-	// };
 
 	that.adjustNewPixels = function adjustNewPixels(pixels) {
 		var i, j, v, x, y, adjustedPixels;
