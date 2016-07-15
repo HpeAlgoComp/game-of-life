@@ -7,6 +7,7 @@ function GolHtmlHelper() {
 		that.cols = settings.cols;
 		that.rows = settings.rows;
 		that.colorsRGB = settings.colorsRGB;
+		that.powerBarMaxWidth = that.settings.cols / 2;
 		that.addCssRules();
 	};
 
@@ -39,11 +40,15 @@ function GolHtmlHelper() {
 		var colorsHex = [that.getColorHexStr(that.colorsRGB[0]), that.getColorHexStr(that.colorsRGB[1])];
 		that.addCssRule('* {box-sizing: border-box;}');
 		that.addCssRule('html {height: 100%;}');
-		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #222; color: #FFF; font-family: consolas, monospace, sans-serif; font-size: 16px;}');
+		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #FFF; font-family: consolas, monospace, sans-serif; font-size: 16px;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000000; cursor: crosshair; margin: 5px;}');
-		that.addCssRule('#gol-army-line-0 {display: flex; justify-content: space-between; width: ' + that.cols + 'px; color: #' + colorsHex[0] + ';}');
-		that.addCssRule('#gol-army-line-1 {display: flex; justify-content: space-between; width: ' + that.cols + 'px; color: #' + colorsHex[1] + ';}');
+		that.addCssRule('#gol-army-line-0 {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px;}');
+		that.addCssRule('#gol-army-line-1 {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px;}');
+		that.addCssRule('#gol-army-name-0 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[0] + ';}');
+		that.addCssRule('#gol-army-name-1 {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + colorsHex[1] + ';}');
+		that.addCssRule('#gol-army-power-0 {height: 2px; background-color: #' + colorsHex[0] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[0] +';}');
+		that.addCssRule('#gol-army-power-1 {height: 2px; background-color: #' + colorsHex[1] + '; transition: 1s width ease; box-shadow: 0px 0px 10px #' + colorsHex[1] +';}');
 	};
 
 	that.addContainer = function addContainer() {
@@ -54,7 +59,7 @@ function GolHtmlHelper() {
 	};
 
 	that.addArmyLine = function addArmyLine(container, index, army) {
-		var textNode, armyLine, armyName, armyScore;
+		var textNode, armyLine, armyName, armyPower;
 		armyLine = document.createElement('div');
 		armyLine.setAttribute('id', 'gol-army-line-' + index);
 
@@ -64,11 +69,10 @@ function GolHtmlHelper() {
 		armyName.appendChild(textNode);
 		armyLine.appendChild(armyName);
 
-		armyScore = document.createElement('div');
-		armyScore.setAttribute('id', 'gol-army-score-' + index);
-		textNode = document.createTextNode(army.score);
-		armyScore.appendChild(textNode);
-		armyLine.appendChild(armyScore);
+		armyPower = document.createElement('div');
+		armyPower.setAttribute('id', 'gol-army-power-' + index);
+		armyPower.style['width'] = that.powerBarMaxWidth + 'px';
+		armyLine.appendChild(armyPower);
 
 		return container.appendChild(armyLine);
 	};
@@ -123,22 +127,20 @@ function GolHtmlHelper() {
 			}
 		}
 		for (i = 0; i < 2; i++) {
-			if (Math.random() > 0.05) {
-				y = (i === 0) ? that.rows-1 : 0;
-				for (x = 0; x < that.cols; x++) {
-					index = y * that.cols + x;
-					imgData.data[index * 4] = that.colorsRGB[i][0];
-					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-					imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
-				}
+			y = (i === 0) ? that.rows-1 : 0;
+			for (x = 0; x < that.cols; x++) {
+				index = y * that.cols + x;
+				imgData.data[index * 4] = that.colorsRGB[i][0];
+				imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+				imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+				imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
 			}
 		}
 		that.ctx.putImageData(imgData, 0, 0);
 	};
 
 	that.updateScore = function updateScore(army) {
-		document.getElementById('gol-army-score-' + army.index).innerHTML = army.score;
+		document.getElementById('gol-army-power-' + army.index).style['width'] = Math.floor(army.power / 100 * that.powerBarMaxWidth) + 'px';
 	};
 
 }
