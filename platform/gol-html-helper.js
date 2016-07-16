@@ -92,7 +92,7 @@ function GolHtmlHelper() {
 		return container.appendChild(canvas);
 	};
 
-	that.drawVectorToCanvas = function drawVectorToCanvas(vector, newPixels) {
+	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels) {
 		var i, j, k, x, y, b, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		
@@ -100,12 +100,12 @@ function GolHtmlHelper() {
 		for (y = 0; y < that.rows; y++) {
 			for (x = 0; x < that.cols; x++) {
 				i = y * that.cols + x;
-				if (vector[i] === -1) {
+				if (array[i] === -1) {
 					imgData.data[i * 4] = imgData.data[i * 4 + 1] = imgData.data[i * 4 + 2] = 0;
 				} else {
-					imgData.data[i * 4] = that.colorsRGB[vector[i]][0];
-					imgData.data[i * 4 + 1] = that.colorsRGB[vector[i]][1];
-					imgData.data[i * 4 + 2] = that.colorsRGB[vector[i]][2];
+					imgData.data[i * 4] = that.colorsRGB[array[i]][0];
+					imgData.data[i * 4 + 1] = that.colorsRGB[array[i]][1];
+					imgData.data[i * 4 + 2] = that.colorsRGB[array[i]][2];
 				}
 				imgData.data[i * 4 + 3] = 255;
 			}
@@ -118,7 +118,7 @@ function GolHtmlHelper() {
 					distance = Math.abs(k - newPixels[i][j][1]);
 					if (distance < 64) {
 						index = k * that.cols + newPixels[i][j][0];
-						if (vector[index] === -1) {
+						if (array[index] === -1) {
 							imgData.data[index * 4] = that.colorsRGB[i][0];
 							imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
 							imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
@@ -130,7 +130,7 @@ function GolHtmlHelper() {
 					distance = Math.abs(k - newPixels[i][j][0]);
 					if (distance < 64) {
 						index = newPixels[i][j][1] * that.cols + k;
-						if (vector[index] === -1) {
+						if (array[index] === -1) {
 							imgData.data[index * 4] = that.colorsRGB[i][0];
 							imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
 							imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
@@ -146,7 +146,7 @@ function GolHtmlHelper() {
 			y = (i === 0) ? that.rows-1 : 0;
 			for (x = 0; x < that.cols; x++) {
 				index = y * that.cols + x;
-				if (vector[index] === -1) {
+				if (array[index] === -1) {
 					imgData.data[index * 4] = that.colorsRGB[i][0];
 					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
 					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];

@@ -8,9 +8,9 @@ function GolBoard() {
 		that.cols = settings.cols;
 		that.rows = settings.rows;
 		that.points = that.cols * that.rows;
-		that.vectors = [[], []];
+		that.arrays = [[], []];
 		for (i = 0; i < that.points; i++) {
-			that.vectors[0][i] = that.vectors[1][i] = -1;
+			that.arrays[0][i] = that.arrays[1][i] = -1;
 		}
 	};
 
@@ -63,7 +63,7 @@ function GolBoard() {
 		return that.getAdjacentIndexes(y * that.cols + x);
 	};
 
-	that.computeNextState = function computeNextState(vector1, vector2) {
+	that.computeNextState = function computeNextState(array1, array2) {
 		var i, a, j, n, v, c0, adjacents;
 		for (i = 0; i < that.points; i++) {
 			n = 0;
@@ -71,20 +71,20 @@ function GolBoard() {
 			adjacents = that.getAdjacentIndexes(i);
 			for (a = 0; a < adjacents.length; a++) {
 				j = adjacents[a];
-				if (vector1[j] === 0) {
+				if (array1[j] === 0) {
 					n++;
 					c0++;
-				} else if (vector1[j] === 1) {
+				} else if (array1[j] === 1) {
 					n++;
 				}
 			}
-			v = vector1[i];
+			v = array1[i];
 			if ((v === 0 || v === 1) && (n < 2 || n > 3))  {
-				vector2[i] = -1;
+				array2[i] = -1;
 			} else if (v === -1 && n === 3) {
-				vector2[i] = (c0 >= 2) ? 0 : 1;
+				array2[i] = (c0 >= 2) ? 0 : 1;
 			} else {
-				vector2[i] = v;
+				array2[i] = v;
 			}
 		}
 	};
@@ -124,29 +124,29 @@ function GolBoard() {
 		return pixelIndices;
 	};
 
-	that.placeNewPixelsOnBoard = function placeNewPixelsOnBoard(vector, pixels) {
+	that.placeNewPixelsOnBoard = function placeNewPixelsOnBoard(array, pixels) {
 		var i, j;
 		for (i = 0; i < pixels.length; i++) {
 			for (j = 0; j < pixels[i].length; j++) {
-				vector[pixels[i][j][1] * that.cols + pixels[i][j][0]] = i;	
+				array[pixels[i][j][1] * that.cols + pixels[i][j][0]] = i;	
 			}
 		}	
 	}
 
-	that.handleWinningPixels = function handleWinningPixels(vector) {
+	that.handleWinningPixels = function handleWinningPixels(array) {
 		var a, r, c, i, adjs, j;
 		var winningPixels = [0, 0];
 		for (a = 0; a < 2; a++) {
 			r = a === 0 ? 0 : that.rows - 1;
 			for (c = 0; c < that.cols; c++) {
 				i = r * that.cols + c;
-				if (vector[i] === a) {
+				if (array[i] === a) {
 					winningPixels[a]++;
-					vector[i] = -1;
+					array[i] = -1;
 					adjs = that.getAdjacentIndexes(i);
 					for (j = 0; j < adjs.length; j++) {
-						if (vector[adjs[j]] === a) {
-							vector[adjs[j]] = -1;
+						if (array[adjs[j]] === a) {
+							array[adjs[j]] = -1;
 						}
 					}
 				}

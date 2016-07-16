@@ -37,17 +37,17 @@
 		};
 		
 		that.onTick = function onTick() {
-			var curVector, nxtVector, newPixels;
+			var curArray, nxtArray, newPixels;
 			//_log('onTick()');
 			that.ticks++;
-			curVector = that.board.vectors[(that.ticks % 2) * (-1) + 1];
-			nxtVector = that.board.vectors[that.ticks % 2];			
-			that.board.computeNextState(curVector, nxtVector);
-			//that.board.makeRandomChange(nxtVector);
-			newPixels = that.getNewPixels(nxtVector);
-			that.htmlHelper.drawVectorToCanvas(nxtVector, newPixels);
-			that.board.placeNewPixelsOnBoard(nxtVector, newPixels);
-			that.handleScore(nxtVector);
+			curArray = that.board.arrays[(that.ticks % 2) * (-1) + 1];
+			nxtArray = that.board.arrays[that.ticks % 2];			
+			that.board.computeNextState(curArray, nxtArray);
+			//that.board.makeRandomChange(nxtArray);
+			newPixels = that.getNewPixels(nxtArray);
+			that.htmlHelper.drawArrayToCanvas(nxtArray, newPixels);
+			that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
+			that.handleScore(nxtArray);
 			if (that.armies[0].power > 0 && that.armies[1].power > 0) {
 				setTimeout(that.onTick, 0);
 			} else {
@@ -55,7 +55,7 @@
 			}
 		};
 
-		that.getNewPixels = function getNewPixels(vector) {
+		that.getNewPixels = function getNewPixels(array) {
 			var i, pixels, adjustedPixels;
 			pixels = [];
 			adjustedPixels = [[],[]];
@@ -76,10 +76,10 @@
 			return adjustedPixels;
 		};
 
-		that.handleScore = function handleScore(vector) {
+		that.handleScore = function handleScore(array) {
 			that.armies[0].power -= that.settings.powerTickQuantum;
 			that.armies[1].power -= that.settings.powerTickQuantum;
-			var winningPixels = that.board.handleWinningPixels(vector);
+			var winningPixels = that.board.handleWinningPixels(array);
 			if (winningPixels[0] !== 0 || winningPixels[1] !== 0) {
 				that.armies[1].power -= winningPixels[0] * that.settings.powerPixelQuantum;
 				that.armies[0].power -= winningPixels[1] * that.settings.powerPixelQuantum;
