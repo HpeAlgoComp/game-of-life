@@ -95,11 +95,12 @@ function GolBoard() {
 		for (i = 0; i < pixels.length; i++) {
 			for (j = 0; j < pixels[i].length; j++) {
 				x = pixels[i][j][0];
-				y = i === 0 ? that.rows / 2 + pixels[i][j][1] : that.rows / 2 - 1 - pixels[i][j][1];
-				if (x < 0 || x >= that.cols || y < 0 || y >= that.rows) {
-					_err('New pixel out of range! ArmyIndex: ' + i + ', X: ' + pixels[i][j][0] + ', Y: ' + pixels[i][j][1]);	
-				} else {
+				y = pixels[i][j][1];
+				if (x >= 0 && x < that.cols && y >= 0 && y < that.rows / 2) {
+					y = (i === 0) ? that.rows / 2 + y : that.rows / 2 - 1 - y;
 					adjustedPixels[i].push([x,y]);
+				} else {
+					_err('New pixel out of range! ArmyIndex: ' + i + ', X: ' + pixels[i][j][0] + ', Y: ' + pixels[i][j][1]);	
 				}
 			}	
 		}
