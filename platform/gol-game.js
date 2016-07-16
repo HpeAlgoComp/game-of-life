@@ -17,7 +17,7 @@
 		};
 
 		that.registerArmy = function registerArmy(data) {
-			var army = new GolArmy(that.armies.length, data.name, that.settings.colorsRGB[that.armies.length], data.icon, data.cb);
+			var army = new GolArmy(that.armies.length, data.name, that.settings.colorsRGB[that.armies.length], that.settings.powerMaxValue, data.icon, data.cb);
 			_dbg('registerArmy()');
 			_log('army name: ' + data.name + ', icon: ' + data.icon);
 			that.armies.push(army);

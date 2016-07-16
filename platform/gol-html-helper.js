@@ -167,7 +167,7 @@ function GolHtmlHelper() {
 	that.updateScore = function updateScore(army, winningPixels) {
 		var width;
 		document.getElementById('gol-army-power-' + army.index).style['background-color'] = (winningPixels === 0) ? '#' + that.colorsHex[army.index] : '#fff';
-		width = Math.floor(army.power / 100 * that.powerBarMaxWidth);
+		width = Math.floor(army.power / that.settings.powerMaxValue * that.powerBarMaxWidth);
 		if (width === 0 && army.power > 0) {
 			width = 1;
 		}
