@@ -105,17 +105,11 @@
 
 		that.handleWin = function handleWin() {
 			if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
-				_log('draw');
-				that.htmlHelper.updateFinal(that.armies[0], 'DRAW');
-				that.htmlHelper.updateFinal(that.armies[1], 'DRAW');
+				_log('draw');				
 			} else if (that.armies[1].power <= 0) {
 				_log(that.armies[0].name + ' wins');
-				that.htmlHelper.updateFinal(that.armies[0], 'WINNER');
-				that.htmlHelper.updateFinal(that.armies[1], 'LOSER');
 			} else if (that.armies[0].power <= 0) {
 				_log(that.armies[1].name + ' wins');
-				that.htmlHelper.updateFinal(that.armies[1], 'WINNER');
-				that.htmlHelper.updateFinal(that.armies[0], 'LOSER');
 			}
 		}
 
