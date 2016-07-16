@@ -70,7 +70,13 @@
 						rows: that.board.rows / 2,
 						budget: that.armies[i].budget
 					});
-				that.armies[i].budget -= pixels[i].length;
+				if (that.armies[i].budget >= pixels[i].length) {
+					that.armies[i].budget -= pixels[i].length;
+				} else {
+					_err('Budget exceeded. ArmyName: ' + that.armies[i].name);
+					pixels[i] = [];
+				}
+				
 			}
 			if (pixels[0].length > 0 || pixels[1].length > 0) {
 				adjustedPixels = that.board.adjustNewPixels(pixels);
