@@ -47,7 +47,7 @@ function GolHtmlHelper() {
 		for (i = 0; i < 2; i++) {
 			that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px; position:relative;}');
 			that.addCssRule('#gol-army-name-' + i + ' {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
-			that.addCssRule('#gol-army-final-' + i + ' {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; position: absolute; left:50%; opacity: 0; transition: 5s opacity ease;}');
+			that.addCssRule('#gol-army-final-' + i + ' {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + '; position: absolute; left:50%; opacity: 0; transition: 5s opacity ease;}');
 			that.addCssRule('#gol-army-power-' + i + ' {height: 2px; background-color: #' + that.colorsHex[i] + '; box-shadow: 0px 0px 10px #' + that.colorsHex[i] +'; transition: 1s width linear;}');
 		}
 	};
@@ -165,8 +165,13 @@ function GolHtmlHelper() {
 	};
 
 	that.updateScore = function updateScore(army, winningPixels) {
+		var width;
 		document.getElementById('gol-army-power-' + army.index).style['background-color'] = (winningPixels === 0) ? '#' + that.colorsHex[army.index] : '#fff';
-		document.getElementById('gol-army-power-' + army.index).style['width'] = Math.floor(army.power / 100 * that.powerBarMaxWidth) + 'px';
+		width = Math.floor(army.power / 100 * that.powerBarMaxWidth);
+		if (width === 0 && army.power > 0) {
+			width = 1;
+		}
+		document.getElementById('gol-army-power-' + army.index).style['width'] = width + 'px';
 	};
 
 	that.updateFinal = function updateFinal(army, text) {
