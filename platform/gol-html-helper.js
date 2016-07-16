@@ -182,11 +182,6 @@ function GolHtmlHelper() {
 			score = 1;
 		}
 		scoreText = '' + score;
-		if (scoreText.length === 1) {
-			scoreText = '00' + scoreText;
-		} else if (scoreText.length === 2) {
-			scoreText = '0' + scoreText;
-		}
 		document.getElementById('gol-army-score-' + army.index).innerHTML = scoreText;		
 		powerWidth = Math.floor(army.power / that.settings.powerMaxValue * that.powerBarMaxWidth);
 		if (powerWidth === 0 && army.power > 0) {
