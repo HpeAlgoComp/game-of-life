@@ -95,6 +95,8 @@ function GolHtmlHelper() {
 	that.drawVectorToCanvas = function drawVectorToCanvas(vector, newPixels) {
 		var i, j, k, x, y, b, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
+		
+		// regular matrix
 		for (y = 0; y < that.rows; y++) {
 			for (x = 0; x < that.cols; x++) {
 				i = y * that.cols + x;
@@ -107,41 +109,52 @@ function GolHtmlHelper() {
 				}
 				imgData.data[i * 4 + 3] = 255;
 			}
-		}		
+		}
+
+		// new pixels mark
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
 				for (k = 0; k < that.rows; k++) {
 					distance = Math.abs(k - newPixels[i][j][1]);
-					if (distance < 128) {
+					if (distance < 64) {
 						index = k * that.cols + newPixels[i][j][0];
-						imgData.data[index * 4] = that.colorsRGB[i][0];
-						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-						imgData.data[index * 4 + 3] = (128 - distance) * 2 - 1;
+						if (vector[index] === -1) {
+							imgData.data[index * 4] = that.colorsRGB[i][0];
+							imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+							imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+							imgData.data[index * 4 + 3] = (64 - distance) * 4 - 1;
+						}
 					}
 				}
 				for (k = 0; k < that.cols; k++) {
 					distance = Math.abs(k - newPixels[i][j][0]);
-					if (distance < 128) {
+					if (distance < 64) {
 						index = newPixels[i][j][1] * that.cols + k;
-						imgData.data[index * 4] = that.colorsRGB[i][0];
-						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-						imgData.data[index * 4 + 3] = (128 - distance) * 2 - 1;
+						if (vector[index] === -1) {
+							imgData.data[index * 4] = that.colorsRGB[i][0];
+							imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+							imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+							imgData.data[index * 4 + 3] = (64 - distance) * 4 - 1;
+						}
 					}
 				}	
 			}
 		}
+
+		// back line
 		for (i = 0; i < 2; i++) {
 			y = (i === 0) ? that.rows-1 : 0;
 			for (x = 0; x < that.cols; x++) {
 				index = y * that.cols + x;
-				imgData.data[index * 4] = that.colorsRGB[i][0];
-				imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-				imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-				imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
+				if (vector[index] === -1) {
+					imgData.data[index * 4] = that.colorsRGB[i][0];
+					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+					imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
+				}
 			}
 		}
+
 		that.ctx.putImageData(imgData, 0, 0);
 	};
 
