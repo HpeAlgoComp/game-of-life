@@ -134,15 +134,28 @@ function GolBoard() {
 		}	
 	}
 
-	that.handleWinningPixels = function handleWinningPixels(array) {
+	that.countScoringPixels = function countScoringPixels(array) {
 		var a, r, c, i, adjs, j;
-		var winningPixels = [0, 0];
+		var scoringPixels = [0, 0];
 		for (a = 0; a < 2; a++) {
 			r = a === 0 ? 0 : that.rows - 1;
 			for (c = 0; c < that.cols; c++) {
 				i = r * that.cols + c;
 				if (array[i] === a) {
-					winningPixels[a]++;
+					scoringPixels[a]++;					
+				}
+			}
+		}
+		return scoringPixels;		
+	};
+
+	that.deleteScoringPixels = function deleteScoringPixels(array) {
+		var a, r, c, i, adjs, j;
+		for (a = 0; a < 2; a++) {
+			r = a === 0 ? 0 : that.rows - 1;
+			for (c = 0; c < that.cols; c++) {
+				i = r * that.cols + c;
+				if (array[i] === a) {
 					array[i] = -1;
 					adjs = that.getAdjacentIndexes(i);
 					for (j = 0; j < adjs.length; j++) {
@@ -152,8 +165,7 @@ function GolBoard() {
 					}
 				}
 			}
-		}
-		return winningPixels;		
+		}			
 	};
 
 }

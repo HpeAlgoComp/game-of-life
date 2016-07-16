@@ -100,7 +100,7 @@ function GolHtmlHelper() {
 		return container.appendChild(canvas);
 	};
 
-	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, winningPixels, gameEnded) {
+	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, scoringPixelCount, gameEnded) {
 		var i, j, k, x, y, c, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		
@@ -154,8 +154,8 @@ function GolHtmlHelper() {
 			y = (i === 0) ? that.rows-1 : 0;
 			for (x = 0; x < that.cols; x++) {
 				index = y * that.cols + x;
-				if (gameEnded || winningPixels[i * -1 + 1] === 0) {
-					if (array[index] === -1 && (gameEnded || winningPixels[i * -1 + 1] === 0)) {
+				if (gameEnded || scoringPixelCount[i * -1 + 1] === 0) {
+					if (array[index] === -1) {
 						imgData.data[index * 4] = that.colorsRGB[i][0];
 						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
 						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
