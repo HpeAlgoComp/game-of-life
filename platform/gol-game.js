@@ -93,8 +93,8 @@
 			}
 			that.armies[0].power = Math.max(that.armies[0].power, 0);
 			that.armies[1].power = Math.max(that.armies[1].power, 0);
-			that.htmlHelper.updateScore(that.armies[0]);
-			that.htmlHelper.updateScore(that.armies[1]);
+			that.htmlHelper.updateScore(that.armies[0], winningPixels[1]);
+			that.htmlHelper.updateScore(that.armies[1], winningPixels[0]);
 		}
 
 		that.handleWin = function handleWin() {
