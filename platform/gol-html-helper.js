@@ -92,8 +92,8 @@ function GolHtmlHelper() {
 		return container.appendChild(canvas);
 	};
 
-	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels) {
-		var i, j, k, x, y, b, distance, index, imgData;
+	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, winningPixels) {
+		var i, j, k, x, y, c, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		
 		// regular matrix
@@ -146,11 +146,18 @@ function GolHtmlHelper() {
 			y = (i === 0) ? that.rows-1 : 0;
 			for (x = 0; x < that.cols; x++) {
 				index = y * that.cols + x;
-				if (array[index] === -1) {
-					imgData.data[index * 4] = that.colorsRGB[i][0];
-					imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-					imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-					imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
+				if (winningPixels[i * -1 + 1] === 0) {
+					if (array[index] === -1 && winningPixels[i * -1 + 1] === 0) {
+						imgData.data[index * 4] = that.colorsRGB[i][0];
+						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+						imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
+					}
+				} else {
+					imgData.data[index * 4] = 255;
+					imgData.data[index * 4 + 1] = 255;
+					imgData.data[index * 4 + 2] = 255;
+					imgData.data[index * 4 + 3] = 255;	
 				}
 			}
 		}
