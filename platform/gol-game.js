@@ -37,7 +37,7 @@
 		};
 		
 		that.onTick = function onTick() {
-			var curArray, nxtArray, newPixels, winningPixels;
+			var curArray, nxtArray, newPixels, winningPixels, gameEnded;
 			//_dbg('onTick()');
 			that.ticks++;
 			curArray = that.board.arrays[(that.ticks % 2) * (-1) + 1];
@@ -46,14 +46,15 @@
 			that.board.computeNextState(curArray, nxtArray);
 			winningPixels = that.board.handleWinningPixels(nxtArray);
 			that.handleScore(winningPixels);
+			gameEnded = that.armies[0].power <= 0 || that.armies[1].power <= 0;
 			newPixels = that.getNewPixels(nxtArray);
-			that.htmlHelper.drawArrayToCanvas(nxtArray, newPixels, winningPixels);			
+			that.htmlHelper.drawArrayToCanvas(nxtArray, newPixels, winningPixels, gameEnded);			
 			
-			if (that.armies[0].power > 0 && that.armies[1].power > 0) {
+			if (gameEnded) {
+				that.endGame();
+			} else {
 				that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
 				setTimeout(that.onTick, 0);
-			} else {
-				that.handleWin();
 			}
 		};
 
@@ -103,7 +104,7 @@
 			that.htmlHelper.updateScore(that.armies[1], winningPixels[0]);
 		}
 
-		that.handleWin = function handleWin() {
+		that.endGame = function endGame() {
 			if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
 				_log('draw');				
 			} else if (that.armies[1].power <= 0) {
@@ -111,6 +112,7 @@
 			} else if (that.armies[0].power <= 0) {
 				_log(that.armies[1].name + ' wins');
 			}
+			that.htmlHelper.endGame();
 		}
 
 	}

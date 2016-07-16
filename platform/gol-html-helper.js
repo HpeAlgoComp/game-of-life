@@ -48,8 +48,8 @@ function GolHtmlHelper() {
 			that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px; position:relative;}');
 			that.addCssRule('#gol-army-name-' + i + ' {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-stats-' + i + ' {height: 20px; display: flex; align-items: center;}');
-			that.addCssRule('#gol-army-score-' + i + ' {height: 20px; margin-right: 2px; color: #' + that.colorsHex[i] + ';}');
-			that.addCssRule('#gol-army-power-' + i + ' {height: 3px; background-color: #' + that.colorsHex[i] + '; box-shadow: 0px 0px 10px #' + that.colorsHex[i] +'; transition: 1s width linear;}');
+			that.addCssRule('#gol-army-score-' + i + ' {height: 20px; color: #' + that.colorsHex[i] + ';}');
+			that.addCssRule('#gol-army-power-' + i + ' {height: 3px; margin-left: 2px; background-color: #' + that.colorsHex[i] + '; box-shadow: 0px 0px 10px #' + that.colorsHex[i] +'; transition: 1s width linear;}');
 		}
 	};
 
@@ -100,7 +100,7 @@ function GolHtmlHelper() {
 		return container.appendChild(canvas);
 	};
 
-	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, winningPixels) {
+	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, winningPixels, gameEnded) {
 		var i, j, k, x, y, c, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		
@@ -154,8 +154,8 @@ function GolHtmlHelper() {
 			y = (i === 0) ? that.rows-1 : 0;
 			for (x = 0; x < that.cols; x++) {
 				index = y * that.cols + x;
-				if (winningPixels[i * -1 + 1] === 0) {
-					if (array[index] === -1 && winningPixels[i * -1 + 1] === 0) {
+				if (gameEnded || winningPixels[i * -1 + 1] === 0) {
+					if (array[index] === -1 && (gameEnded || winningPixels[i * -1 + 1] === 0)) {
 						imgData.data[index * 4] = that.colorsRGB[i][0];
 						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
 						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
@@ -194,5 +194,13 @@ function GolHtmlHelper() {
 		}
 		document.getElementById('gol-army-power-' + army.index).style['width'] = powerWidth + 'px';
 	};
+
+	that.endGame = function endGame()  {
+		var i;
+		for (i = 0; i < 2; i++) {
+			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];		
+			document.getElementById('gol-army-power-' + i).style['background-color'] = '#' + that.colorsHex[i];
+		}
+	}
 
 }
