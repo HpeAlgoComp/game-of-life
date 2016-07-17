@@ -77,7 +77,7 @@ function GolHtmlHelper() {
 
 		armyScore = document.createElement('div');
 		armyScore.setAttribute('id', 'gol-army-score-' + index);
-		textNode = document.createTextNode(that.settings.powerMaxValue);
+		textNode = document.createTextNode('' + that.settings.powerMaxValue);
 		armyScore.appendChild(textNode);
 		armyStats.appendChild(armyScore);
 
@@ -101,7 +101,7 @@ function GolHtmlHelper() {
 	};
 
 	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, scoringPixelCount, gameEnded) {
-		var i, j, k, x, y, c, distance, index, imgData;
+		var i, j, k, x, y, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		
 		// regular matrix
@@ -207,6 +207,6 @@ function GolHtmlHelper() {
 			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];		
 			document.getElementById('gol-army-power-' + i).style['background-color'] = '#' + that.colorsHex[i];
 		}
-	}
+	};
 
 }

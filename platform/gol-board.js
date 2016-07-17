@@ -90,7 +90,7 @@ function GolBoard() {
 	};
 
 	that.adjustNewPixels = function adjustNewPixels(pixels) {
-		var i, j, v, x, y, adjustedPixels;
+		var i, j, x, y, adjustedPixels;
 		adjustedPixels = [[],[]];
 		for (i = 0; i < pixels.length; i++) {
 			for (j = 0; j < pixels[i].length; j++) {
@@ -132,10 +132,10 @@ function GolBoard() {
 				array[pixels[i][j][1] * that.cols + pixels[i][j][0]] = i;	
 			}
 		}	
-	}
+	};
 
 	that.countScoringPixels = function countScoringPixels(array) {
-		var a, r, c, i, adjs, j;
+		var a, r, c, i;
 		var scoringPixels = [0, 0];
 		for (a = 0; a < 2; a++) {
 			r = a === 0 ? 0 : that.rows - 1;

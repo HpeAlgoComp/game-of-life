@@ -46,7 +46,7 @@
 			scoringPixelCount = that.board.countScoringPixels(nxtArray);
 			that.handleScore(scoringPixelCount);
 			gameEnded = that.armies[0].power <= 0 || that.armies[1].power <= 0;
-			newPixels = that.getNewPixels(nxtArray);
+			newPixels = that.getNewPixels();
 			that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
 			if (!gameEnded) {								
 				that.htmlHelper.drawArrayToCanvas(nxtArray, newPixels, scoringPixelCount, gameEnded);
@@ -58,7 +58,7 @@
 			}						
 		};
 
-		that.getNewPixels = function getNewPixels(array) {
+		that.getNewPixels = function getNewPixels() {
 			var i, pixels, adjustedPixels;
 			pixels = [];
 			adjustedPixels = [[],[]];
@@ -102,7 +102,7 @@
 			that.armies[1].power = Math.max(that.armies[1].power, 0);
 			that.htmlHelper.updateScore(that.armies[0], winningPixelsCount[1]);
 			that.htmlHelper.updateScore(that.armies[1], winningPixelsCount[0]);
-		}
+		};
 
 		that.endGame = function endGame() {
 			if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
@@ -113,7 +113,7 @@
 				_log(that.armies[1].name + ' wins');
 			}
 			that.htmlHelper.endGame();
-		}
+		};
 
 	}
 	
