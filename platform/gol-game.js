@@ -40,18 +40,17 @@
 			var curArray, nxtArray, newPixels, scoringPixelCount, gameEnded;
 			//_dbg('onTick()');
 			that.ticks++;
-			newPixels = [];
 			curArray = that.board.arrays[(that.ticks % 2) * (-1) + 1];
 			nxtArray = that.board.arrays[that.ticks % 2];			
 			that.board.computeNextState(curArray, nxtArray);
 			scoringPixelCount = that.board.countScoringPixels(nxtArray);
 			that.handleScore(scoringPixelCount);
 			gameEnded = that.armies[0].power <= 0 || that.armies[1].power <= 0;
-			if (!gameEnded){
-				that.board.deleteScoringPixels(nxtArray);
-				newPixels = that.getNewPixels(nxtArray);
-				that.htmlHelper.drawArrayToCanvas(nxtArray, newPixels, scoringPixelCount, gameEnded);	
-				that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
+			newPixels = that.getNewPixels(nxtArray);
+			that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
+			if (!gameEnded) {								
+				that.htmlHelper.drawArrayToCanvas(nxtArray, newPixels, scoringPixelCount, gameEnded);
+				that.board.deleteScoringPixels(nxtArray);				
 				setTimeout(that.onTick, 0);
 			} else {
 				that.htmlHelper.drawArrayToCanvas(nxtArray, newPixels, scoringPixelCount, gameEnded);
