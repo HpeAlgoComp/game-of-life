@@ -49,7 +49,7 @@ function GolHtmlHelper() {
 			that.addCssRule('#gol-army-name-' + i + ' {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-stats-' + i + ' {height: 20px; display: flex; align-items: center;}');
 			that.addCssRule('#gol-army-score-' + i + ' {height: 20px; color: #' + that.colorsHex[i] + ';}');
-			that.addCssRule('#gol-army-power-' + i + ' {height: 3px; margin-left: 2px; background-color: #' + that.colorsHex[i] + '; box-shadow: 0px 0px 10px #' + that.colorsHex[i] +'; transition: 1s width linear;}');
+			that.addCssRule('#gol-army-power-' + i + ' {height: 3px; margin-left: 2px; background-color: #' + that.colorsHex[i] + '; box-shadow: 0px 0px 10px #' + that.colorsHex[i] +'; transition: 1s width ease;}');
 		}
 	};
 
