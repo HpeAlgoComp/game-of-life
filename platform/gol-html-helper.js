@@ -119,6 +119,27 @@ function GolHtmlHelper() {
 			}
 		}
 
+		// back line
+		for (i = 0; i < 2; i++) {
+			y = (i === 0) ? that.rows-1 : 0;
+			for (x = 0; x < that.cols; x++) {
+				index = y * that.cols + x;
+				if (array[index] === -1) {
+					if (scoringPixelCount[i * -1 + 1] === 0 || gameEnded) {
+						imgData.data[index * 4] = that.colorsRGB[i][0];
+						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+						imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
+					} else {
+						imgData.data[index * 4] = 255;
+						imgData.data[index * 4 + 1] = 255;
+						imgData.data[index * 4 + 2] = 255;
+						imgData.data[index * 4 + 3] = 255;	
+					}
+				}
+			}
+		}
+
 		// new pixels mark
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
@@ -149,24 +170,14 @@ function GolHtmlHelper() {
 			}
 		}
 
-		// back line
-		for (i = 0; i < 2; i++) {
-			y = (i === 0) ? that.rows-1 : 0;
-			for (x = 0; x < that.cols; x++) {
-				index = y * that.cols + x;
-				if (gameEnded || scoringPixelCount[i * -1 + 1] === 0) {
-					if (array[index] === -1) {
-						imgData.data[index * 4] = that.colorsRGB[i][0];
-						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-						imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
-					}
-				} else {
-					imgData.data[index * 4] = 255;
-					imgData.data[index * 4 + 1] = 255;
-					imgData.data[index * 4 + 2] = 255;
-					imgData.data[index * 4 + 3] = 255;	
-				}
+		// new pixels
+		for (i = 0; i < newPixels.length; i++) {
+			for (j = 0; j < newPixels[i].length; j++) {
+				index = newPixels[i][j][1] * that.cols + newPixels[i][j][0];
+				imgData.data[index * 4] = 255;
+				imgData.data[index * 4 + 1] = 255;
+				imgData.data[index * 4 + 2] = 255;
+				imgData.data[index * 4 + 3] = 255;	
 			}
 		}
 
