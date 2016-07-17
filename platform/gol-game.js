@@ -12,6 +12,8 @@
 			that.board = new GolBoard();
 			that.board.init(settings);
 			that.armies = [];
+			that.newPixels = [[],[]];
+			that.newPixelsAge = [];
 			window.registerArmy = that.registerArmy;
 			window.startGame = that.startGame;
 		};
@@ -48,12 +50,12 @@
 			gameEnded = that.armies[0].power <= 0 || that.armies[1].power <= 0;
 			newPixels = that.getNewPixels();
 			that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
-			if (!gameEnded) {								
-				that.htmlHelper.drawArrayToCanvas(nxtArray, newPixels, scoringPixelCount, gameEnded);
+			if (!gameEnded) {
+				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, gameEnded);
 				that.board.deleteScoringPixels(nxtArray);				
 				setTimeout(that.onTick, 0);
 			} else {
-				that.htmlHelper.drawArrayToCanvas(nxtArray, newPixels, scoringPixelCount, gameEnded);
+				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, gameEnded);
 				that.endGame();
 			}						
 		};
@@ -81,6 +83,14 @@
 			}
 			if (pixels[0].length > 0 || pixels[1].length > 0) {
 				adjustedPixels = that.board.adjustNewPixels(pixels);
+			}
+			for (i = 0; i < 2; i++) {
+				if (adjustedPixels[i].length > 0) {
+					that.newPixels[i] = adjustedPixels[i];
+					that.newPixelsAge[i] = 1;
+				} else {
+					that.newPixelsAge[i]++;
+				}
 			}
 			return adjustedPixels;
 		};

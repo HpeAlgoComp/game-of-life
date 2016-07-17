@@ -100,7 +100,7 @@ function GolHtmlHelper() {
 		return container.appendChild(canvas);
 	};
 
-	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, scoringPixelCount, gameEnded) {
+	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, gameEnded) {
 		var i, j, k, x, y, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		
@@ -151,7 +151,7 @@ function GolHtmlHelper() {
 							imgData.data[index * 4] = that.colorsRGB[i][0];
 							imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
 							imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-							imgData.data[index * 4 + 3] = (64 - distance) * 4 - 1;
+							imgData.data[index * 4 + 3] = (1 / newPixelsAge[i]) * (64 - distance) * 4 - 1;
 						}
 					}
 				}
@@ -163,7 +163,7 @@ function GolHtmlHelper() {
 							imgData.data[index * 4] = that.colorsRGB[i][0];
 							imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
 							imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-							imgData.data[index * 4 + 3] = (64 - distance) * 4 - 1;
+							imgData.data[index * 4 + 3] = (1 / newPixelsAge[i]) * (64 - distance) * 4 - 1;
 						}
 					}
 				}	
