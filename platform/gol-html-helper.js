@@ -101,7 +101,7 @@ function GolHtmlHelper() {
 	};
 
 	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, gameEnded) {
-		var i, j, k, x, y, distance, index, imgData;
+		var i, j, k, x, y, maxAge, maxDistance, multiplier, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		
 		// regular matrix
@@ -141,29 +141,34 @@ function GolHtmlHelper() {
 		}
 
 		// new pixels mark
+		maxAge = 4;		
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
-				for (k = 0; k < that.rows; k++) {
-					distance = Math.abs(k - newPixels[i][j][1]);
-					if (distance < 64) {
-						index = k * that.cols + newPixels[i][j][0];
-						if (array[index] === -1) {
-							imgData.data[index * 4] = that.colorsRGB[i][0];
-							imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-							imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-							imgData.data[index * 4 + 3] = (1 / newPixelsAge[i]) * (64 - distance) * 4 - 1;
+				if (newPixelsAge[i] <= maxAge) {
+					maxDistance = Math.floor(64 / newPixelsAge[i]);
+					multiplier = Math.floor(256 / maxDistance);
+					for (k = 0; k < that.rows; k++) {
+						distance = Math.abs(k - newPixels[i][j][1]);
+						if (distance < maxDistance) {
+							index = k * that.cols + newPixels[i][j][0];
+							if (array[index] === -1) {
+								imgData.data[index * 4] = that.colorsRGB[i][0];
+								imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+								imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+								imgData.data[index * 4 + 3] = (1 / newPixelsAge[i]) * (maxDistance - distance) * multiplier - 1;
+							}
 						}
 					}
-				}
-				for (k = 0; k < that.cols; k++) {
-					distance = Math.abs(k - newPixels[i][j][0]);
-					if (distance < 64) {
-						index = newPixels[i][j][1] * that.cols + k;
-						if (array[index] === -1) {
-							imgData.data[index * 4] = that.colorsRGB[i][0];
-							imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-							imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-							imgData.data[index * 4 + 3] = (1 / newPixelsAge[i]) * (64 - distance) * 4 - 1;
+					for (k = 0; k < that.cols; k++) {
+						distance = Math.abs(k - newPixels[i][j][0]);
+						if (distance < maxDistance) {
+							index = newPixels[i][j][1] * that.cols + k;
+							if (array[index] === -1) {
+								imgData.data[index * 4] = that.colorsRGB[i][0];
+								imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
+								imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
+								imgData.data[index * 4 + 3] = (1 / newPixelsAge[i]) * (maxDistance - distance) * multiplier - 1;
+							}
 						}
 					}
 				}	
@@ -172,12 +177,14 @@ function GolHtmlHelper() {
 
 		// new pixels
 		for (i = 0; i < newPixels.length; i++) {
-			for (j = 0; j < newPixels[i].length; j++) {
-				index = newPixels[i][j][1] * that.cols + newPixels[i][j][0];
-				imgData.data[index * 4] = 255;
-				imgData.data[index * 4 + 1] = 255;
-				imgData.data[index * 4 + 2] = 255;
-				imgData.data[index * 4 + 3] = 255;	
+			if (newPixelsAge[i] <= maxAge) {
+				for (j = 0; j < newPixels[i].length; j++) {
+					index = newPixels[i][j][1] * that.cols + newPixels[i][j][0];
+					imgData.data[index * 4] = 255;
+					imgData.data[index * 4 + 1] = 255;
+					imgData.data[index * 4 + 2] = 255;
+					imgData.data[index * 4 + 3] = 255;	
+				}
 			}
 		}
 

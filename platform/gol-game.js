@@ -13,7 +13,7 @@
 			that.board.init(settings);
 			that.armies = [];
 			that.newPixels = [[],[]];
-			that.newPixelsAge = [];
+			that.newPixelsAge = [0, 0];
 			window.registerArmy = that.registerArmy;
 			window.startGame = that.startGame;
 		};
