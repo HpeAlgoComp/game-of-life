@@ -34,7 +34,7 @@
 			} else {
 				that.htmlHelper.drawUserInterface(that.armies);
 				that.ticks = 0;
-				setTimeout(that.onTick, 3000);
+				setTimeout(that.onTick, 0);
 			}
 		};
 		

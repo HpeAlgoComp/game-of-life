@@ -141,7 +141,7 @@ function GolHtmlHelper() {
 		}
 
 		// new pixels mark
-		maxAge = 4;		
+		maxAge = 5;		
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
 				if (newPixelsAge[i] <= maxAge) {
