@@ -100,8 +100,8 @@ function GolHtmlHelper() {
 		return container.appendChild(canvas);
 	};
 
-	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, gameEnded) {
-		var i, j, k, x, y, maxAge, maxDistance, multiplier, distance, index, imgData;
+	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, armies, gameEnded) {
+		var i, j, k, x, y, r, g, b, a, maxAge, maxDistance, multiplier, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		
 		// regular matrix
@@ -125,17 +125,35 @@ function GolHtmlHelper() {
 			for (x = 0; x < that.cols; x++) {
 				index = y * that.cols + x;
 				if (array[index] === -1) {
-					if (scoringPixelCount[i * -1 + 1] === 0 || gameEnded) {
-						imgData.data[index * 4] = that.colorsRGB[i][0];
-						imgData.data[index * 4 + 1] = that.colorsRGB[i][1];
-						imgData.data[index * 4 + 2] = that.colorsRGB[i][2];
-						imgData.data[index * 4 + 3] = Math.floor(Math.random() * 255);
+					if (gameEnded) {
+						if (armies[i].power !== 0 || armies[0].power === 0 && armies[1].power === 0) {
+							// draw
+							r = that.colorsRGB[i][0];
+							g = that.colorsRGB[i][1];
+							b = that.colorsRGB[i][2];
+							a = Math.floor(Math.random() * 255);
+						} else if (armies[i].power === 0) {
+							r = that.colorsRGB[i * -1 + 1][0];
+							g = that.colorsRGB[i * -1 + 1][1];
+							b = that.colorsRGB[i * -1 + 1][2];
+							a = Math.floor(Math.random() * 255);
+						}
 					} else {
-						imgData.data[index * 4] = 255;
-						imgData.data[index * 4 + 1] = 255;
-						imgData.data[index * 4 + 2] = 255;
-						imgData.data[index * 4 + 3] = 255;	
+						// regular back line
+						if (scoringPixelCount[i * -1 + 1] === 0) {
+							r = that.colorsRGB[i][0];
+							g = that.colorsRGB[i][1];
+							b = that.colorsRGB[i][2];
+							a = Math.floor(Math.random() * 255);
+						} else {
+							// hit
+							r = g = b = a = 255;
+						}
 					}
+					imgData.data[index * 4] = r;
+					imgData.data[index * 4 + 1] = g;
+					imgData.data[index * 4 + 2] = b;
+					imgData.data[index * 4 + 3] = a;
 				}
 			}
 		}
@@ -180,10 +198,7 @@ function GolHtmlHelper() {
 			if (newPixelsAge[i] <= maxAge) {
 				for (j = 0; j < newPixels[i].length; j++) {
 					index = newPixels[i][j][1] * that.cols + newPixels[i][j][0];
-					imgData.data[index * 4] = 255;
-					imgData.data[index * 4 + 1] = 255;
-					imgData.data[index * 4 + 2] = 255;
-					imgData.data[index * 4 + 3] = 255;	
+					imgData.data[index * 4] = imgData.data[index * 4 + 1] = imgData.data[index * 4 + 2] = imgData.data[index * 4 + 3] = 255;
 				}
 			}
 		}
@@ -195,13 +210,13 @@ function GolHtmlHelper() {
 		var score, scoreText, powerWidth;
 		document.getElementById('gol-army-score-' + army.index).style['color'] = (winningPixels === 0) ? '#' + that.colorsHex[army.index] : '#fff';		
 		document.getElementById('gol-army-power-' + army.index).style['background-color'] = (winningPixels === 0) ? '#' + that.colorsHex[army.index] : '#fff';
-		score = Math.floor(army.power);
+		score = Math.round(army.power);
 		if (score === 0 && army.power > 0) {
 			score = 1;
 		}
 		scoreText = '' + score;
 		document.getElementById('gol-army-score-' + army.index).innerHTML = scoreText;		
-		powerWidth = Math.floor(army.power / that.settings.powerMaxValue * that.powerBarMaxWidth);
+		powerWidth = Math.round(army.power / that.settings.powerMaxValue * that.powerBarMaxWidth);
 		if (powerWidth === 0 && army.power > 0) {
 			powerWidth = 1;
 		}

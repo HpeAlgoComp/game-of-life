@@ -19,7 +19,7 @@
 		};
 
 		that.registerArmy = function registerArmy(data) {
-			var army = new GolArmy(that.armies.length, data.name, that.settings.colorsRGB[that.armies.length], that.settings.powerMaxValue, data.icon, data.cb);
+			var army = new GolArmy(that.armies.length, data.name, data.icon, data.cb, that.settings.colorsRGB[that.armies.length], that.settings.powerMaxValue, 0);
 			_dbg('registerArmy()');
 			_log('army name: ' + data.name + ', icon: ' + data.icon);
 			that.armies.push(army);
@@ -51,11 +51,11 @@
 			newPixels = that.getNewPixels();
 			that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
 			if (!gameEnded) {
-				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, gameEnded);
+				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, gameEnded);
 				that.board.deleteScoringPixels(nxtArray);				
 				setTimeout(that.onTick, 0);
 			} else {
-				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, gameEnded);
+				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, gameEnded);
 				that.endGame();
 			}						
 		};
