@@ -29,9 +29,9 @@
 	function cb(data) {
 		var pixels = [];
 		var plan;
-		if (data.ticks < 200) {
+		if (data.generation < 200) {
 			plan = plan1;
-		} else if (data.ticks < 520) {
+		} else if (data.generation < 520) {
 			plan = plan2;
 		} else {
 			plan = plan3;

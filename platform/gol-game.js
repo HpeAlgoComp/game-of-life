@@ -33,17 +33,17 @@
 				setTimeout(that.startGame, 1000);
 			} else {
 				that.htmlHelper.drawUserInterface(that.armies);
-				that.ticks = 0;
-				setTimeout(that.onTick, 0);
+				that.generation = 0;
+				setTimeout(that.onGeneration, 0);
 			}
 		};
 		
-		that.onTick = function onTick() {
+		that.onGeneration = function onGeneration() {
 			var curArray, nxtArray, newPixels, scoringPixelCount, gameEnded;
-			//_dbg('onTick()');
-			that.ticks++;
-			curArray = that.board.arrays[(that.ticks % 2) * (-1) + 1];
-			nxtArray = that.board.arrays[that.ticks % 2];			
+			//_dbg('onGeneration()');
+			that.generation++;
+			curArray = that.board.arrays[(that.generation % 2) * (-1) + 1];
+			nxtArray = that.board.arrays[that.generation % 2];
 			that.board.computeNextState(curArray, nxtArray);
 			scoringPixelCount = that.board.countScoringPixels(nxtArray);
 			that.handleScore(scoringPixelCount);
@@ -53,7 +53,7 @@
 			if (!gameEnded) {
 				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, gameEnded);
 				that.board.deleteScoringPixels(nxtArray);				
-				setTimeout(that.onTick, 0);
+				setTimeout(that.onGeneration, 0);
 			} else {
 				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, gameEnded);
 				that.endGame();
@@ -68,7 +68,7 @@
 				that.armies[i].budget += that.settings.budgetTickQuantum;
 				pixels[i] = that.armies[i].cb(
 					{
-						ticks: that.ticks,
+						generation: that.generation,
 						cols: that.board.cols,
 						rows: that.board.rows / 2,
 						budget: that.armies[i].budget
@@ -96,8 +96,8 @@
 		};
 
 		that.handleScore = function handleScore(winningPixelsCount) {
-			that.armies[0].power -= that.settings.powerTickQuantum;
-			that.armies[1].power -= that.settings.powerTickQuantum;
+			that.armies[0].power -= that.settings.powerGenerationQuantum;
+			that.armies[1].power -= that.settings.powerGenerationQuantum;
 			if (winningPixelsCount[0] !== 0 || winningPixelsCount[1] !== 0) {
 				that.armies[1].power -= winningPixelsCount[0] * that.settings.powerPixelQuantum;
 				that.armies[0].power -= winningPixelsCount[1] * that.settings.powerPixelQuantum;
