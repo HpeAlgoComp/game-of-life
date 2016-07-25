@@ -27,11 +27,16 @@
 		};
 
 		that.startGame = function startGame() {
+			var i;
 			_dbg('startGame()');
 			if (that.armies.length < 2) {
 				_log('waiting for armies...');
 				setTimeout(that.startGame, 1000);
 			} else {
+				for (i = 0; i < 2; i++) {
+					that.armies[i].power = that.settings.powerMaxValue;
+					that.armies[i].budget = 0;
+				}
 				that.htmlHelper.drawUserInterface(that.armies);
 				that.generation = 0;
 				setTimeout(that.onGeneration, 0);
@@ -79,7 +84,6 @@
 					_err('Budget exceeded. ArmyName: ' + that.armies[i].name);
 					pixels[i] = [];
 				}
-				
 			}
 			if (pixels[0].length > 0 || pixels[1].length > 0) {
 				adjustedPixels = that.board.adjustNewPixels(pixels);
