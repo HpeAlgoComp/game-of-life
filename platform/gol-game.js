@@ -100,23 +100,23 @@
 			return adjustedPixels;
 		};
 
-		that.handleScore = function handleScore(winningPixelsCount) {
+		that.handleScore = function handleScore(scoringPixelsCount) {
 			that.armies[0].power -= that.settings.powerGenerationQuantum;
 			that.armies[1].power -= that.settings.powerGenerationQuantum;
-			if (winningPixelsCount[0] !== 0 || winningPixelsCount[1] !== 0) {
-				that.armies[1].power -= winningPixelsCount[0] * that.settings.powerPixelQuantum;
-				that.armies[0].power -= winningPixelsCount[1] * that.settings.powerPixelQuantum;
-				if (winningPixelsCount[0] !== 0) {
+			if (scoringPixelsCount[0] !== 0 || scoringPixelsCount[1] !== 0) {
+				that.armies[1].power -= scoringPixelsCount[0] * that.settings.powerPixelQuantum;
+				that.armies[0].power -= scoringPixelsCount[1] * that.settings.powerPixelQuantum;
+				if (scoringPixelsCount[0] !== 0) {
 					_log(that.armies[0].name + ' scores');	
 				}
-				if (winningPixelsCount[1] !== 0) {
+				if (scoringPixelsCount[1] !== 0) {
 					_log(that.armies[1].name + ' scores');		
 				}
 			}
 			that.armies[0].power = Math.max(that.armies[0].power, 0);
 			that.armies[1].power = Math.max(that.armies[1].power, 0);
-			that.htmlHelper.updateScore(that.armies[0].index, that.armies[0].power, winningPixelsCount[1]);
-			that.htmlHelper.updateScore(that.armies[1].index, that.armies[1].power, winningPixelsCount[0]);
+			that.htmlHelper.updateScore(that.armies[0].index, that.armies[0].power, scoringPixelsCount[1]);
+			that.htmlHelper.updateScore(that.armies[1].index, that.armies[1].power, scoringPixelsCount[0]);
 		};
 
 		that.endGame = function endGame() {
