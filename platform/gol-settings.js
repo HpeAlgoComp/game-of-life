@@ -7,6 +7,6 @@ function GolSettings() {
 	that.rows = 200;
 	that.budgetTickQuantum = 1;
 	that.powerMaxValue = 100;
-	that.powerGenerationQuantum = 0.01;
+	that.powerTimeQuantum = 0.5;
 	that.powerPixelQuantum = 5;
 }

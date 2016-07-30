@@ -40,7 +40,8 @@
 				}
 				that.htmlHelper.drawUserInterface(that.armies);
 				that.generation = 0;
-				setTimeout(that.onGeneration, 0);				
+				that.nextPowerReduction = (new Date()).getTime() + 1000;
+				setTimeout(that.onGeneration, 0);								
 			}
 		};
 		
@@ -101,8 +102,11 @@
 		};
 
 		that.handleScore = function handleScore(scoringPixelsCount) {
-			that.armies[0].power -= that.settings.powerGenerationQuantum;
-			that.armies[1].power -= that.settings.powerGenerationQuantum;
+			if ((new Date()).getTime() > that.nextPowerReduction) {
+				that.armies[0].power -= that.settings.powerTimeQuantum;
+				that.armies[1].power -= that.settings.powerTimeQuantum;
+				that.nextPowerReduction = (new Date()).getTime() + 1000;	
+			}
 			if (scoringPixelsCount[0] !== 0 || scoringPixelsCount[1] !== 0) {
 				that.armies[1].power -= scoringPixelsCount[0] * that.settings.powerPixelQuantum;
 				that.armies[0].power -= scoringPixelsCount[1] * that.settings.powerPixelQuantum;
