@@ -206,21 +206,21 @@ function GolHtmlHelper() {
 		that.ctx.putImageData(imgData, 0, 0);
 	};
 
-	that.updateScore = function updateScore(army, winningPixels) {
+	that.updateScore = function updateScore(armyIndex, armyPower, scoringPixels) {
 		var score, scoreText, powerWidth;
-		document.getElementById('gol-army-score-' + army.index).style['color'] = (winningPixels === 0) ? '#' + that.colorsHex[army.index] : '#fff';		
-		document.getElementById('gol-army-power-' + army.index).style['background-color'] = (winningPixels === 0) ? '#' + that.colorsHex[army.index] : '#fff';
-		score = Math.round(army.power);
-		if (score === 0 && army.power > 0) {
+		document.getElementById('gol-army-score-' + armyIndex).style['color'] = (scoringPixels === 0) ? '#' + that.colorsHex[armyIndex] : '#fff';		
+		document.getElementById('gol-army-power-' + armyIndex).style['background-color'] = (scoringPixels === 0) ? '#' + that.colorsHex[armyIndex] : '#fff';
+		score = Math.round(armyPower);
+		if (score === 0 && armyPower > 0) {
 			score = 1;
 		}
 		scoreText = '' + score;
-		document.getElementById('gol-army-score-' + army.index).innerHTML = scoreText;		
-		powerWidth = Math.round(army.power / that.settings.powerMaxValue * that.powerBarMaxWidth);
-		if (powerWidth === 0 && army.power > 0) {
+		document.getElementById('gol-army-score-' + armyIndex).innerHTML = scoreText;		
+		powerWidth = Math.round(armyPower / that.settings.powerMaxValue * that.powerBarMaxWidth);
+		if (powerWidth === 0 && armyPower > 0) {
 			powerWidth = 1;
 		}
-		document.getElementById('gol-army-power-' + army.index).style['width'] = powerWidth + 'px';
+		document.getElementById('gol-army-power-' + armyIndex).style['width'] = powerWidth + 'px';
 	};
 
 	that.endGame = function endGame()  {

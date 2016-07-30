@@ -14,6 +14,7 @@
 			that.armies = [];
 			that.newPixels = [[],[]];
 			that.newPixelsAge = [0, 0];
+			that.matchScore = [];
 			window.registerArmy = that.registerArmy;
 			window.startGame = that.startGame;
 		};
@@ -26,7 +27,7 @@
 			_dbg('number of armies: ' + that.armies.length);
 		};
 
-		that.startGame = function startGame() {
+		that.startGame = function startGame(isMatch) {
 			var i;
 			_dbg('startGame()');
 			if (that.armies.length < 2) {
@@ -39,7 +40,7 @@
 				}
 				that.htmlHelper.drawUserInterface(that.armies);
 				that.generation = 0;
-				setTimeout(that.onGeneration, 0);
+				setTimeout(that.onGeneration, 0);				
 			}
 		};
 		
@@ -114,8 +115,8 @@
 			}
 			that.armies[0].power = Math.max(that.armies[0].power, 0);
 			that.armies[1].power = Math.max(that.armies[1].power, 0);
-			that.htmlHelper.updateScore(that.armies[0], winningPixelsCount[1]);
-			that.htmlHelper.updateScore(that.armies[1], winningPixelsCount[0]);
+			that.htmlHelper.updateScore(that.armies[0].index, that.armies[0].power, winningPixelsCount[1]);
+			that.htmlHelper.updateScore(that.armies[1].index, that.armies[1].power, winningPixelsCount[0]);
 		};
 
 		that.endGame = function endGame() {
