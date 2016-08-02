@@ -20,17 +20,22 @@
 		};
 
 		that.loadSources = function loadSources() {
-			var i, srcElm, srcText;
 			document.getElementById('load-src-panel').style.display = 'none';
-			for (i = 0; i < 2; i++) {
+			that.loadSource(0);
+			setTimeout(function() {
+				that.loadSource(1);
+			}, 1000);
+		};
+
+		that.loadSource = function loadSource(i) {
+			var srcText, srcElm;
+			srcText = document.getElementById('src-' + i).value;
+			_log('loading source: ' + srcText);
+			if (srcText) {
 				srcElm = document.createElement('script');
 				srcElm.setAttribute('type', 'text/javascript');
-				srcText = document.getElementById('src-' + i).value;
-				if (srcText) {
-					_log('loading source: ' + srcText);
-					srcElm.setAttribute('src', srcText);
-					document.getElementsByTagName('head')[0].appendChild(srcElm);
-				}
+				srcElm.setAttribute('src', srcText);
+				document.getElementsByTagName('head')[0].appendChild(srcElm);
 			}
 		};
 
