@@ -23,12 +23,15 @@
 		'fence'
 	];
 	var planIndex = 0;
-
-	var fenceLocation = 0;
+  var fenceLocation = 0;
 
 	function cb(data) {
 		var pixels = [];
 		var plan;
+		if (data.generation === 1) {
+			planIndex = 0;
+      fenceLocation = 0;
+		}
 		if (data.generation < 200) {
 			plan = plan1;
 		} else if (data.generation < 520) {
