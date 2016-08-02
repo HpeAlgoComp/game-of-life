@@ -14,9 +14,24 @@
 			that.armies = [];
 			that.newPixels = [[],[]];
 			that.newPixelsAge = [0, 0];
-			that.matchScore = [];
+			window.loadSources = that.loadSources;
 			window.registerArmy = that.registerArmy;
 			window.startGame = that.startGame;
+		};
+
+		that.loadSources = function loadSources() {
+			var i, srcElm, srcText;
+			document.getElementById('load-src-panel').style.display = 'none';
+			for (i = 0; i < 2; i++) {
+				srcElm = document.createElement('script');
+				srcElm.setAttribute('type', 'text/javascript');
+				srcText = document.getElementById('src-' + i).value;
+				if (srcText) {
+					_log('loading source: ' + srcText);
+					srcElm.setAttribute('src', srcText);
+					document.getElementsByTagName('head')[0].appendChild(srcElm);
+				}
+			}
 		};
 
 		that.registerArmy = function registerArmy(data) {
@@ -27,7 +42,7 @@
 			_dbg('number of armies: ' + that.armies.length);
 		};
 
-		that.startGame = function startGame(isMatch) {
+		that.startGame = function startGame() {
 			var i;
 			_dbg('startGame()');
 			if (that.armies.length < 2) {

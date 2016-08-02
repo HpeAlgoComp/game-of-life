@@ -7,9 +7,12 @@
 		<script src='platform/gol-army.js'></script>
 		<script src='platform/gol-board.js'></script>
 		<script src='platform/gol-game.js'></script>
-		<script src='bots/gol-bot-0.js'></script>
-		<script src='bots/gol-bot-1.js'></script>
 	</head>
 	<body onload="startGame()">
+	    <div id="load-src-panel">
+	    <div><input title="source-1" type="text" value="bots/gol-bot-1.js" id="src-1"/></div>
+		<div><input title="source-0" type="text" value="bots/gol-bot-0.js" id="src-0"/></div>
+	    <div><button id="load-src-button" onclick="loadSources()">Load Sources</button></div>
+	    </div>
 	</body>
 </html>
