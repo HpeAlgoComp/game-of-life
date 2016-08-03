@@ -148,8 +148,8 @@
                 that.nextPowerReduction = (new Date()).getTime() + 1000;
             }
             if (scoringPixelsCount[0] !== 0 || scoringPixelsCount[1] !== 0) {
-                that.armies[1].power -= scoringPixelsCount[0] * that.settings.powerPixelQuantum;
-                that.armies[0].power -= scoringPixelsCount[1] * that.settings.powerPixelQuantum;
+                that.armies[1].power -= scoringPixelsCount[0] * that.settings.powerHitQuantum;
+                that.armies[0].power -= scoringPixelsCount[1] * that.settings.powerHitQuantum;
                 if (scoringPixelsCount[0] !== 0) {
                     _log(that.armies[0].name + ' scores');
                     that.playHitSound(scoringPixelsCount[0]);

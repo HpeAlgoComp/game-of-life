@@ -8,7 +8,7 @@ function GolSettings() {
 	that.budgetTickQuantum = 1;
 	that.powerMaxValue = 100;
 	that.powerTimeQuantum = 0.5;
-	that.powerPixelQuantum = 5;
+	that.powerHitQuantum = 5;
 	that.secondsBetweenGames = 10;
 	that.winRoundLimit = 2;
 }
