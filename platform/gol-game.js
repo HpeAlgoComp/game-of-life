@@ -13,7 +13,13 @@
             that.round = 0;
             that.roundWins = [0, 0];
             that.lastWinner = '';
-            that.sounds = ['punch_or_whack_-Vladimir-403040765.mp3', '335152_apenguin73_explosion-test.mp3', '250712_aiwha_explosion.mp3', '182429_qubodup_explosion.mp3', '84521_destro-94_explosion-flangered.mp3', '86026_harpoyume_explosion-3.mp3', '95058_plamdi1_explosion.mp3', '156031__iwiploppenisse__explosion.mp3'];
+            that.sounds = [
+                '335152_apenguin73_explosion-test.mp3', 
+                '182429_qubodup_explosion.mp3', 
+                '84521_destro-94_explosion-flangered.mp3', 
+                '86026_harpoyume_explosion-3.mp3', 
+                '95058_plamdi1_explosion.mp3'
+            ];
             window.loadSources = that.loadSources;
             window.registerArmy = that.registerArmy;
             window.startGame = that.startGame;
