@@ -13,13 +13,14 @@
             that.round = 0;
             that.roundWins = [0, 0];
             that.lastWinner = '';
-            that.sounds = [
+            that.hitSounds = [
                 '335152_apenguin73_explosion-test.mp3', 
                 '182429_qubodup_explosion.mp3', 
                 '84521_destro-94_explosion-flangered.mp3', 
                 '86026_harpoyume_explosion-3.mp3', 
                 '95058_plamdi1_explosion.mp3'
             ];
+            that.quietSound = '250712_aiwha_explosion.mp3';
             window.loadSources = that.loadSources;
             window.registerArmy = that.registerArmy;
             window.startGame = that.startGame;
@@ -80,6 +81,7 @@
                 that.htmlHelper.drawUserInterface(that.armies);
             }
             that.nextPowerReduction = (new Date()).getTime() + 1000;
+            that.playSound(that.quietSound);
             setTimeout(that.onGeneration, 0); 
         }        
 
@@ -105,9 +107,10 @@
             }
         };
 
-        that.endRound = function endRound(){
+        that.endRound = function endRound() {
             var winnerIndex;
             _dbg('endRound()');
+            that.playSound(that.quietSound);
             if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
                 _log('draw');
             } else {
@@ -159,6 +162,7 @@
             }
             for (i = 0; i < 2; i++) {
                 if (adjustedPixels[i].length > 0) {
+                    
                     that.newPixels[i] = adjustedPixels[i];
                     that.newPixelsAge[i] = 1;
                 } else {
@@ -168,19 +172,21 @@
             return adjustedPixels;
         };
 
-        that.playHitSound = function playHitSound(hits) {
-            var soundIndex = Math.floor(Math.random() * that.sounds.length);            
-            var audio = new Audio('https://raw.githubusercontent.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + that.sounds[soundIndex]);
-            audio.play();            
+        that.playSound = function playSound(soundPath) {
+            var audio = new Audio('https://raw.githubusercontent.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + soundPath);
+            audio.play();
         };
 
         that.handleScore = function handleScore(scoringPixelsCount) {
             if ((new Date()).getTime() > that.nextPowerReduction) {
+                that.playSound(that.quietSound);
                 that.armies[0].power -= that.settings.powerTimeQuantum;
                 that.armies[1].power -= that.settings.powerTimeQuantum;
                 that.nextPowerReduction = (new Date()).getTime() + 1000;
             }
             if (scoringPixelsCount[0] !== 0 || scoringPixelsCount[1] !== 0) {
+                that.playSound(that.hitSounds[Math.floor(Math.random() * that.hitSounds.length)]);
+                that.htmlHelper.shake();
                 that.armies[1].power -= scoringPixelsCount[0] * that.settings.powerHitQuantum;
                 that.armies[0].power -= scoringPixelsCount[1] * that.settings.powerHitQuantum;
                 if (scoringPixelsCount[0] !== 0) {
@@ -188,9 +194,7 @@
                 }
                 if (scoringPixelsCount[1] !== 0) {
                     _log(that.armies[1].name + ' scores');
-                }
-                that.playHitSound();
-                that.htmlHelper.shake();
+                }                
             }
             that.armies[0].power = Math.max(that.armies[0].power, 0);
             that.armies[1].power = Math.max(that.armies[1].power, 0);
