@@ -5,7 +5,8 @@
         var that = this;
         that.round = 0;
         that.winners = {};
-        that.lastWinner = "";
+        that.lastWinner = '';
+        that.sounds = ['punch_or_whack_-Vladimir-403040765.mp3', '335152_apenguin73_explosion-test.mp3', '250712_aiwha_explosion.mp3', '182429_qubodup_explosion.mp3', '84521_destro-94_explosion-flangered.mp3', '86026_harpoyume_explosion-3.mp3', '95058_plamdi1_explosion.mp3', '156031__iwiploppenisse__explosion.mp3'];
 
         that.init = function init(settings) {
             _dbg('init()');
@@ -70,16 +71,19 @@
                     that.nextPowerReduction = (new Date()).getTime() + 1000;
                     setTimeout(that.onGeneration, 0);
                 } else {
-                    that.CheckReachWinRoundLimit(that.onGeneration);
+                    that.checkReachWinRoundLimit(that.onGeneration);
                 }
             }
         };
 
-        that.CheckReachWinRoundLimit = function(startNextRound) {
+        that.checkReachWinRoundLimit = function checkReachWinRoundLimit(startNextRound) {
             that.nextPowerReduction = (new Date()).getTime() + that.settings.secondsBetweenGames * 1000;
             setTimeout(function () {
-                if (that.winners[that.lastWinner] >= that.settings.winRoundLimit) that.htmlHelper.endAllRounds(that.lastWinner);
-                else startNextRound();
+                if (that.winners[that.lastWinner] >= that.settings.winRoundLimit) {
+                    that.htmlHelper.endAllRounds(that.lastWinner);
+                } else {
+                    startNextRound();
+                }
             }, that.settings.secondsBetweenGames * 1000);
         };
 
@@ -152,12 +156,12 @@
                 that.armies[0].power -= scoringPixelsCount[1] * that.settings.powerHitQuantum;
                 if (scoringPixelsCount[0] !== 0) {
                     _log(that.armies[0].name + ' scores');
-                    that.playHitSound(scoringPixelsCount[0]);
                 }
                 if (scoringPixelsCount[1] !== 0) {
                     _log(that.armies[1].name + ' scores');
-                    that.playHitSound(scoringPixelsCount[1]);
                 }
+                that.playHitSound();
+                that.htmlHelper.shake();
             }
             that.armies[0].power = Math.max(that.armies[0].power, 0);
             that.armies[1].power = Math.max(that.armies[1].power, 0);
@@ -170,34 +174,25 @@
                 _log('draw');
             } else if (that.armies[1].power <= 0) {
                 _log(that.armies[0].name + ' wins');
-                that.registerResualt(that.armies[0].name);
+                that.registerResult(that.armies[0].name);
                 that.htmlHelper.endGame(that.round, that.armies[0].name, that.armies[0].color, that.winners[that.armies[0].name]);
             } else if (that.armies[0].power <= 0) {
                 _log(that.armies[1].name + ' wins');
-                that.registerResualt(that.armies[1].name);
+                that.registerResult(that.armies[1].name);
                 that.htmlHelper.endGame(that.round, that.armies[1].name, that.armies[1].color, that.winners[that.armies[1].name]);
             }
         };
 
-        that.registerResualt = function registerResualt(winName) {
-            if (that.winners[winName] == undefined || that.winners[winName] == null) that.winners[winName] = 0;
-            that.winners[winName] = that.winners[winName] + 1;
-
-            that.round = that.round + 1;
-            that.lastWinner = winName;
+        that.registerResult = function registerResult(winnerArmyName) {
+            that.winners[winnerArmyName] = that.winners[winnerArmyName] ? that.winners[winnerArmyName] + 1 : 1;
+            that.round++;
+            that.lastWinner = winnerArmyName;
         };
-
-        that.SoundArr = ['punch_or_whack_-Vladimir-403040765.mp3', '335152_apenguin73_explosion-test.mp3', '250712_aiwha_explosion.mp3', '182429_qubodup_explosion.mp3', '84521_destro-94_explosion-flangered.mp3', '86026_harpoyume_explosion-3.mp3', '95058_plamdi1_explosion.mp3', '156031__iwiploppenisse__explosion.mp3'];
-        that.ShakeArr = ['shake-little'];//['shake', 'shake-little', 'shake-horizontal', 'shake-rotate'];
-        that.playHitSound = function(hits) {
-            var i = Math.floor(Math.random() * (that.SoundArr.length - 1));
-            var j = Math.floor(Math.random() * (that.ShakeArr.length - 1));
-            var audio = new Audio('https://raw.githubusercontent.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + that.SoundArr[i]);
-            audio.play();
-            document.getElementById("gol-canvas").className = that.ShakeArr[j] + " shake-constant";
-            setTimeout(function () {
-                document.getElementById("gol-canvas").className = "";
-            }, 400);
+        
+        that.playHitSound = function playHitSound(hits) {
+            var soundIndex = Math.floor(Math.random() * that.sounds.length);            
+            var audio = new Audio('https://raw.githubusercontent.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + that.sounds[soundIndex]);
+            audio.play();            
         };
     }
 
