@@ -192,7 +192,7 @@
         that.playHitSound = function(hits) {
             var i = Math.floor(Math.random() * (that.SoundArr.length - 1));
             var j = Math.floor(Math.random() * (that.ShakeArr.length - 1));
-            var audio = new Audio('platform/sounds/' + that.SoundArr[i]);
+            var audio = new Audio('https://raw.githubusercontent.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + that.SoundArr[i]);
             audio.play();
             document.getElementById("gol-canvas").className = that.ShakeArr[j] + " shake-constant";
             setTimeout(function () {

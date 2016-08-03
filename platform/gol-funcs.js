@@ -19,3 +19,4 @@ function _err(msg) {
 //    rgb.push(r, g, b);
 //    return Math.sqrt((rgb[0] * rgb[0] * 0.241) + (rgb[1] * rgb[1] * 0.691) + (rgb[2] * rgb[2] * 0.68) ) / 255;
 // }
+
