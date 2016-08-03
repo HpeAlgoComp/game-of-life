@@ -106,7 +106,7 @@ function GolHtmlHelper() {
 		return container.appendChild(canvas);
 	};
 
-	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, armies, gameEnded) {
+	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, armies, roundEnded) {
 		var i, j, k, x, y, r, g, b, a, maxAge, maxDistance, multiplier, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 		
@@ -131,7 +131,7 @@ function GolHtmlHelper() {
 			for (x = 0; x < that.cols; x++) {
 				index = y * that.cols + x;
 				if (array[index] === -1) {
-					if (gameEnded) {
+					if (roundEnded) {
 						if (armies[i].power !== 0 || armies[0].power === 0 && armies[1].power === 0) {
 							// draw
 							r = that.colorsRGB[i][0];
@@ -237,7 +237,7 @@ function GolHtmlHelper() {
 		document.getElementById('gol-army-power-' + armyIndex).style['width'] = powerWidth + 'px';
 	};
 
-	that.endGame = function endGame(round, winner, color, winnerWinCount)  {
+	that.endRound = function endRound(round, winner, color)  {
 		var i;
 		for (i = 0; i < 2; i++) {
 			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];		
@@ -252,7 +252,7 @@ function GolHtmlHelper() {
 		that.ctx.fillText(winner + '!', that.cols / 2, (that.rows / 2) + 10);
 	};
 
-	that.endAllRounds = function endAllRounds(winner) {
+	that.endGame = function endGame(winner) {
 	    that.ctx.clearRect(0, 0, that.cols, that.rows);
 	    that.ctx.font = '16px Consolas';
 	    that.ctx.fillStyle = '#ffffff';

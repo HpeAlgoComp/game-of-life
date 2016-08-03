@@ -2,30 +2,21 @@
 
     function GolGame() {
 
-        var that = this;
-        that.round = 0;
-        that.winners = {};
-        that.lastWinner = '';
-        that.sounds = ['punch_or_whack_-Vladimir-403040765.mp3', '335152_apenguin73_explosion-test.mp3', '250712_aiwha_explosion.mp3', '182429_qubodup_explosion.mp3', '84521_destro-94_explosion-flangered.mp3', '86026_harpoyume_explosion-3.mp3', '95058_plamdi1_explosion.mp3', '156031__iwiploppenisse__explosion.mp3'];
+        var that = this;     
 
         that.init = function init(settings) {
             _dbg('init()');
-            that.firstGame = true;
             that.settings = settings;
             that.htmlHelper = new GolHtmlHelper();
             that.htmlHelper.init(settings);
             that.armies = [];
+            that.round = 0;
+            that.roundWins = [0, 0];
+            that.lastWinner = '';
+            that.sounds = ['punch_or_whack_-Vladimir-403040765.mp3', '335152_apenguin73_explosion-test.mp3', '250712_aiwha_explosion.mp3', '182429_qubodup_explosion.mp3', '84521_destro-94_explosion-flangered.mp3', '86026_harpoyume_explosion-3.mp3', '95058_plamdi1_explosion.mp3', '156031__iwiploppenisse__explosion.mp3'];
             window.loadSources = that.loadSources;
             window.registerArmy = that.registerArmy;
             window.startGame = that.startGame;
-        };
-
-        that.loadSources = function loadSources() {
-            document.getElementById('load-src-panel').style.display = 'none';
-            that.loadSource(0);
-            setTimeout(function() {
-                that.loadSource(1);
-            }, 1000);
         };
 
         that.loadSource = function loadSource(i) {
@@ -40,6 +31,14 @@
             }
         };
 
+        that.loadSources = function loadSources() {
+            document.getElementById('load-src-panel').style.display = 'none';
+            that.loadSource(0);
+            setTimeout(function() {
+                that.loadSource(1);
+            }, 1000);
+        };        
+
         that.registerArmy = function registerArmy(data) {
             var army = new GolArmy(that.armies.length, data.name, data.icon, data.cb, that.settings.colorsRGB[that.armies.length], that.settings.powerMaxValue, 0);
             _dbg('registerArmy()');
@@ -49,46 +48,37 @@
         };
 
         that.startGame = function startGame() {
-            var i;
             _dbg('startGame()');
             if (that.armies.length < 2) {
                 _log('waiting for armies...');
                 setTimeout(that.startGame, 1000);
             } else {
-                for (i = 0; i < 2; i++) {
-                    that.armies[i].power = that.settings.powerMaxValue;
-                    that.armies[i].budget = 0;
-                }
-                that.board = new GolBoard();
-                that.board.init(that.settings);
-                that.newPixels = [[], []];
-                that.newPixelsAge = [0, 0];
-                that.generation = 0;
-                if (that.firstGame) {
-                    that.htmlHelper.drawUserInterface(that.armies);
-                }
-                if (that.firstGame) {
-                    that.nextPowerReduction = (new Date()).getTime() + 1000;
-                    setTimeout(that.onGeneration, 0);
-                } else {
-                    that.checkReachWinRoundLimit(that.onGeneration);
-                }
+                that.startRound();
             }
         };
 
-        that.checkReachWinRoundLimit = function checkReachWinRoundLimit(startNextRound) {
-            that.nextPowerReduction = (new Date()).getTime() + that.settings.secondsBetweenGames * 1000;
-            setTimeout(function () {
-                if (that.winners[that.lastWinner] >= that.settings.winRoundLimit) {
-                    that.htmlHelper.endAllRounds(that.lastWinner);
-                } else {
-                    startNextRound();
-                }
-            }, that.settings.secondsBetweenGames * 1000);
-        };
+        that.startRound = function startRound() {
+            var i;
+            _dbg('startRound()');
+            that.round++;
+            for (i = 0; i < 2; i++) {
+                that.armies[i].power = that.settings.powerMaxValue;
+                that.armies[i].budget = 0;
+            }
+            that.board = new GolBoard();
+            that.board.init(that.settings);
+            that.newPixels = [[], []];
+            that.newPixelsAge = [0, 0];
+            that.generation = 0;
+            if (that.round === 1) {
+                that.htmlHelper.drawUserInterface(that.armies);
+            }
+            that.nextPowerReduction = (new Date()).getTime() + 1000;
+            setTimeout(that.onGeneration, 0); 
+        }        
 
         that.onGeneration = function onGeneration() {
-            var curArray, nxtArray, newPixels, scoringPixelCount, gameEnded;
+            var curArray, nxtArray, newPixels, scoringPixelCount, roundEnded;
             //_dbg('onGeneration()');
             that.generation++;
             curArray = that.board.arrays[(that.generation % 2) * (-1) + 1];
@@ -96,19 +86,44 @@
             that.board.computeNextState(curArray, nxtArray);
             scoringPixelCount = that.board.countScoringPixels(nxtArray);
             that.handleScore(scoringPixelCount);
-            gameEnded = that.armies[0].power <= 0 || that.armies[1].power <= 0;
+            roundEnded = that.armies[0].power <= 0 || that.armies[1].power <= 0;
             newPixels = that.getNewPixels();
             that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
-            if (!gameEnded) {
-                that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, gameEnded);
+            if (!roundEnded) {
+                that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
                 that.board.deleteScoringPixels(nxtArray);
                 setTimeout(that.onGeneration, 0);
             } else {
-                that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, gameEnded);
-                that.endGame();
-                that.firstGame = false;
-                that.startGame();
+                that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
+                that.endRound();                
             }
+        };
+
+        that.endRound = function endRound(){
+            var i;
+            _dbg('endRound()');
+            if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
+                _log('draw');
+            } else {
+                i = (that.armies[1].power <= 0) ? 0 : 1;
+                _log(that.armies[i].name + ' wins');
+                that.lastWinner = that.armies[i].name;
+                that.roundWins[i]++;
+                that.htmlHelper.endRound(that.round, that.armies[i].name, that.armies[i].color);
+            }
+            if (that.roundWins[0] < that.settings.winRoundLimit && that.roundWins[1] < that.settings.winRoundLimit) {
+                setTimeout(function () {
+                    that.round++;
+                    that.startRound();
+                }, that.settings.secondsBetweenGames * 1000);
+            } else {
+                that.endGame();    
+            }
+        };
+
+        that.endGame= function endGame() {
+            _dbg('endGame()');
+            that.htmlHelper.endGame(that.lastWinner);
         };
 
         that.getNewPixels = function getNewPixels() {
@@ -145,6 +160,12 @@
             return adjustedPixels;
         };
 
+        that.playHitSound = function playHitSound(hits) {
+            var soundIndex = Math.floor(Math.random() * that.sounds.length);            
+            var audio = new Audio('https://raw.githubusercontent.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + that.sounds[soundIndex]);
+            audio.play();            
+        };
+
         that.handleScore = function handleScore(scoringPixelsCount) {
             if ((new Date()).getTime() > that.nextPowerReduction) {
                 that.armies[0].power -= that.settings.powerTimeQuantum;
@@ -167,33 +188,8 @@
             that.armies[1].power = Math.max(that.armies[1].power, 0);
             that.htmlHelper.updateScore(that.armies[0].index, that.armies[0].power, scoringPixelsCount[1]);
             that.htmlHelper.updateScore(that.armies[1].index, that.armies[1].power, scoringPixelsCount[0]);
-        };
-
-        that.endGame = function endGame() {
-            if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
-                _log('draw');
-            } else if (that.armies[1].power <= 0) {
-                _log(that.armies[0].name + ' wins');
-                that.registerResult(that.armies[0].name);
-                that.htmlHelper.endGame(that.round, that.armies[0].name, that.armies[0].color, that.winners[that.armies[0].name]);
-            } else if (that.armies[0].power <= 0) {
-                _log(that.armies[1].name + ' wins');
-                that.registerResult(that.armies[1].name);
-                that.htmlHelper.endGame(that.round, that.armies[1].name, that.armies[1].color, that.winners[that.armies[1].name]);
-            }
-        };
-
-        that.registerResult = function registerResult(winnerArmyName) {
-            that.winners[winnerArmyName] = that.winners[winnerArmyName] ? that.winners[winnerArmyName] + 1 : 1;
-            that.round++;
-            that.lastWinner = winnerArmyName;
-        };
+        };        
         
-        that.playHitSound = function playHitSound(hits) {
-            var soundIndex = Math.floor(Math.random() * that.sounds.length);            
-            var audio = new Audio('https://raw.githubusercontent.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + that.sounds[soundIndex]);
-            audio.play();            
-        };
     }
 
     var game = new GolGame();
