@@ -188,7 +188,7 @@
         };
 
         that.SoundArr = ['punch_or_whack_-Vladimir-403040765.mp3', '335152_apenguin73_explosion-test.mp3', '250712_aiwha_explosion.mp3', '182429_qubodup_explosion.mp3', '84521_destro-94_explosion-flangered.mp3', '86026_harpoyume_explosion-3.mp3', '95058_plamdi1_explosion.mp3', '156031__iwiploppenisse__explosion.mp3'];
-        that.ShakeArr = ['shake', 'shake-little', 'shake-horizontal', 'shake-rotate'];
+        that.ShakeArr = ['shake-little'];//['shake', 'shake-little', 'shake-horizontal', 'shake-rotate'];
         that.playHitSound = function(hits) {
             var i = Math.floor(Math.random() * (that.SoundArr.length - 1));
             var j = Math.floor(Math.random() * (that.ShakeArr.length - 1));
@@ -197,7 +197,7 @@
             document.getElementById("gol-canvas").className = that.ShakeArr[j] + " shake-constant";
             setTimeout(function () {
                 document.getElementById("gol-canvas").className = "";
-            }, 1000);
+            }, 400);
         };
     }
 
