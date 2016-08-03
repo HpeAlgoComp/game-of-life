@@ -57,13 +57,12 @@
 	function tryPlaceMine(data) {
 		var pixels = [];
 		var r, c;
-		if (data.budget >= 4) {
+		if (data.budget >= 3) {
 			c = Math.floor(Math.random() * (data.cols - 1));
 			r = Math.floor(Math.random() * 60) + 20;
 			pixels.push([c, r]);
 			pixels.push([c, r+1]);
-			pixels.push([c+1, r]);
-			pixels.push([c+1, r+1]);			
+			pixels.push([c+1, r]);			
 		}
 		return pixels;
 	}
@@ -71,13 +70,12 @@
 	function tryPlaceFence(data) {
 		var pixels = [];
 		var r, c;
-		if (data.budget >= 4) {
+		if (data.budget >= 3) {
 			c = fenceLocation;
 			r = data.rows - 15;
 			pixels.push([c, r]);
 			pixels.push([c+1, r]);
 			pixels.push([c, r+1]);
-			pixels.push([c+1, r+1]);
 			fenceLocation += 5;
 			if (fenceLocation > data.cols - 2) {
 				fenceLocation = 0;
