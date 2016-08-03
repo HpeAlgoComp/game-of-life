@@ -98,6 +98,8 @@
             that.handleScore(scoringPixelCount);
             roundEnded = that.armies[0].power <= 0 || that.armies[1].power <= 0;
             newPixels = that.getNewPixels();
+            that.newPixelsAge[0]++;
+            that.newPixelsAge[1]++;
             that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
             if (!roundEnded) {
                 that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
@@ -163,12 +165,9 @@
                 adjustedPixels = that.board.adjustNewPixels(pixels);
             }
             for (i = 0; i < 2; i++) {
-                if (adjustedPixels[i].length > 0) {
-                    
+                if (adjustedPixels[i].length > 0) {                    
                     that.newPixels[i] = adjustedPixels[i];
-                    that.newPixelsAge[i] = 1;
-                } else {
-                    that.newPixelsAge[i]++;
+                    that.newPixelsAge[i] = 0;
                 }
             }
             return adjustedPixels;
