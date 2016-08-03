@@ -21,6 +21,8 @@
                 '95058_plamdi1_explosion.mp3'
             ];
             that.quietSound = '250712_aiwha_explosion.mp3';
+            that.music = 'prelude_to_war.mp3';
+            that.playSound(that.music);
             window.loadSources = that.loadSources;
             window.registerArmy = that.registerArmy;
             window.startGame = that.startGame;
@@ -173,13 +175,12 @@
         };
 
         that.playSound = function playSound(soundPath) {
-            var audio = new Audio('https://raw.githubusercontent.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + soundPath);
+            var audio = new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + soundPath);
             audio.play();
         };
 
         that.handleScore = function handleScore(scoringPixelsCount) {
             if ((new Date()).getTime() > that.nextPowerReduction) {
-                that.playSound(that.quietSound);
                 that.armies[0].power -= that.settings.powerTimeQuantum;
                 that.armies[1].power -= that.settings.powerTimeQuantum;
                 that.nextPowerReduction = (new Date()).getTime() + 1000;
