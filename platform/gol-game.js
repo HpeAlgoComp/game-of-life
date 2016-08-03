@@ -100,16 +100,16 @@
         };
 
         that.endRound = function endRound(){
-            var i;
+            var winnerIndex;
             _dbg('endRound()');
             if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
                 _log('draw');
             } else {
-                i = (that.armies[1].power <= 0) ? 0 : 1;
-                _log(that.armies[i].name + ' wins');
-                that.lastWinner = that.armies[i].name;
-                that.roundWins[i]++;
-                that.htmlHelper.endRound(that.round, that.armies[i].name, that.armies[i].color);
+                winnerIndex = (that.armies[1].power <= 0) ? 0 : 1;
+                _log(that.armies[winnerIndex].name + ' wins');
+                that.lastWinner = that.armies[winnerIndex].name;
+                that.roundWins[winnerIndex]++;
+                that.htmlHelper.endRound(that.round, that.roundWins, that.armies, winnerIndex);
             }
             if (that.roundWins[0] < that.settings.winRoundLimit && that.roundWins[1] < that.settings.winRoundLimit) {
                 setTimeout(function () {
@@ -122,8 +122,10 @@
         };
 
         that.endGame= function endGame() {
+            var winnerIndex;
             _dbg('endGame()');
-            that.htmlHelper.endGame(that.lastWinner);
+            winnerIndex = (that.armies[1].power <= 0) ? 0 : 1;
+            that.htmlHelper.endGame(that.armies, winnerIndex);
         };
 
         that.getNewPixels = function getNewPixels() {

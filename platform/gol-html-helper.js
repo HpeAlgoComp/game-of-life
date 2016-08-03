@@ -237,29 +237,30 @@ function GolHtmlHelper() {
 		document.getElementById('gol-army-power-' + armyIndex).style['width'] = powerWidth + 'px';
 	};
 
-	that.endRound = function endRound(round, winner, color)  {
+	that.endRound = function endRound(round, roundWins, armies, winnerIndex)  {
 		var i;
 		for (i = 0; i < 2; i++) {
 			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];		
 			document.getElementById('gol-army-power-' + i).style['background-color'] = '#' + that.colorsHex[i];
 		}
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
-		that.ctx.font = '16px Consolas';
-		that.ctx.fillStyle = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+		that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 		that.ctx.textAlign = 'center';
-		that.ctx.fillText('round #' + round + ' winner:', that.cols / 2, that.rows / 2 - 10);
 		that.ctx.font = '20px Consolas';
-		that.ctx.fillText(winner + '!', that.cols / 2, (that.rows / 2) + 10);
+		that.ctx.fillText(armies[1].name, that.cols / 2, that.rows / 2 - 30);
+		that.ctx.fillText(roundWins[1], that.cols / 2, that.rows / 2 - 10);
+		that.ctx.fillText(roundWins[0], that.cols / 2, that.rows / 2 + 10);
+		that.ctx.fillText(armies[0].name, that.cols / 2, that.rows / 2 + 30);
 	};
 
-	that.endGame = function endGame(winner) {
-	    that.ctx.clearRect(0, 0, that.cols, that.rows);
-	    that.ctx.font = '16px Consolas';
-	    that.ctx.fillStyle = '#ffffff';
+	that.endGame = function endGame(armies, winnerIndex) {
+	    that.ctx.clearRect(0, 0, that.cols, that.rows);	    
+	    that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 	    that.ctx.textAlign = 'center';
-	    that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 10);
+	    that.ctx.font = '10px Consolas';
+	    that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 20);
 	    that.ctx.font = '20px Consolas';
-		that.ctx.fillText(winner + '!', that.cols / 2, (that.rows / 2) + 10);
+		that.ctx.fillText(armies[winnerIndex].name + '!', that.cols / 2, that.rows / 2);
 	};
 
 }
