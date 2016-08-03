@@ -226,12 +226,27 @@ function GolHtmlHelper() {
 		document.getElementById('gol-army-power-' + armyIndex).style['width'] = powerWidth + 'px';
 	};
 
-	that.endGame = function endGame()  {
+	that.endGame = function endGame(round,winner,color,winnerWinCount)  {
 		var i;
 		for (i = 0; i < 2; i++) {
 			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];		
 			document.getElementById('gol-army-power-' + i).style['background-color'] = '#' + that.colorsHex[i];
 		}
+		that.ctx.clearRect(0, 0, that.cols, that.rows);
+		that.ctx.font = "30px Arial";
+		that.ctx.fillStyle = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
+		that.ctx.textAlign = "center";
+		that.ctx.fillText(" Round " + round + " Winner is " + winner + "!", that.cols / 2, that.rows / 2);
+		that.ctx.font = "16px Arial";
+		that.ctx.fillText(winner + " won " + winnerWinCount + " Out of " + round, that.cols / 2, (that.rows / 2) + 45);
+	};
+
+	that.endAllRounds = function endAllRounds(winner) {
+	    that.ctx.clearRect(0, 0, that.cols, that.rows);
+	    that.ctx.font = "30px Arial";
+	    that.ctx.fillStyle = "#ffffff";
+	    that.ctx.textAlign = "center";
+	    that.ctx.fillText("The winner is " + winner + "!", that.cols / 2, that.rows / 2);
 	};
 
 }
