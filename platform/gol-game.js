@@ -84,8 +84,9 @@
                 that.htmlHelper.drawUserInterface(that.armies);
             }
             that.nextPowerReduction = (new Date()).getTime() + 1000;            
-            setTimeout(that.onGeneration, 0); 
-        }        
+            //setTimeout(that.onGeneration, 0);
+            requestAnimationFrame(that.onGeneration);
+        };
 
         that.onGeneration = function onGeneration() {
             var curArray, nxtArray, newPixels, scoringPixelCount, roundEnded;
@@ -104,7 +105,8 @@
             if (!roundEnded) {
                 that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
                 that.board.deleteScoringPixels(nxtArray);
-                setTimeout(that.onGeneration, 0);
+                //setTimeout(that.onGeneration, 0);
+                requestAnimationFrame(that.onGeneration);
             } else {
                 that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
                 setTimeout(that.endRound, 3000);                
