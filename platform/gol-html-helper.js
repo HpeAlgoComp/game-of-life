@@ -249,8 +249,9 @@ function GolHtmlHelper() {
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
 		that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 		that.ctx.textAlign = 'center';
-		that.ctx.font = '20px visitor1';
+		that.ctx.font = (winnerIndex === 1) ? '20px visitor1' : '10px visitor1';
 		that.ctx.fillText(armies[1].name + ': ' + roundWins[1], that.cols / 2, that.rows / 2 - 20);
+		that.ctx.font = (winnerIndex === 0) ? '20px visitor1' : '10px visitor1';
 		that.ctx.fillText(armies[0].name + ': ' + roundWins[0], that.cols / 2, that.rows / 2 + 20);
 	};
 
