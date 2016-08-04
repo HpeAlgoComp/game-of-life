@@ -2,7 +2,7 @@
 
 	function registerArmy() {
 		window.registerArmy({
-			name: 'BotZero',
+			name: 'Bot_Zero',
 			icon: '',
 			cb: cb
 		});

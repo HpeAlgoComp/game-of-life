@@ -40,16 +40,19 @@ function GolHtmlHelper() {
 
 	that.addCssRules = function addCssRules() {
 		var i;
+
+		that.addCssRule('@font-face {font-family: visitor1; src: url("https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/visitor1.woff") format("woff");}');
+		that.addCssRule('@font-face {font-family: visitor2; src: url("https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/visitor2.woff") format("woff");}');
 		that.addCssRule('* {box-sizing: border-box;}');
 		that.addCssRule('html {height: 100%; font-size: 16px;}');
-		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: consolas, monospace, sans-serif;}');
+		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: visitor1, consolas, monospace, sans-serif;}');
 		that.addCssRule('#load-src-panel {margin-top: 100px; margin-left: calc(50% - 200px); width: 400px; text-align: center}');
-		that.addCssRule('#load-src-button {border: 1px solid #666; background: #666; color: #fff; font-family: consolas, monospace, sans-serif; font-size: 16px; cursor: pointer; outline: none;}');
+		that.addCssRule('#load-src-button {border: 1px solid #666; background: #666; color: #fff; font-family: visitor1, consolas, monospace, sans-serif; font-size: 16px; cursor: pointer; outline: none;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
 		for (i = 0; i < 2; i++) {
-			that.addCssRule('#src-' + i + ' {margin-bottom: 10px; border: 1px solid #666; width: 100%; background-color: #000; padding-left: 3px; font-family: consolas, monospace, sans-serif; font-size: 10px; color: #' + that.colorsHex[i] + ';}');
-			that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; height: 20px; width: ' + that.cols + 'px; position:relative;}');
+			that.addCssRule('#src-' + i + ' {margin-bottom: 10px; border: 1px solid #666; width: 100%; background-color: #000; padding-left: 3px; font-family: visitor1, consolas, monospace, sans-serif; font-size: 10px; color: #' + that.colorsHex[i] + ';}');
+			that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; height: 20px; line-height: 20px; width: ' + that.cols + 'px; position:relative;}');
 			that.addCssRule('#gol-army-name-' + i + ' {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-stats-' + i + ' {height: 20px; display: flex; align-items: center;}');
 			that.addCssRule('#gol-army-score-' + i + ' {height: 20px; color: #' + that.colorsHex[i] + ';}');
@@ -246,20 +249,18 @@ function GolHtmlHelper() {
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
 		that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 		that.ctx.textAlign = 'center';
-		that.ctx.font = '20px Consolas';
-		that.ctx.fillText(armies[1].name, that.cols / 2, that.rows / 2 - 30);
-		that.ctx.fillText(roundWins[1], that.cols / 2, that.rows / 2 - 10);
-		that.ctx.fillText(roundWins[0], that.cols / 2, that.rows / 2 + 10);
-		that.ctx.fillText(armies[0].name, that.cols / 2, that.rows / 2 + 30);
+		that.ctx.font = '20px visitor1';
+		that.ctx.fillText(armies[1].name + ': ' + roundWins[1], that.cols / 2, that.rows / 2 - 20);
+		that.ctx.fillText(armies[0].name + ': ' + roundWins[1], that.cols / 2, that.rows / 2 + 20);
 	};
 
 	that.endGame = function endGame(armies, winnerIndex) {
 	    that.ctx.clearRect(0, 0, that.cols, that.rows);	    
 	    that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 	    that.ctx.textAlign = 'center';
-	    that.ctx.font = '10px Consolas';
+	    that.ctx.font = '10px visitor1';
 	    that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 20);
-	    that.ctx.font = '20px Consolas';
+	    that.ctx.font = '20px visitor1';
 		that.ctx.fillText(armies[winnerIndex].name + '!', that.cols / 2, that.rows / 2);
 	};
 
