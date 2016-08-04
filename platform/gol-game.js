@@ -69,6 +69,7 @@
         that.startRound = function startRound() {
             var i;
             _dbg('startRound()');
+            that.playSound(that.quietSound);
             that.round++;
             for (i = 0; i < 2; i++) {
                 that.armies[i].power = that.settings.powerMaxValue;
@@ -82,8 +83,7 @@
             if (that.round === 1) {
                 that.htmlHelper.drawUserInterface(that.armies);
             }
-            that.nextPowerReduction = (new Date()).getTime() + 1000;
-            that.playSound(that.quietSound);
+            that.nextPowerReduction = (new Date()).getTime() + 1000;            
             setTimeout(that.onGeneration, 0); 
         }        
 
@@ -174,8 +174,7 @@
         };
 
         that.playSound = function playSound(soundPath) {
-            var audio = new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + soundPath);
-            audio.play();
+            (new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + soundPath)).play();
         };
 
         that.handleScore = function handleScore(scoringPixelsCount) {
