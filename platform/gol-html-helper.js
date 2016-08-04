@@ -251,7 +251,7 @@ function GolHtmlHelper() {
 		that.ctx.textAlign = 'center';
 		that.ctx.font = '20px visitor1';
 		that.ctx.fillText(armies[1].name + ': ' + roundWins[1], that.cols / 2, that.rows / 2 - 20);
-		that.ctx.fillText(armies[0].name + ': ' + roundWins[1], that.cols / 2, that.rows / 2 + 20);
+		that.ctx.fillText(armies[0].name + ': ' + roundWins[0], that.cols / 2, that.rows / 2 + 20);
 	};
 
 	that.endGame = function endGame(armies, winnerIndex) {
