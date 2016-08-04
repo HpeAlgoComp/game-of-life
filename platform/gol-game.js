@@ -107,7 +107,7 @@
                 setTimeout(that.onGeneration, 0);
             } else {
                 that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
-                that.endRound();                
+                setTimeout(that.endRound, 3000);                
             }
         };
 
