@@ -125,18 +125,21 @@
                 that.htmlHelper.endRound(that.round, that.roundWins, that.armies, winnerIndex);
             }
             if (that.roundWins[0] < that.settings.winRoundLimit && that.roundWins[1] < that.settings.winRoundLimit) {
-                setTimeout(function () {
-                    that.round++;
-                    that.startRound();
-                }, that.settings.secondsBetweenGames * 1000);
+                setTimeout(that.restartRound, that.settings.secondsBetweenRounds * 1000);  
             } else {
-                that.endGame();    
+                setTimeout(that.endGame, 3000);    
             }
+        };
+
+        that.restartRound = function restartRound() {
+            that.round++;
+            that.startRound();            
         };
 
         that.endGame= function endGame() {
             var winnerIndex;
             _dbg('endGame()');
+            that.playSound(that.quietSound);
             winnerIndex = (that.armies[1].power <= 0) ? 0 : 1;
             that.htmlHelper.endGame(that.armies, winnerIndex);
         };

@@ -9,6 +9,6 @@ function GolSettings() {
 	that.powerMaxValue = 100;
 	that.powerTimeQuantum = 0.5;
 	that.powerHitQuantum = 5;
-	that.secondsBetweenGames = 10;
+	that.secondsBetweenRounds = 5;
 	that.winRoundLimit = 3;
 }
