@@ -47,11 +47,11 @@ function GolHtmlHelper() {
 		that.addCssRule('html {height: 100%; font-size: 16px;}');
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: visitor1, consolas, monospace, sans-serif;}');
 		that.addCssRule('#load-src-panel {margin-top: 100px; margin-left: calc(50% - 200px); width: 400px; text-align: center}');
-		that.addCssRule('#load-src-button {border: 1px solid #666; background: #666; color: #fff; font-family: visitor1, consolas, monospace, sans-serif; font-size: 16px; cursor: pointer; outline: none;}');
+		that.addCssRule('#load-src-button {width: 50px; height: 18px; border: 1px solid #666; background: #666; color: #fff; font-family: visitor1, consolas, monospace, sans-serif; font-size: 16px; cursor: pointer; outline: none;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
 		for (i = 0; i < 2; i++) {
-			that.addCssRule('#src-' + i + ' {margin-bottom: 10px; border: 1px solid #666; width: 100%; background-color: #000; padding-left: 3px; font-family: visitor1, consolas, monospace, sans-serif; font-size: 10px; color: #' + that.colorsHex[i] + ';}');
+			that.addCssRule('#src-' + i + ' {margin-bottom: 10px; width: 100%; height: 15px; border: 1px solid #666; background-color: #000; padding-left: 3px; font-family: visitor1, consolas, monospace, sans-serif; font-size: 10px; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; height: 20px; line-height: 20px; width: ' + that.cols + 'px; position:relative;}');
 			that.addCssRule('#gol-army-name-' + i + ' {height: 20px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-stats-' + i + ' {height: 20px; display: flex; align-items: center;}');
