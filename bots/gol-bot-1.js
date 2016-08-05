@@ -2,7 +2,7 @@
 
 	setTimeout(function registerArmy() {
 		window.registerArmy({
-			name: 'BOT-ONE',
+			name: 'BOT_ONE',
 			icon: '',
 			cb: cb
 		});
