@@ -83,7 +83,7 @@
             if (that.round === 1) {
                 that.htmlHelper.drawUserInterface(that.armies);
             }
-            that.nextPowerReduction = (new Date()).getTime() + 1000;            
+            that.nextPowerReduction = (new Date()).getTime() + that.settings.millisBetweenPowerTimeReductions;            
             //setTimeout(that.onGeneration, 0);
             requestAnimationFrame(that.onGeneration);
         };
@@ -127,7 +127,7 @@
                 that.htmlHelper.endRound(that.round, that.roundWins, that.armies, winnerIndex);
             }
             if (that.roundWins[0] < that.settings.winRoundLimit && that.roundWins[1] < that.settings.winRoundLimit) {
-                setTimeout(that.restartRound, that.settings.secondsBetweenRounds * 1000);  
+                setTimeout(that.restartRound, that.settings.millisBetweenRounds);  
             } else {
                 setTimeout(that.endGame, 3000);    
             }
@@ -186,7 +186,7 @@
             if ((new Date()).getTime() > that.nextPowerReduction) {
                 that.armies[0].power -= that.settings.powerTimeQuantum;
                 that.armies[1].power -= that.settings.powerTimeQuantum;
-                that.nextPowerReduction = (new Date()).getTime() + 1000;
+                that.nextPowerReduction = (new Date()).getTime() + that.settings.millisBetweenPowerTimeReductions;
             }
             if (scoringPixelsCount[0] !== 0 || scoringPixelsCount[1] !== 0) {
                 that.playSound(that.hitSounds[Math.floor(Math.random() * that.hitSounds.length)]);
