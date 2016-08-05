@@ -109,7 +109,7 @@
                 requestAnimationFrame(that.onGeneration);
             } else {
                 that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
-                setTimeout(that.endRound, 3000);                
+                setTimeout(that.endRound, that.settings.millisEndRoundBoardFreeze);                
             }
         };
 
@@ -127,9 +127,9 @@
                 that.htmlHelper.endRound(that.round, that.roundWins, that.armies, winnerIndex);
             }
             if (that.roundWins[0] < that.settings.winRoundLimit && that.roundWins[1] < that.settings.winRoundLimit) {
-                setTimeout(that.restartRound, that.settings.millisBetweenRounds);  
+                setTimeout(that.restartRound, that.settings.millisEndRoundMessageTime);  
             } else {
-                setTimeout(that.endGame, 3000);    
+                setTimeout(that.endGame, that.settings.millisEndRoundMessageTime);    
             }
         };
 

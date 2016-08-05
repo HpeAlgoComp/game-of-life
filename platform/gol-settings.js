@@ -10,10 +10,11 @@ function GolSettings() {
 	that.budgetTickQuantum = 1;
 
 	that.powerMaxValue = 100;
-	that.powerHitQuantum = 5;
+	that.powerHitQuantum = 50;
 	that.millisBetweenPowerTimeReductions = 2000;
 	that.powerTimeQuantum = 1;		
 
-	that.millisBetweenRounds = 5000;
+	that.millisEndRoundBoardFreeze = 5000;
+	that.millisEndRoundMessageTime = 5000;
 	that.winRoundLimit = 3;
 }
