@@ -1,14 +1,12 @@
 (function() {
 
-	function registerArmy() {
+	setTimeout(function registerArmy() {
 		window.registerArmy({
-			name: 'BOT_ZERO',
+			name: 'BOT-ZERO',
 			icon: '',
 			cb: cb
 		});
-	}
-
-	setTimeout(registerArmy, 1000);
+	}, 1000);
 
 	var plan = [
 		'blocker', 
