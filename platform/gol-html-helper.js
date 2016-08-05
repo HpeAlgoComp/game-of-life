@@ -260,9 +260,9 @@ function GolHtmlHelper() {
 	    that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 	    that.ctx.textAlign = 'center';
 	    that.ctx.font = '10px visitor1';
-	    that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 20);
+	    that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 10);
 	    that.ctx.font = '20px visitor1';
-		that.ctx.fillText(armies[winnerIndex].name + '!', that.cols / 2, that.rows / 2);
+		that.ctx.fillText(armies[winnerIndex].name + '!', that.cols / 2, that.rows / 2 + 10);
 	};
 
 }
