@@ -10,7 +10,7 @@ function GolSettings() {
 	that.budgetTickQuantum = 1;
 
 	that.powerMaxValue = 100;
-	that.powerHitQuantum = 10;
+	that.powerHitQuantum = 5;
 	that.millisBetweenPowerTimeReductions = 2000;
 	that.powerTimeQuantum = 1;		
 
