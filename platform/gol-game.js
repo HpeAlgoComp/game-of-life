@@ -5,6 +5,7 @@
         var that = this;     
 
         that.init = function init(settings) {
+            var i;
             _dbg('init()');
             that.settings = settings;
             that.htmlHelper = new GolHtmlHelper();
@@ -13,14 +14,11 @@
             that.round = 0;
             that.roundWins = [0, 0];
             that.lastWinner = '';
-            that.hitSounds = [
-                '335152_apenguin73_explosion-test.mp3', 
-                '182429_qubodup_explosion.mp3', 
-                '84521_destro-94_explosion-flangered.mp3', 
-                '86026_harpoyume_explosion-3.mp3', 
-                '95058_plamdi1_explosion.mp3'
-            ];
-            that.quietSound = '250712_aiwha_explosion.mp3';
+            that.hitSounds = [];
+            for (i = 1; i <= 9; i++) {
+                that.hitSounds.push('explosion' + i + '.mp3');
+            }
+            that.quietSound = 'explosion1.mp3';
             that.music = 'prelude_to_war.mp3';
             that.playSound(that.music);
             window.loadSources = that.loadSources;
