@@ -5,7 +5,7 @@
         var that = this;     
 
         that.init = function init(settings) {
-            var i;
+            var i, m;
             _dbg('init()');
             that.settings = settings;
             that.htmlHelper = new GolHtmlHelper();
@@ -19,8 +19,17 @@
                 that.hitSounds.push('explosion' + i + '.mp3');
             }
             that.quietSound = 'explosion1.mp3';
-            that.music = 'prelude_to_war.mp3';
-            that.playSound(that.music);
+            that.musicFiles = [
+                'prelude_to_war.mp3',
+                'dark_knight_rises.mp3',
+                'fury_road.mp3',
+                'wonder_woman.mp3'
+            ];
+            m = (localStorage.getItem('game-of-life-music-index') || 0) % that.musicFiles.length;
+            that.music = that.musicFiles[m];
+            that.playMusic(that.music);
+            m = (m + 1) % that.musicFiles.length;
+            localStorage.setItem('game-of-life-music-index', m);
             window.loadSources = that.loadSources;
             window.registerArmy = that.registerArmy;
             window.startGame = that.startGame;
@@ -176,8 +185,14 @@
             return adjustedPixels;
         };
 
-        that.playSound = function playSound(soundPath) {
-            (new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + soundPath)).play();
+        that.playMusic = function playMusic(musicFile) {
+            var audio = (new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/music/' + musicFile));
+            audio.loop = true;
+            audio.play();
+        };
+
+        that.playSound = function playSound(soundFile) {
+            (new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + soundFile)).play();
         };
 
         that.handleScore = function handleScore(scoringPixelsCount) {
