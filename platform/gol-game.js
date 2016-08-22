@@ -21,6 +21,7 @@
             that.quietSound = 'explosion1.mp3';
             that.musicFiles = [
                 'prelude_to_war.mp3',
+                'terminator_genisys.mp3',
                 'dark_knight_rises.mp3',
                 'its_our_fight.mp3',
                 'wonder_woman.mp3',
