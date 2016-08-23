@@ -23,10 +23,10 @@
                 'terminator_genisys.mp3',
                 'dark_knight_rises.mp3',
                 'wonder_woman.mp3',                
-                'its_our_fight.mp3',
+                'transformers.mp3',
                 'starship_troopers.mp3',                
                 'fury_road.mp3',
-                'prelude_to_war.mp3'
+                'battlestar_galactica.mp3'
             ];
             m = (localStorage.getItem('game-of-life-music-index') || 0) % that.musicFiles.length;
             that.music = that.musicFiles[m];
