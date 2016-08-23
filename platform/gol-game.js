@@ -23,7 +23,8 @@
                 'terminator_genisys.mp3',
                 'dark_knight_rises.mp3',
                 'wonder_woman.mp3',                
-                'its_our_fight.mp3',                
+                'its_our_fight.mp3',
+                'starship_troopers.mp3',                
                 'fury_road.mp3',
                 'prelude_to_war.mp3'
             ];
