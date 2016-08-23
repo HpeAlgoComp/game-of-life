@@ -26,6 +26,8 @@
                 'transformers.mp3',
                 'starship_troopers.mp3',                
                 'fury_road.mp3',
+                'battleship.mp3',
+                'blade_runner.mp3',
                 'battlestar_galactica.mp3'
             ];
             m = (localStorage.getItem('game-of-life-music-index') || 0) % that.musicFiles.length;
