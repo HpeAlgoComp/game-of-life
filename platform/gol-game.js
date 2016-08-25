@@ -172,23 +172,21 @@
             adjustedPixels = [[], []];
             for (i = 0; i < 2; i++) {
                 that.armies[i].budget += that.settings.budgetTickQuantum;
-                if (that.armies[i].budget >= 1) {
-                    pixels[i] = that.armies[i].cb(
-                    {
-                        generation: that.generation,
-                        cols: that.board.cols,
-                        rows: that.board.rows / 2,
-                        budget: that.armies[i].budget
-                    });
-                    if (that.armies[i].budget >= pixels[i].length) {
-                        that.armies[i].budget -= pixels[i].length;
-                    } else {
-                        _err('Budget exceeded. ArmyName: ' + that.armies[i].name);
-                        pixels[i] = [];
-                    }
-                    if (pixels[0].length > 0 || pixels[1].length > 0) {
-                        adjustedPixels = that.board.adjustNewPixels(pixels);
-                    }
+                pixels[i] = that.armies[i].cb(
+                {
+                    generation: that.generation,
+                    cols: that.board.cols,
+                    rows: that.board.rows / 2,
+                    budget: that.armies[i].budget
+                });
+                if (that.armies[i].budget >= pixels[i].length) {
+                    that.armies[i].budget -= pixels[i].length;
+                } else {
+                    _err('Budget exceeded. ArmyName: ' + that.armies[i].name);
+                    pixels[i] = [];
+                }
+                if (pixels[0].length > 0 || pixels[1].length > 0) {
+                    adjustedPixels = that.board.adjustNewPixels(pixels);
                 }
             }
             for (i = 0; i < 2; i++) {
