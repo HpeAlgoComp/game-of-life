@@ -7,12 +7,12 @@ function GolSettings() {
 	that.cols = 400;
 	that.rows = 200;
 
-	that.budgetTickQuantum = 1;
+	that.budgetTickQuantum = 0.5;
 
 	that.powerMaxValue = 100;
 	that.powerHitQuantum = 5;
 	that.millisBetweenPowerTimeReductions = 2000;
-	that.powerTimeQuantum = 1;		
+	that.powerTimeQuantum = 0.25;		
 
 	that.millisEndRoundBoardFreeze = 5000;
 	that.millisEndRoundMessageTime = 5000;
