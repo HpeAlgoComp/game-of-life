@@ -25,7 +25,9 @@
                 {file: 'explosion8.mp3', volume: 1},
                 {file: 'explosion9.mp3', volume: 1}    
             ];
-            that.quietSound = {file: 'explosion1.mp3', volume: 1};
+            that.startRoundSound = {file: 'explosion1.mp3', volume: 1};
+            that.endRoundSound = {file: 'explosion1.mp3', volume: 1};
+            that.endGameSound = {file: 'explosion1.mp3', volume: 1};
             that.musicFiles = [
                 {file: 'terminator_genisys.mp3', volume: 1},
                 {file: 'dark_knight_rises.mp3', volume: 1},
@@ -87,7 +89,7 @@
         that.startRound = function startRound() {
             var i;
             _dbg('startRound()');
-            that.playSound(that.quietSound);
+            that.playSound(that.startRoundSound);
             that.round++;
             for (i = 0; i < 2; i++) {
                 that.armies[i].power = that.settings.powerMaxValue;
@@ -134,7 +136,7 @@
         that.endRound = function endRound() {
             var winnerIndex;
             _dbg('endRound()');
-            that.playSound(that.quietSound);
+            that.playSound(that.endRoundSound);
             if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
                 _log('draw');
             } else {
@@ -159,7 +161,7 @@
         that.endGame= function endGame() {
             var winnerIndex;
             _dbg('endGame()');
-            that.playSound(that.quietSound);
+            that.playSound(that.endGameSound);
             winnerIndex = (that.armies[1].power <= 0) ? 0 : 1;
             that.htmlHelper.endGame(that.armies, winnerIndex);
         };
