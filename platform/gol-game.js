@@ -14,20 +14,27 @@
             that.round = 0;
             that.roundWins = [0, 0];
             that.lastWinner = '';
-            that.hitSounds = [];
-            for (i = 1; i <= 9; i++) {
-                that.hitSounds.push('explosion' + i + '.mp3');
-            }
-            that.quietSound = 'explosion1.mp3';
+            that.hitSounds = [
+                {file: 'explosion1.mp3', volume: 1},
+                {file: 'explosion2.mp3', volume: 1},
+                {file: 'explosion3.mp3', volume: 1},
+                {file: 'explosion4.mp3', volume: 1},
+                {file: 'explosion5.mp3', volume: 1},
+                {file: 'explosion6.mp3', volume: 1},
+                {file: 'explosion7.mp3', volume: 1},
+                {file: 'explosion8.mp3', volume: 1},
+                {file: 'explosion9.mp3', volume: 1}    
+            ];
+            that.quietSound = {file: 'explosion1.mp3', volume: 1};
             that.musicFiles = [
-                'terminator_genisys.mp3',
-                'dark_knight_rises.mp3',
-                'wonder_woman.mp3',                
-                'transformers.mp3',
-                'fury_road.mp3',
-                'battleship.mp3',
-                'blade_runner.mp3',
-                'battlestar_galactica.mp3'
+                {file: 'terminator_genisys.mp3', volume: 1},
+                {file: 'dark_knight_rises.mp3', volume: 1},
+                {file: 'wonder_woman.mp3', volume: 1},                
+                {file: 'transformers.mp3', volume: 1},
+                {file: 'fury_road.mp3', volume: 1},
+                {file: 'battleship.mp3', volume: 1},
+                {file: 'blade_runner.mp3', volume: 1},
+                {file: 'battlestar_galactica.mp3', volume: 1}
             ];
             m = (localStorage.getItem('game-of-life-music-index') || 0) % that.musicFiles.length;
             that.music = that.musicFiles[m];
@@ -189,14 +196,17 @@
             return adjustedPixels;
         };
 
-        that.playMusic = function playMusic(musicFile) {
-            var audio = (new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/music/' + musicFile));
+        that.playMusic = function playMusic(music) {
+            var audio = new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/music/' + music.file);
+            audio.volume = music.volume;
             audio.loop = true;
             audio.play();
         };
 
-        that.playSound = function playSound(soundFile) {
-            (new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/sounds/' + soundFile)).play();
+        that.playSound = function playSound(sound) {
+            var audio = new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/sound/' + sound.file);
+            audio.volume = sound.volume;
+            audio.play();
         };
 
         that.handleScore = function handleScore(scoringPixelsCount) {
