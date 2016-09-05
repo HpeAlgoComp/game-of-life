@@ -93,7 +93,7 @@
             that.round++;
             for (i = 0; i < 2; i++) {
                 that.armies[i].power = that.settings.powerMaxValue;
-                that.armies[i].budget = 0;
+                that.armies[i].budget = that.settings.initialBudget;;
             }
             that.board = new GolBoard();
             that.board.init(that.settings);
@@ -103,7 +103,8 @@
             if (that.round === 1) {
                 that.htmlHelper.drawUserInterface(that.armies);
             }
-            that.nextPowerReduction = (new Date()).getTime() + that.settings.millisBetweenPowerTimeReductions;            
+            that.roundStartTime = (new Date()).getTime();
+            that.nextPowerReduction = that.roundStartTime + that.settings.millisBetweenPowerTimeReductions;
             //setTimeout(that.onGeneration, 0);
             requestAnimationFrame(that.onGeneration);
         };

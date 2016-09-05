@@ -7,14 +7,17 @@ function GolSettings() {
 	that.cols = 400;
 	that.rows = 200;
 
-	that.budgetTickQuantum = 0.5;
+	that.initialBudget = 0;
+	that.budgetTickQuantum = 1;
 
 	that.powerMaxValue = 100;
-	that.powerHitQuantum = 5;
-	that.millisBetweenPowerTimeReductions = 2000;
-	that.powerTimeQuantum = 0.25;		
+	that.millisBetweenPowerTimeReductions = 1000;
+	that.powerTimeQuantum = 1;
+	that.millisMaxRoundDuration = that.powerMaxValue * that.millisBetweenPowerTimeReductions / that.powerTimeQuantum;
 
-	that.millisEndRoundBoardFreeze = 5000;
-	that.millisEndRoundMessageTime = 5000;
+	that.powerHitQuantum = 5;
+
+	that.millisEndRoundBoardFreeze = 3000;
+	that.millisEndRoundMessageTime = 3000;
 	that.winRoundLimit = 3;
 }
