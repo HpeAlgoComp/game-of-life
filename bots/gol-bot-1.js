@@ -6,7 +6,7 @@
 			icon: '',
 			cb: cb
 		});
-	}, 1000);
+	}, 2000);
 
 	var plan1 = [
 		'spaceship'
