@@ -32,7 +32,7 @@
 		}
 		if (data.generation < 200) {
 			plan = plan1;
-		} else if (data.generation < 680) {
+		} else if (data.generation < 440) {
 			plan = plan2;
 		} else {
 			plan = plan3;
