@@ -5,7 +5,7 @@
         var that = this;     
 
         that.init = function init(settings) {
-            var i, m;
+            var m;
             _dbg('init()');
             that.settings = settings;
             that.htmlHelper = new GolHtmlHelper();
@@ -93,7 +93,7 @@
             that.round++;
             for (i = 0; i < 2; i++) {
                 that.armies[i].power = that.settings.powerMaxValue;
-                that.armies[i].budget = that.settings.initialBudget;;
+                that.armies[i].budget = that.settings.initialBudget;
             }
             that.board = new GolBoard();
             that.board.init(that.settings);
