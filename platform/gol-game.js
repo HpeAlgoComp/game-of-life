@@ -26,6 +26,7 @@
                 {file: 'explosion8.mp3', volume: 1},
                 {file: 'explosion9.mp3', volume: 1}    
             ];
+            that.selectSourceSound = {file: 'explosion1.mp3', volume: 1};
             that.startRoundSound = {file: 'explosion1.mp3', volume: 1};
             that.endRoundSound = {file: 'explosion1.mp3', volume: 1};
             that.endGameSound = {file: 'explosion1.mp3', volume: 1};
@@ -61,7 +62,8 @@
             } else if (that.srcIndices[1] === -1) {
                 that.srcIndices[1] = senderInd;    
             }
-            that.htmlHelper.markSrcLines(that.srcIndices);            
+            that.htmlHelper.markSrcLines(that.srcIndices);
+            that.playSound(that.selectSourceSound);            
         };
 
         that.loadSource = function loadSource(i) {
@@ -77,11 +79,10 @@
         };
 
         that.loadSources = function loadSources() {
-            that.htmlHelper.fadeOutLoadSourcesPanel();            
+            that.htmlHelper.hideLoadSourcesPanel();            
             that.loadSource(0);
             setTimeout(function() {
                 that.loadSource(1);
-                that.htmlHelper.hideLoadSourcesPanel();
             }, 1000);
         };        
 
@@ -95,6 +96,7 @@
 
         that.startGame = function startGame() {
             _dbg('startGame()');
+            that.htmlHelper.fadeInLoadSourcesPanel();
             that.htmlHelper.markSrcLines(that.srcIndices);
             if (that.armies.length < 2) {
                 _log('waiting for armies...');
