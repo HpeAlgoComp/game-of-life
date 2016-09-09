@@ -250,19 +250,21 @@ function GolHtmlHelper() {
 		that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 		that.ctx.textAlign = 'center';
 		isWinner = winnerIndex === 1;
-		that.ctx.font = (winnerIndex === 1) ? '20px visitor' : '10px visitor';
+		that.ctx.font = (winnerIndex === 1) ? '20px visitor' : '14px visitor';
 		that.ctx.fillText(armies[1].name + ' : ' + roundWins[1], that.cols / 2, that.rows / 2 - 20 + (isWinner ? 10 : 5));
 		isWinner = winnerIndex === 0;
-		that.ctx.font = (winnerIndex === 0) ? '20px visitor' : '10px visitor';
+		that.ctx.font = (winnerIndex === 0) ? '20px visitor' : '14px visitor';
 		that.ctx.fillText(armies[0].name + ' : ' + roundWins[0], that.cols / 2, that.rows / 2 + 20 + (isWinner ? 10 : 5));
 	};
 
-	that.endGame = function endGame(armies, winnerIndex) {
+	that.endGame = function endGame(armies, winnerIndex, roundWins) {
+		var winnerRoundCount = roundWins[winnerIndex];
+		var loserRoundCount = roundWins[winnerIndex*-1+1];
 	    that.ctx.clearRect(0, 0, that.cols, that.rows);	    
 	    that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 	    that.ctx.textAlign = 'center';
-	    that.ctx.font = '10px visitor';
-	    that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 10);
+	    that.ctx.font = '14px visitor';
+	    that.ctx.fillText('winner ( ' + winnerRoundCount + ' : ' + loserRoundCount + ' )', that.cols / 2, that.rows / 2 - 10);
 	    that.ctx.font = '20px visitor';
 		that.ctx.fillText(armies[winnerIndex].name, that.cols / 2, that.rows / 2 + 10);
 	};

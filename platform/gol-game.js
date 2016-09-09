@@ -164,7 +164,7 @@
             _dbg('endGame()');
             that.playSound(that.endGameSound);
             winnerIndex = (that.armies[1].power <= 0) ? 0 : 1;
-            that.htmlHelper.endGame(that.armies, winnerIndex);
+            that.htmlHelper.endGame(that.armies, winnerIndex, that.roundWins);
         };
 
         that.getNewPixels = function getNewPixels() {
