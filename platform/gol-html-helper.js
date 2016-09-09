@@ -13,6 +13,24 @@ function GolHtmlHelper() {
 		that.shakes = ['shake-little'];//['shake', 'shake-little', 'shake-horizontal', 'shake-rotate'];
 	};
 
+	that.markSrcLines  = function markSrcLines(srcIndices) {
+		var i, elm;
+		for (i = 0; i < 16; i++) {
+			elm = document.getElementById('src-' + i);
+			if ('' + i === srcIndices[0]) {
+				elm.classList.add('src-0');	
+				elm.classList.remove('src-1');	
+			} else if ('' + i === srcIndices[1]) {
+				elm.classList.add('src-1');	
+				elm.classList.remove('src-0');	
+			} else {
+				elm.classList.remove('src-0');
+				elm.classList.remove('src-1');	
+			}
+		}
+		document.getElementById('load-src-button').style['visibility'] = (srcIndices[0] !== -1 && srcIndices[1] !== -1) ? 'visible' : 'hidden';		
+	};
+
 	that.drawUserInterface = function drawUserInterface(armies) {
 		var container, canvas;
 		container = that.addContainer();
@@ -46,12 +64,13 @@ function GolHtmlHelper() {
 		that.addCssRule('* {box-sizing: border-box;}');
 		that.addCssRule('html {height: 100%; font-size: 8px;}');
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: individigital, consolas, monospace, sans-serif;}');
-		that.addCssRule('#load-src-panel {margin-top: 100px; margin-left: calc(50% - 200px); width: 400px; text-align: center}');
-		that.addCssRule('#load-src-button {width: 50px; height: 18px; border: 1px solid #666; background: #666; color: #fff; font-family: visitor, consolas, monospace, sans-serif; font-size: 14px; cursor: pointer; outline: none;}');
+		that.addCssRule('#load-src-panel {margin-top: 15px; margin-left: calc(50% - 200px); width: 400px; text-align: center}');
+		that.addCssRule('.load-src-input {outline: none !important; margin-bottom: 1px; width: 100%; height: 9px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #666;}');
+		that.addCssRule('#load-src-button {margin-top: 15px; width: 50px; height: 15px; border: 1px solid #666; background: #666; color: #fff; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; cursor: pointer; outline: none; visibility: hidden;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
 		for (i = 0; i < 2; i++) {
-			that.addCssRule('#src-' + i + ' {margin-bottom: 10px; width: 100%; height: 15px; border: 1px solid #666; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 10px; color: #' + that.colorsHex[i] + ';}');
+			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; height: 9px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; height: 10px; line-height: 10px; width: ' + that.cols + 'px; position:relative;}');
 			that.addCssRule('#gol-army-name-' + i + ' {height: 10px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-stats-' + i + ' {height: 10px; display: flex; align-items: center;}');

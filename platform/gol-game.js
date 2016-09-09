@@ -10,6 +10,7 @@
             that.settings = settings;
             that.htmlHelper = new GolHtmlHelper();
             that.htmlHelper.init(settings);
+            that.srcIndices = [-1, -1];
             that.armies = [];
             that.round = 0;
             that.roundWins = [0, 0];
@@ -43,14 +44,29 @@
             that.playMusic(that.music);
             m = (m + 1) % that.musicFiles.length;
             localStorage.setItem('game-of-life-music-index', m);
+            window.toggleSrc = that.toggleSrc;
             window.loadSources = that.loadSources;
             window.registerArmy = that.registerArmy;
             window.startGame = that.startGame;
         };
 
+        that.toggleSrc = function toggleSrc(srcInput) {
+            var senderInd = srcInput.attributes['src-ind'].value;
+            if (that.srcIndices[0] === senderInd) {
+                that.srcIndices[0] = -1;
+            } else if (that.srcIndices[1] === senderInd) {
+                that.srcIndices[1] = -1;
+            } else if (that.srcIndices[0] === -1) {
+                that.srcIndices[0] = senderInd;    
+            } else if (that.srcIndices[1] === -1) {
+                that.srcIndices[1] = senderInd;    
+            }
+            that.htmlHelper.markSrcLines(that.srcIndices);            
+        };
+
         that.loadSource = function loadSource(i) {
             var srcText, srcElm;
-            srcText = document.getElementById('src-' + i).value;
+            srcText = document.getElementById('src-' + that.srcIndices[i]).value;
             _log('loading source: ' + srcText);
             if (srcText) {
                 srcElm = document.createElement('script');
