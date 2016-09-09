@@ -122,6 +122,25 @@
 			planIndex = 0;
 			fenceLocation = 0;
 		}
+		plan = ['mine', 'glider'];
+		if (plan[planIndex] === 'mine') {
+			pixels = tryPlaceMine(data);
+		} else if (plan[planIndex] === 'glider') {
+			pixels = tryPlaceGlider(data, null, 0);
+		}
+		if (pixels.length > 0) {
+			planIndex = (planIndex + 1) % plan.length;
+		}
+		return pixels;
+	};
+
+	var bot3 = function bot3(data) {
+		var pixels = [];
+		var plan;
+		if (data.generation === 1) {
+			planIndex = 0;
+			fenceLocation = 0;
+		}
 		plan = ['glider', 'spaceship'];
 		if (plan[planIndex] === 'glider') {
 			pixels = tryPlaceGlider(data);
@@ -139,10 +158,15 @@
 	var planIndex = 0;
 	var fenceLocation = 0;
 	var bots = [
-		{name: 'BOT_1', icon:'bot', cb: bot1},
-		{name: 'BOT_2', icon:'bot', cb: bot2}
+		{name: 'TRAINING_BOT_ONE',   icon:'bot', cb: bot1},
+		{name: 'TRAINING_BOT_TWO',   icon:'bot', cb: bot2},
+		{name: 'TRAINING_BOT_THREE', icon:'bot', cb: bot3}
 	];
-	var bot = bots[getRnd(0, bots.length-1)];
+	//var b = (localStorage.getItem('game-of-life-training-bot-index') || 0) % bots.length;
+	var b = getRnd(0, bots.length-1);
+    var bot = bots[b];        
+    //b = (b + 1) % bots.length;
+    //localStorage.setItem('game-of-life-training-bot-index', b);	
 	setTimeout(function registerArmy() {
 		window.registerArmy({
 			name: bot.name,
