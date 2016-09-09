@@ -77,10 +77,11 @@
         };
 
         that.loadSources = function loadSources() {
-            document.getElementById('load-src-panel').style.display = 'none';
+            that.htmlHelper.fadeOutLoadSourcesPanel();            
             that.loadSource(0);
             setTimeout(function() {
                 that.loadSource(1);
+                that.htmlHelper.hideLoadSourcesPanel();
             }, 1000);
         };        
 
@@ -94,6 +95,7 @@
 
         that.startGame = function startGame() {
             _dbg('startGame()');
+            that.htmlHelper.markSrcLines(that.srcIndices);
             if (that.armies.length < 2) {
                 _log('waiting for armies...');
                 setTimeout(that.startGame, 1000);

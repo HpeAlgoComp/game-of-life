@@ -28,7 +28,17 @@ function GolHtmlHelper() {
 				elm.classList.remove('src-1');	
 			}
 		}
-		document.getElementById('load-src-button').style['visibility'] = (srcIndices[0] !== -1 && srcIndices[1] !== -1) ? 'visible' : 'hidden';		
+		document.getElementById('load-src-msg-0').style['color'] = srcIndices[0] === -1 ? '#' + that.colorsHex[0] : '#333';
+		document.getElementById('load-src-msg-1').style['color'] = srcIndices[0] !== -1 && srcIndices[1] === -1 ? '#' + that.colorsHex[1] : '#333';
+		document.getElementById('load-src-button').style['opacity'] = (srcIndices[0] !== -1 && srcIndices[1] !== -1) ? '1' : '0';		
+	};
+
+	that.fadeOutLoadSourcesPanel = function fadeOutLoadSourcesPanel() {
+		document.getElementById('load-src-panel').style['opacity'] = 0;
+	};
+
+	that.hideLoadSourcesPanel = function hideLoadSourcesPanel() {
+		document.getElementById('load-src-panel').style['display'] = 'none';
 	};
 
 	that.drawUserInterface = function drawUserInterface(armies) {
@@ -64,9 +74,11 @@ function GolHtmlHelper() {
 		that.addCssRule('* {box-sizing: border-box;}');
 		that.addCssRule('html {height: 100%; font-size: 8px;}');
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: individigital, consolas, monospace, sans-serif;}');
-		that.addCssRule('#load-src-panel {margin-top: 15px; margin-left: calc(50% - 200px); width: 400px; text-align: center}');
-		that.addCssRule('.load-src-input {outline: none !important; margin-bottom: 1px; width: 100%; height: 9px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #666;}');
-		that.addCssRule('#load-src-button {margin-top: 15px; width: 50px; height: 15px; border: 1px solid #666; background: #666; color: #fff; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; cursor: pointer; outline: none; visibility: hidden;}');
+		that.addCssRule('#load-src-panel {margin-top: 10px; margin-left: calc(50% - 200px); width: 400px; text-align: center; transition: 1s all ease;}}');
+		that.addCssRule('.load-src-title {text-align: left; color: #fff; font-size: 16px;}');
+		that.addCssRule('.load-src-msg {text-align: left; font-size: 7px; color: #333; transition: 1s color ease;}');
+		that.addCssRule('.load-src-input {outline: none !important; margin-bottom: 1px; width: 100%; height: 9px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #666; transition: 1s color ease;}');
+		that.addCssRule('#load-src-button {margin-top: 7px; width: 50px; height: 15px; border: 1px solid #666; background: #666; color: #fff; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; cursor: pointer; outline: none; opacity: 0; transition: 1s opacity ease;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
 		for (i = 0; i < 2; i++) {
