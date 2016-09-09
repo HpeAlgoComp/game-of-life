@@ -79,6 +79,7 @@
         };
 
         that.loadSources = function loadSources() {
+            that.playSound(that.startRoundSound);
             that.htmlHelper.hideLoadSourcesPanel();            
             that.loadSource(0);
             setTimeout(function() {
