@@ -52,6 +52,18 @@
             window.startGame = that.startGame;
         };
 
+        that.startGame = function startGame(isTournament) {
+            _dbg('startGame()');
+            that.isTournament = isTournament;
+            _log('tournament: ' + that.isTournament);
+            if (that.isTournament) {
+                that.htmlHelper.fadeInLoadSourcesPanel();
+                that.htmlHelper.markSrcLines(that.srcIndices);
+            } else {            
+                that.waitForArmies();
+            }
+        };
+
         that.toggleSrc = function toggleSrc(srcInput) {
             var senderInd = srcInput.attributes['src-ind'].value;
             if (that.srcIndices[0] === senderInd) {
@@ -69,7 +81,7 @@
 
         that.loadSources = function loadSources() {
             that.playSound(that.startRoundSound);
-            that.htmlHelper.hideLoadSourcesPanel();            
+            that.htmlHelper.hideLoadSourcesPanel();
             that.htmlHelper.loadSource(that.srcIndices[0]);
             setTimeout(function() {
                 that.htmlHelper.loadSource(that.srcIndices[1]);
@@ -85,23 +97,11 @@
             _dbg('number of armies: ' + that.armies.length);
         };
 
-        that.startGame = function startGame(isTournament) {
-            _dbg('startGame()');
-            that.isTournament = isTournament;
-            _log('tournament: ' + that.isTournament);
-            if (that.isTournament) {
-                that.htmlHelper.fadeInLoadSourcesPanel();
-                that.htmlHelper.markSrcLines(that.srcIndices);
-            } else {            
-                that.waitForArmies();
-            }
-        };
-
         that.waitForArmies = function waitForArmies() {
             _dbg('waitForArmies()');
             if (that.armies.length < 2) {
                 _log('waiting for armies...');
-                setTimeout(that.waitForArmies, 1000);
+                setTimeout(that.waitForArmies, 500);
             } else {
                 that.startRound();
             }
