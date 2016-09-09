@@ -44,10 +44,10 @@ function GolHtmlHelper() {
 		that.addCssRule('@font-face {font-family: visitor1; src: url("https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/visitor1.woff") format("woff");}');
 		that.addCssRule('@font-face {font-family: visitor2; src: url("https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/visitor2.woff") format("woff");}');
 		that.addCssRule('* {box-sizing: border-box;}');
-		that.addCssRule('html {height: 100%; font-size: 16px;}');
+		that.addCssRule('html {height: 100%; font-size: 14px;}');
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: visitor1, consolas, monospace, sans-serif;}');
 		that.addCssRule('#load-src-panel {margin-top: 100px; margin-left: calc(50% - 200px); width: 400px; text-align: center}');
-		that.addCssRule('#load-src-button {width: 50px; height: 18px; border: 1px solid #666; background: #666; color: #fff; font-family: visitor1, consolas, monospace, sans-serif; font-size: 16px; cursor: pointer; outline: none;}');
+		that.addCssRule('#load-src-button {width: 50px; height: 18px; border: 1px solid #666; background: #666; color: #fff; font-family: visitor1, consolas, monospace, sans-serif; font-size: 14px; cursor: pointer; outline: none;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
 		for (i = 0; i < 2; i++) {
@@ -264,7 +264,7 @@ function GolHtmlHelper() {
 	    that.ctx.font = '10px visitor1';
 	    that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 10);
 	    that.ctx.font = '20px visitor1';
-		that.ctx.fillText(armies[winnerIndex].name + '!', that.cols / 2, that.rows / 2 + 10);
+		that.ctx.fillText(armies[winnerIndex].name, that.cols / 2, that.rows / 2 + 10);
 	};
 
 }
