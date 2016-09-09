@@ -37,6 +37,18 @@ function GolHtmlHelper() {
 		document.getElementById('load-src-panel').style['opacity'] = 1;
 	};
 
+	that.loadSource = function loadSource(index) {
+        var srcText, srcElm;
+        srcText = document.getElementById('src-' + index).value;
+        _log('loading source: ' + srcText);
+        if (srcText) {
+            srcElm = document.createElement('script');
+            srcElm.setAttribute('type', 'text/javascript');
+            srcElm.setAttribute('src', srcText);
+            document.getElementsByTagName('head')[0].appendChild(srcElm);
+        }
+     };
+
 	that.hideLoadSourcesPanel = function hideLoadSourcesPanel() {
 		document.getElementById('load-src-panel').style['display'] = 'none';
 	};

@@ -66,24 +66,12 @@
             that.playSound(that.selectSourceSound);            
         };
 
-        that.loadSource = function loadSource(i) {
-            var srcText, srcElm;
-            srcText = document.getElementById('src-' + that.srcIndices[i]).value;
-            _log('loading source: ' + srcText);
-            if (srcText) {
-                srcElm = document.createElement('script');
-                srcElm.setAttribute('type', 'text/javascript');
-                srcElm.setAttribute('src', srcText);
-                document.getElementsByTagName('head')[0].appendChild(srcElm);
-            }
-        };
-
         that.loadSources = function loadSources() {
             that.playSound(that.startRoundSound);
             that.htmlHelper.hideLoadSourcesPanel();            
-            that.loadSource(0);
+            that.htmlHelper.loadSource(that.srcIndices[0]);
             setTimeout(function() {
-                that.loadSource(1);
+                that.htmlHelper.loadSource(that.srcIndices[1]);
             }, 1000);
         };        
 
