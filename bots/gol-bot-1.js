@@ -158,9 +158,9 @@
 	var planIndex = 0;
 	var fenceLocation = 0;
 	var bots = [
-		{name: 'TRAINING_BOT_ONE',   icon:'bot', cb: bot1},
-		{name: 'TRAINING_BOT_TWO',   icon:'bot', cb: bot2},
-		{name: 'TRAINING_BOT_THREE', icon:'bot', cb: bot3}
+		{name: 'TRAINING BOT ALPHA',   icon:'bot', cb: bot1},
+		{name: 'TRAINING BOT BRAVO',   icon:'bot', cb: bot2},
+		{name: 'TRAINING BOT DELTA', icon:'bot', cb: bot3}
 	];
 	//var b = (localStorage.getItem('game-of-life-training-bot-index') || 0) % bots.length;
 	var b = getRnd(0, bots.length-1);
