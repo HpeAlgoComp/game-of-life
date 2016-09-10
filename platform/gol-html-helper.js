@@ -24,12 +24,12 @@ function GolHtmlHelper() {
 		that.addCssRule('#load-src-panel {margin-top: 10px; margin-left: calc(50% - 200px); width: 400px; text-align: center; opacity: 0; transition: 1s all ease;}}');
 		that.addCssRule('.load-src-title {text-align: left; color: #fff; font-size: 16px;}');
 		that.addCssRule('.load-src-msg {text-align: left; font-size: 7px; color: #333; transition: 1s color ease;}');
-		that.addCssRule('.load-src-input {outline: none !important; margin-bottom: 1px; width: 100%; height: 9px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #666; transition: 1s color ease;}');
+		that.addCssRule('.load-src-input {outline: none !important; margin-bottom: 1px; width: 100%; height: 8px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #666; transition: 1s all ease;}');
 		that.addCssRule('#load-src-button {margin-top: 8px; width: 50px; height: 15px; border: 1px solid #666; background: #666; color: #fff; font-family: individigital, sans-serif; font-size: 7px; cursor: pointer; outline: none; opacity: 0; transition: 1s opacity ease;}');
 		that.addCssRule('#gol-container {height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
 		for (i = 0; i < 2; i++) {
-			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; height: 9px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
+			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; height: 10px; line-height: 10px; width: ' + that.cols + 'px; position:relative;}');
 			that.addCssRule('#gol-army-name-' + i + ' {height: 10px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-stats-' + i + ' {height: 10px; display: flex; align-items: center;}');
