@@ -283,6 +283,19 @@ function GolHtmlHelper() {
 		document.getElementById('gol-army-power-' + armyIndex).style['width'] = powerWidth + 'px';
 	};
 
+	that.endRoundByDraw = function endRoundByDraw()  {
+		var i;
+		for (i = 0; i < 2; i++) {
+			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];		
+			document.getElementById('gol-army-power-' + i).style['background-color'] = '#' + that.colorsHex[i];
+		}
+		that.ctx.clearRect(0, 0, that.cols, that.rows);
+		that.ctx.textAlign = 'center';
+		that.ctx.fillStyle = 'rgb(66, 66, 66)';
+		that.ctx.font = '14px visitor';
+		that.ctx.fillText('DRAW', that.cols / 2, that.rows / 2);	
+	};
+
 	that.endRound = function endRound(round, roundWins, armies, winnerIndex)  {
 		var i, isWinner;
 		for (i = 0; i < 2; i++) {

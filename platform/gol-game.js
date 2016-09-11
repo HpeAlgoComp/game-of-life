@@ -161,6 +161,7 @@
             that.playSound(that.endRoundSound);
             if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
                 _log('draw');
+                that.htmlHelper.endRoundByDraw();
             } else {
                 winnerIndex = (that.armies[1].power <= 0) ? 0 : 1;
                 _log(that.armies[winnerIndex].name + ' wins');
