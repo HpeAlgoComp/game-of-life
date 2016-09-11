@@ -66,14 +66,14 @@
 
         that.toggleSrc = function toggleSrc(srcInput) {
             var senderInd = srcInput.attributes['src-ind'].value;
-            if (that.srcIndices[0] === senderInd) {
-                that.srcIndices[0] = -1;
-            } else if (that.srcIndices[1] === senderInd) {
+            if (that.srcIndices[1] === senderInd) {
                 that.srcIndices[1] = -1;
-            } else if (that.srcIndices[0] === -1) {
-                that.srcIndices[0] = senderInd;    
+            } else if (that.srcIndices[0] === senderInd) {
+                that.srcIndices[0] = -1;
             } else if (that.srcIndices[1] === -1) {
                 that.srcIndices[1] = senderInd;    
+            } else if (that.srcIndices[0] === -1) {
+                that.srcIndices[0] = senderInd;    
             }
             that.htmlHelper.markSrcLines(that.srcIndices);
             that.playSound(that.selectSourceSound);            

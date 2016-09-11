@@ -75,9 +75,9 @@ function GolHtmlHelper() {
 				elm.classList.remove('src-1');	
 			}
 		}
-		document.getElementById('load-src-msg-0').style['color'] = srcIndices[0] === -1 ? '#' + that.colorsHex[0] : '#333';
-		document.getElementById('load-src-msg-1').style['color'] = srcIndices[0] !== -1 && srcIndices[1] === -1 ? '#' + that.colorsHex[1] : '#333';
-		document.getElementById('load-src-button').style['opacity'] = (srcIndices[0] !== -1 && srcIndices[1] !== -1) ? '1' : '0';		
+		document.getElementById('load-src-msg-1').style['color'] = srcIndices[1] === -1 ? '#' + that.colorsHex[1] : '#333';
+		document.getElementById('load-src-msg-0').style['color'] = srcIndices[0] === -1 && srcIndices[1] !== -1 ? '#' + that.colorsHex[0] : '#333';
+		document.getElementById('load-src-button').style['opacity'] = (srcIndices[1] !== -1 && srcIndices[0] !== -1) ? '1' : '0';		
 	};
 
 	that.loadSource = function loadSource(index) {
