@@ -290,14 +290,15 @@ function GolHtmlHelper() {
 			document.getElementById('gol-army-power-' + i).style['background-color'] = '#' + that.colorsHex[i];
 		}
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
-		that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 		that.ctx.textAlign = 'center';
+		that.ctx.fillStyle = 'rgb(' + armies[1].color[0] + ',' + armies[1].color[1] + ',' + armies[1].color[2] + ')';
 		isWinner = winnerIndex === 1;
-		that.ctx.font = (winnerIndex === 1) ? '20px visitor' : '14px visitor';
-		that.ctx.fillText(armies[1].name + ' : ' + roundWins[1], that.cols / 2, that.rows / 2 - 20 + (isWinner ? 10 : 7));
+		that.ctx.font = (winnerIndex === 1) ? '24px visitor' : '14px visitor';
+		that.ctx.fillText(armies[1].name + ' : ' + roundWins[1], that.cols / 2, that.rows / 2 - 24 + (isWinner ? 12 : 7));
+		that.ctx.fillStyle = 'rgb(' + armies[0].color[0] + ',' + armies[0].color[1] + ',' + armies[0].color[2] + ')';
 		isWinner = winnerIndex === 0;
-		that.ctx.font = (winnerIndex === 0) ? '20px visitor' : '14px visitor';
-		that.ctx.fillText(armies[0].name + ' : ' + roundWins[0], that.cols / 2, that.rows / 2 + 20 + (isWinner ? 10 : 7));
+		that.ctx.font = (winnerIndex === 0) ? '24px visitor' : '14px visitor';
+		that.ctx.fillText(armies[0].name + ' : ' + roundWins[0], that.cols / 2, that.rows / 2 + 24 + (isWinner ? 12 : 7));
 	};
 
 	that.endGame = function endGame(armies, winnerIndex, roundWins) {
@@ -306,12 +307,13 @@ function GolHtmlHelper() {
 		document.getElementById('gol-army-stats-0').style['visibility'] = 'hidden';
 		document.getElementById('gol-army-stats-1').style['visibility'] = 'hidden';
 	    that.ctx.clearRect(0, 0, that.cols, that.rows);	    
-	    that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 	    that.ctx.textAlign = 'center';
 	    that.ctx.font = '14px visitor';
-	    that.ctx.fillText('winner ( ' + winnerRoundCount + ' : ' + loserRoundCount + ' )', that.cols / 2, that.rows / 2 - 10);
-	    that.ctx.font = '20px visitor';
-		that.ctx.fillText(armies[winnerIndex].name, that.cols / 2, that.rows / 2 + 10);
+	   	that.ctx.fillStyle = 'rgb(66, 66, 66)';
+	    that.ctx.fillText('winner ( ' + winnerRoundCount + ' : ' + loserRoundCount + ' )', that.cols / 2, that.rows / 2 - 12);
+	    that.ctx.font = '24px visitor';
+	    that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
+		that.ctx.fillText(armies[winnerIndex].name, that.cols / 2, that.rows / 2 + 12);
 	};
 
 }
