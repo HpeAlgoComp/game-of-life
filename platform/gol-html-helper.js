@@ -307,11 +307,11 @@ function GolHtmlHelper() {
 		that.ctx.fillStyle = 'rgb(' + armies[1].color[0] + ',' + armies[1].color[1] + ',' + armies[1].color[2] + ')';
 		isWinner = winnerIndex === 1;
 		that.ctx.font = (winnerIndex === 1) ? '24px visitor' : '14px visitor';
-		that.ctx.fillText(armies[1].name + ' : ' + roundWins[1], that.cols / 2, that.rows / 2 - 12 + (isWinner ? 12 : 7));
+		that.ctx.fillText(armies[1].name + ' : ' + roundWins[1], that.cols / 2, that.rows / 2 - 12);
 		that.ctx.fillStyle = 'rgb(' + armies[0].color[0] + ',' + armies[0].color[1] + ',' + armies[0].color[2] + ')';
 		isWinner = winnerIndex === 0;
 		that.ctx.font = (winnerIndex === 0) ? '24px visitor' : '14px visitor';
-		that.ctx.fillText(armies[0].name + ' : ' + roundWins[0], that.cols / 2, that.rows / 2 + 12 + (isWinner ? 12 : 7));
+		that.ctx.fillText(armies[0].name + ' : ' + roundWins[0], that.cols / 2, that.rows / 2 + 12);
 	};
 
 	that.endGame = function endGame(armies, winnerIndex, roundWins) {
