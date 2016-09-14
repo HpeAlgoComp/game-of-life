@@ -114,7 +114,7 @@
         that.showArmyVsArmyIntro = function showArmyVsArmyIntro() {
             that.playSound(that.startRoundSound);
             that.htmlHelper.showArmyVsArmyPanel(that.armies);
-            setTimeout(that.hideArmyVsArmyIntro, 5000);
+            setTimeout(that.hideArmyVsArmyIntro, 10000);
         };
 
         that.hideArmyVsArmyIntro = function hideArmyVsArmyIntro() {
