@@ -103,8 +103,24 @@
                 _log('waiting for armies...');
                 setTimeout(that.waitForArmies, 500);
             } else {
-                that.startRound();
+                if (that.isTournament) {
+                    that.showArmyVsArmyIntro();
+                } else {
+                    that.startRound();                  
+                }
             }
+        };
+
+        that.showArmyVsArmyIntro = function showArmyVsArmyIntro() {
+            that.playSound(that.startRoundSound);
+            that.htmlHelper.showArmyVsArmyPanel(that.armies);
+            setTimeout(that.hideArmyVsArmyIntro, 5000);
+        };
+
+        that.hideArmyVsArmyIntro = function hideArmyVsArmyIntro() {
+            that.playSound(that.startRoundSound);
+            that.htmlHelper.hideArmyVsArmyPanel();
+            setTimeout(that.startRound, 1000);
         };
 
         that.startRound = function startRound() {
