@@ -13,11 +13,12 @@ function GolSettings() {
 	that.powerMaxValue = 100;
 	that.millisBetweenPowerTimeReductions = 1000;
 	that.powerTimeQuantum = 1;
-	that.millisMaxRoundDuration = that.powerMaxValue * that.millisBetweenPowerTimeReductions / that.powerTimeQuantum;
+	that.millisMaxRoundDuration = 60000;
 
 	that.powerHitQuantum = 5;
 
-	that.millisEndRoundBoardFreeze = 3000;
-	that.millisEndRoundMessageTime = 3000;
+	that.millisArmyVsArmyMessageDuration = 5000;
+	that.millisEndRoundBoardFreezeDuration = 3000;
+	that.millisEndRoundMessageDuration = 3000;
 	that.winRoundLimit = 3;
 }

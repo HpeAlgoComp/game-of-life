@@ -114,7 +114,7 @@
         that.showArmyVsArmyIntro = function showArmyVsArmyIntro() {
             that.playSound(that.startRoundSound);
             that.htmlHelper.showArmyVsArmyPanel(that.armies);
-            setTimeout(that.hideArmyVsArmyIntro, 10000);
+            setTimeout(that.hideArmyVsArmyIntro, that.settings.millisArmyVsArmyMessageDuration);
         };
 
         that.hideArmyVsArmyIntro = function hideArmyVsArmyIntro() {
@@ -167,7 +167,7 @@
                 requestAnimationFrame(that.onGeneration);
             } else {
                 that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
-                setTimeout(that.endRound, that.settings.millisEndRoundBoardFreeze);                
+                setTimeout(that.endRound, that.settings.millisEndRoundBoardFreezeDuration);
             }
         };
 
@@ -186,9 +186,9 @@
                 that.htmlHelper.endRound(that.round, that.roundWins, that.armies, winnerIndex);
             }
             if (that.roundWins[0] < that.settings.winRoundLimit && that.roundWins[1] < that.settings.winRoundLimit) {
-                setTimeout(that.restartRound, that.settings.millisEndRoundMessageTime);  
+                setTimeout(that.restartRound, that.settings.millisEndRoundMessageDuration);  
             } else {
-                setTimeout(that.endGame, that.settings.millisEndRoundMessageTime);    
+                setTimeout(that.endGame, that.settings.millisEndRoundMessageDuration);    
             }
         };
 
