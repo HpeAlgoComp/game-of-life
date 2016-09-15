@@ -178,7 +178,7 @@
 			var millisPassed, secondsPassed, secondsLeft;
 			millisPassed = (new Date()).getTime() - that.roundStartTime;
 			secondsPassed = Math.floor(millisPassed / 1000);
-			secondsLeft = that.settings.secondsMaxRoundDuration - secondsPassed;
+			secondsLeft = Math.max(0, that.settings.secondsMaxRoundDuration - secondsPassed);
 			if (secondsLeft !== that.secondsLeft) {
 				that.secondsLeft = secondsLeft;
 				that.htmlHelper.updateTimeDisplay(that.secondsLeft);
