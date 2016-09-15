@@ -295,9 +295,12 @@ function GolHtmlHelper() {
 		}, 500);
 	};
 
-	that.updateTimeDisplay = function updateTimeDisplay(time) {
-		var timeStr = time >= 10 ? '' + time : '0' + time;
-		document.getElementById('time-display').innerHTML = '' + timeStr;
+	that.updateTimeDisplay = function updateTimeDisplay(secondsLeft) {
+		var minutes, seconds, timeStr;
+		minutes = Math.floor(secondsLeft / 60);
+		seconds = secondsLeft - minutes * 60;
+		timeStr = (minutes >= 10 ? '' + minutes : '0' + minutes) + ':' + (seconds >= 10 ? '' + seconds : '0' + seconds);
+		document.getElementById('time-display').innerHTML = timeStr;
 		document.getElementById('time-display').style['display'] = 'block';
 	};
 
