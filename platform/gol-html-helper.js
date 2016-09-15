@@ -30,7 +30,7 @@ function GolHtmlHelper() {
 		that.addCssRule('.army-vs-army-line {margin-top: 30px;}');
 		that.addCssRule('.army-vs-army-vs {margin-top: 30px; color: #666;}');
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
-		that.addCssRule('#time-display {position: absolute; left: 10; top: 5; font-size: 8px; color: #666;');
+		that.addCssRule('#time-display {position: absolute; left: 10px; top: 5px; font-size: 8px; color: #666;');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
 		for (i = 0; i < 2; i++) {
 			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
