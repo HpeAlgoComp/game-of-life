@@ -2,7 +2,7 @@
 
     function GolGame() {
 
-        var that = this;     
+        var that = this;
 
         that.init = function init(settings) {
             var m;
@@ -25,7 +25,7 @@
                 {file: 'explosion6.mp3', volume: 1},
                 {file: 'explosion7.mp3', volume: 1},
                 {file: 'explosion8.mp3', volume: 1},
-                {file: 'explosion9.mp3', volume: 1}    
+                {file: 'explosion9.mp3', volume: 1}
             ];
             that.selectSourceSound = {file: 'explosion1.mp3', volume: 1};
             that.startRoundSound = {file: 'explosion1.mp3', volume: 1};
@@ -34,7 +34,7 @@
             that.musicFiles = [
                 {file: 'terminator_genisys.mp3', volume: 1},
                 {file: 'dark_knight_rises.mp3', volume: 1},
-                {file: 'wonder_woman.mp3', volume: 1},                
+                {file: 'wonder_woman.mp3', volume: 1},
                 {file: 'transformers.mp3', volume: 1},
                 {file: 'fury_road.mp3', volume: 1},
                 {file: 'battleship.mp3', volume: 1},
@@ -59,7 +59,7 @@
             if (that.isTournament) {
                 that.htmlHelper.fadeInLoadSourcesPanel();
                 that.htmlHelper.markSrcLines(that.srcIndices);
-            } else {            
+            } else {
                 that.waitForArmies();
             }
         };
@@ -71,12 +71,12 @@
             } else if (that.srcIndices[0] === senderInd) {
                 that.srcIndices[0] = -1;
             } else if (that.srcIndices[1] === -1) {
-                that.srcIndices[1] = senderInd;    
+                that.srcIndices[1] = senderInd;
             } else if (that.srcIndices[0] === -1) {
-                that.srcIndices[0] = senderInd;    
+                that.srcIndices[0] = senderInd;
             }
             that.htmlHelper.markSrcLines(that.srcIndices);
-            that.playSound(that.selectSourceSound);            
+            that.playSound(that.selectSourceSound);
         };
 
         that.loadSources = function loadSources() {
@@ -87,7 +87,7 @@
                 that.htmlHelper.loadSource(that.srcIndices[1]);
                 that.waitForArmies();
             }, 1000);
-        };        
+        };
 
         that.registerArmy = function registerArmy(data) {
             var army = new GolArmy(that.armies.length, data.name, data.icon, data.cb, that.settings.colorsRGB[that.armies.length], that.settings.powerMaxValue, 0);
@@ -106,7 +106,7 @@
                 if (that.isTournament) {
                     that.showArmyVsArmyIntro();
                 } else {
-                    that.startRound();                  
+                    that.startRound();
                 }
             }
         };
@@ -186,15 +186,15 @@
                 that.htmlHelper.endRound(that.round, that.roundWins, that.armies, winnerIndex);
             }
             if (that.roundWins[0] < that.settings.winRoundLimit && that.roundWins[1] < that.settings.winRoundLimit) {
-                setTimeout(that.restartRound, that.settings.millisEndRoundMessageDuration);  
+                setTimeout(that.restartRound, that.settings.millisEndRoundMessageDuration);
             } else {
-                setTimeout(that.endGame, that.settings.millisEndRoundMessageDuration);    
+                setTimeout(that.endGame, that.settings.millisEndRoundMessageDuration);
             }
         };
 
         that.restartRound = function restartRound() {
             that.round++;
-            that.startRound();            
+            that.startRound();
         };
 
         that.endGame= function endGame() {
@@ -212,12 +212,12 @@
             for (i = 0; i < 2; i++) {
                 that.armies[i].budget += that.settings.budgetTickQuantum;
                 pixels[i] = that.armies[i].cb(
-                {
-                    generation: that.generation,
-                    cols: that.board.cols,
-                    rows: that.board.rows / 2,
-                    budget: that.armies[i].budget
-                });
+                  {
+                      generation: that.generation,
+                      cols: that.board.cols,
+                      rows: that.board.rows / 2,
+                      budget: that.armies[i].budget
+                  });
                 if (that.armies[i].budget >= pixels[i].length) {
                     that.armies[i].budget -= pixels[i].length;
                 } else {
@@ -229,7 +229,7 @@
                 }
             }
             for (i = 0; i < 2; i++) {
-                if (adjustedPixels[i].length > 0) {                    
+                if (adjustedPixels[i].length > 0) {
                     that.newPixels[i] = adjustedPixels[i];
                     that.newPixelsAge[i] = 0;
                 }
@@ -266,18 +266,18 @@
                 }
                 if (scoringPixelsCount[1] !== 0) {
                     _log(that.armies[1].name + ' scores');
-                }                
+                }
             }
             that.armies[0].power = Math.max(that.armies[0].power, 0);
             that.armies[1].power = Math.max(that.armies[1].power, 0);
             that.htmlHelper.updateScore(that.armies[0].index, that.armies[0].power, scoringPixelsCount[1]);
             that.htmlHelper.updateScore(that.armies[1].index, that.armies[1].power, scoringPixelsCount[0]);
-        };        
-        
+        };
+
     }
 
     var game = new GolGame();
-	game.init(new GolSettings());
-	
+    game.init(new GolSettings());
+
 })();
 

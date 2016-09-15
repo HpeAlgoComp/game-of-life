@@ -65,37 +65,37 @@ function GolHtmlHelper() {
 		document.getElementById('load-src-panel').style['opacity'] = 1;
 	};
 
-	that.markSrcLines  = function markSrcLines(srcIndices) {
+	that.markSrcLines = function markSrcLines(srcIndices) {
 		var i, elm;
 		for (i = 0; i < 16; i++) {
 			elm = document.getElementById('src-' + i);
 			if ('' + i === srcIndices[0]) {
-				elm.classList.add('src-0');	
-				elm.classList.remove('src-1');	
+				elm.classList.add('src-0');
+				elm.classList.remove('src-1');
 			} else if ('' + i === srcIndices[1]) {
-				elm.classList.add('src-1');	
-				elm.classList.remove('src-0');	
+				elm.classList.add('src-1');
+				elm.classList.remove('src-0');
 			} else {
 				elm.classList.remove('src-0');
-				elm.classList.remove('src-1');	
+				elm.classList.remove('src-1');
 			}
 		}
 		document.getElementById('load-src-msg-1').style['color'] = srcIndices[1] === -1 ? '#' + that.colorsHex[1] : '#333';
 		document.getElementById('load-src-msg-0').style['color'] = srcIndices[0] === -1 && srcIndices[1] !== -1 ? '#' + that.colorsHex[0] : '#333';
-		document.getElementById('load-src-button').style['opacity'] = (srcIndices[1] !== -1 && srcIndices[0] !== -1) ? '1' : '0';		
+		document.getElementById('load-src-button').style['opacity'] = (srcIndices[1] !== -1 && srcIndices[0] !== -1) ? '1' : '0';
 	};
 
 	that.loadSource = function loadSource(index) {
-        var srcText, srcElm;
-        srcText = document.getElementById('src-' + index).value;
-        _log('loading source: ' + srcText);
-        if (srcText) {
-            srcElm = document.createElement('script');
-            srcElm.setAttribute('type', 'text/javascript');
-            srcElm.setAttribute('src', srcText);
-            document.getElementsByTagName('head')[0].appendChild(srcElm);
-        }
-     };
+		var srcText, srcElm;
+		srcText = document.getElementById('src-' + index).value;
+		_log('loading source: ' + srcText);
+		if (srcText) {
+			srcElm = document.createElement('script');
+			srcElm.setAttribute('type', 'text/javascript');
+			srcElm.setAttribute('src', srcText);
+			document.getElementsByTagName('head')[0].appendChild(srcElm);
+		}
+	};
 
 	that.hideLoadSourcesPanel = function hideLoadSourcesPanel() {
 		document.getElementById('load-src-panel').style['display'] = 'none';
@@ -106,7 +106,7 @@ function GolHtmlHelper() {
 		for (i = 0; i < 2; i++) {
 			document.getElementById('army-vs-army-img-' + i).setAttribute('src', 'platform/icons/' + armies[i].icon + '.png');
 			document.getElementById('army-vs-army-name-' + i).innerHTML = armies[i].name;
-		}		
+		}
 		document.getElementById('army-vs-army-panel').style['opacity'] = '1';
 	};
 
@@ -119,7 +119,7 @@ function GolHtmlHelper() {
 		container = that.addContainer();
 		that.addArmyLine(container, 1, armies[1]);
 		canvas = that.addCanvas(container, 'gol-canvas', that.cols, that.rows);
-  		that.addArmyLine(container, 0, armies[0]);
+		that.addArmyLine(container, 0, armies[0]);
 		that.ctx = canvas.getContext('2d');
 	};
 
@@ -140,7 +140,7 @@ function GolHtmlHelper() {
 		textNode = document.createTextNode(army.name);
 		armyName.appendChild(textNode);
 
-		armyLine.appendChild(armyName);		
+		armyLine.appendChild(armyName);
 
 		armyStats = document.createElement('div');
 		armyStats.setAttribute('id', 'gol-army-stats-' + index);
@@ -173,7 +173,7 @@ function GolHtmlHelper() {
 	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, armies, roundEnded) {
 		var i, j, k, x, y, r, g, b, a, maxAge, maxDistance, multiplier, distance, index, imgData;
 		imgData = that.ctx.createImageData(that.cols, that.rows);
-		
+
 		// regular matrix
 		for (y = 0; y < that.rows; y++) {
 			for (x = 0; x < that.cols; x++) {
@@ -229,7 +229,7 @@ function GolHtmlHelper() {
 		}
 
 		// new pixels mark
-		maxAge = 5;		
+		maxAge = 5;
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
 				if (newPixelsAge[i] <= maxAge) {
@@ -259,7 +259,7 @@ function GolHtmlHelper() {
 							}
 						}
 					}
-				}	
+				}
 			}
 		}
 
@@ -279,21 +279,21 @@ function GolHtmlHelper() {
 	that.shake = function shake() {
 		var shakeIndex = Math.floor(Math.random() * that.shakes.length);
 		document.getElementById('gol-canvas').className = that.shakes[shakeIndex] + ' shake-constant';
-            setTimeout(function () {
-                document.getElementById('gol-canvas').className = '';
-            }, 500);
+		setTimeout(function () {
+			document.getElementById('gol-canvas').className = '';
+		}, 500);
 	};
 
 	that.updateScore = function updateScore(armyIndex, armyPower, scoringPixels) {
 		var score, scoreText, powerWidth;
-		document.getElementById('gol-army-score-' + armyIndex).style['color'] = (scoringPixels === 0) ? '#' + that.colorsHex[armyIndex] : '#fff';		
+		document.getElementById('gol-army-score-' + armyIndex).style['color'] = (scoringPixels === 0) ? '#' + that.colorsHex[armyIndex] : '#fff';
 		document.getElementById('gol-army-power-' + armyIndex).style['background-color'] = (scoringPixels === 0) ? '#' + that.colorsHex[armyIndex] : '#fff';
 		score = Math.round(armyPower);
 		if (score === 0 && armyPower > 0) {
 			score = 1;
 		}
 		scoreText = '' + score;
-		document.getElementById('gol-army-score-' + armyIndex).innerHTML = scoreText;		
+		document.getElementById('gol-army-score-' + armyIndex).innerHTML = scoreText;
 		powerWidth = Math.round(armyPower / that.settings.powerMaxValue * that.powerBarMaxWidth);
 		if (powerWidth === 0 && armyPower > 0) {
 			powerWidth = 1;
@@ -304,30 +304,28 @@ function GolHtmlHelper() {
 	that.endRoundByDraw = function endRoundByDraw()  {
 		var i;
 		for (i = 0; i < 2; i++) {
-			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];		
+			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];
 			document.getElementById('gol-army-power-' + i).style['background-color'] = '#' + that.colorsHex[i];
 		}
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
 		that.ctx.textAlign = 'center';
 		that.ctx.fillStyle = 'rgb(66, 66, 66)';
 		that.ctx.font = '14px visitor';
-		that.ctx.fillText('DRAW', that.cols / 2, that.rows / 2);	
+		that.ctx.fillText('DRAW', that.cols / 2, that.rows / 2);
 	};
 
 	that.endRound = function endRound(round, roundWins, armies, winnerIndex)  {
-		var i, isWinner;
+		var i;
 		for (i = 0; i < 2; i++) {
-			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];		
+			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];
 			document.getElementById('gol-army-power-' + i).style['background-color'] = '#' + that.colorsHex[i];
 		}
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
 		that.ctx.textAlign = 'center';
 		that.ctx.fillStyle = 'rgb(' + armies[1].color[0] + ',' + armies[1].color[1] + ',' + armies[1].color[2] + ')';
-		isWinner = winnerIndex === 1;
 		that.ctx.font = (winnerIndex === 1) ? '24px visitor' : '14px visitor';
 		that.ctx.fillText(armies[1].name + ' : ' + roundWins[1], that.cols / 2, that.rows / 2 - 12);
 		that.ctx.fillStyle = 'rgb(' + armies[0].color[0] + ',' + armies[0].color[1] + ',' + armies[0].color[2] + ')';
-		isWinner = winnerIndex === 0;
 		that.ctx.font = (winnerIndex === 0) ? '24px visitor' : '14px visitor';
 		that.ctx.fillText(armies[0].name + ' : ' + roundWins[0], that.cols / 2, that.rows / 2 + 12);
 	};
@@ -337,13 +335,13 @@ function GolHtmlHelper() {
 		var loserRoundCount = roundWins[winnerIndex*-1+1];
 		document.getElementById('gol-army-stats-0').style['visibility'] = 'hidden';
 		document.getElementById('gol-army-stats-1').style['visibility'] = 'hidden';
-	    that.ctx.clearRect(0, 0, that.cols, that.rows);	    
-	    that.ctx.textAlign = 'center';
-	    that.ctx.font = '14px visitor';
-	   	that.ctx.fillStyle = 'rgb(66, 66, 66)';
-	    that.ctx.fillText('winner ( ' + winnerRoundCount + ' : ' + loserRoundCount + ' )', that.cols / 2, that.rows / 2 - 12);
-	    that.ctx.font = '24px visitor';
-	    that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
+		that.ctx.clearRect(0, 0, that.cols, that.rows);
+		that.ctx.textAlign = 'center';
+		that.ctx.font = '14px visitor';
+		that.ctx.fillStyle = 'rgb(66, 66, 66)';
+		that.ctx.fillText('winner ( ' + winnerRoundCount + ' : ' + loserRoundCount + ' )', that.cols / 2, that.rows / 2 - 12);
+		that.ctx.font = '24px visitor';
+		that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 		that.ctx.fillText(armies[winnerIndex].name, that.cols / 2, that.rows / 2 + 12);
 	};
 
