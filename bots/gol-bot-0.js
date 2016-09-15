@@ -84,28 +84,6 @@
 		return pixels;
 	}
 
-	function tryPlaceFlower(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 8) {
-			c = col || getRnd(0, data.cols - 6);
-			r = row || 0;
-			pixels.push([c+1, r]);
-			pixels.push([c+2, r]);
-			pixels.push([c+3, r]);
-			pixels.push([c, r+1]);
-			pixels.push([c+4, r+1]);
-			pixels.push([c+1, r+2]);
-			pixels.push([c+2, r+2]);
-			pixels.push([c+3, r+2]);
-			flowerLocation += 20;
-			if (flowerLocation > data.cols - 6) {
-				flowerLocation = 0;
-			}
-		}
-		return pixels;
-	}
-
 	// bots --------------------------------------------------------------------------------------------------------------
 
 	var bot1 = function bot1(data) {
@@ -175,50 +153,14 @@
 		return pixels;
 	};
 
-	var bot4 = function bot4(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			flowerLocation = 15;
-			fenceLocation = 0;
-		}
-		if (data.generation < 160) {
-			plan = ['flower'];
-		}	else if (data.generation < 360) {
-			plan = ['spaceship'];
-		} else if (data.generation < 600) {
-			plan = ['fence'];
-		} else {
-			plan = ['spaceship', 'glider', 'mine', 'fence'];
-		}
-		if (plan[planIndex] === 'flower') {
-			pixels = tryPlaceFlower(data, flowerLocation, 60);
-		} else if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'fence') {
-			pixels = tryPlaceFence(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
-
 	// init --------------------------------------------------------------------------------------------------------------
 
 	var planIndex = 0;
-	var flowerLocation = 15;
 	var fenceLocation = 0;
 	var bots = [
 		{name: 'TRAINING_BOT_ALPHA',   icon:'bot', cb: bot1},
 		{name: 'TRAINING_BOT_BRAVO',   icon:'bot', cb: bot2},
-		{name: 'TRAINING_BOT_CHARLIE', icon:'bot', cb: bot3},
-		{name: 'TRAINING_BOT_DELTA',   icon:'bot', cb: bot4}
+		{name: 'TRAINING_BOT_CHARLIE', icon:'bot', cb: bot3}
 	];
 	//var b = (localStorage.getItem('game-of-life-training-bot-index') || 0) % bots.length;
 	var b = getRnd(0, bots.length-1);
