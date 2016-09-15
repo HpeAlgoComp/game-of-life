@@ -222,7 +222,7 @@
 	];
 	//var b = (localStorage.getItem('game-of-life-training-bot-index') || 0) % bots.length;
 	var b = getRnd(0, bots.length-1);
-    var bot = bots[b];        
+  var bot = bots[b];
     //b = (b + 1) % bots.length;
     //localStorage.setItem('game-of-life-training-bot-index', b);	
 	setTimeout(function registerArmy() {
