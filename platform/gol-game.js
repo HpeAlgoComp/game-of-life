@@ -190,11 +190,11 @@
 			var winnerIndex;
 			_dbg('endRound()');
 			that.playSound(that.endRoundSound);
-			if (that.armies[0].power <= 0 && that.armies[1].power <= 0) {
+			if (that.armies[0].power === that.armies[1].power) {
 				_log('draw');
 				that.htmlHelper.endRoundByDraw();
 			} else {
-				winnerIndex = (that.armies[1].power <= 0) ? 0 : 1;
+				winnerIndex = (that.armies[0].power > that.armies[1].power) ? 0 : 1;
 				_log(that.armies[winnerIndex].name + ' wins');
 				that.lastWinner = that.armies[winnerIndex].name;
 				that.roundWins[winnerIndex]++;
