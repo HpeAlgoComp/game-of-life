@@ -254,14 +254,14 @@
 		};
 
 		that.playMusic = function playMusic(music) {
-			var audio = new Audio(that.settings.remotePlatformLocation + '/music/' + music.file);
+			var audio = new Audio(that.settings.remotePlatformLocationRawGit + '/music/' + music.file);
 			audio.volume = music.volume;
 			audio.loop = true;
 			audio.play();
 		};
 
 		that.playSound = function playSound(sound) {
-			var audio = new Audio(that.settings.remotePlatformLocation + '/sound/' + sound.file);
+			var audio = new Audio(that.settings.remotePlatformLocationRawGit + '/sound/' + sound.file);
 			audio.volume = sound.volume;
 			audio.play();
 		};
