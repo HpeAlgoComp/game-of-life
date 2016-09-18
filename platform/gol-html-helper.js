@@ -16,8 +16,8 @@ function GolHtmlHelper() {
 	that.addCssRules = function addCssRules() {
 		var i;
 
-		that.addCssRule('@font-face {font-family: visitor; src: url("' + that.settings.remotePlatformLocationRawGit + '/fonts/visitor.woff") format("woff");}');
-		that.addCssRule('@font-face {font-family: individigital; src: url("' + that.settings.remotePlatformLocationRawGit + '/fonts/individigital.woff") format("woff");}');
+		that.addCssRule('@font-face {font-family: visitor; src: url("' + that.settings.remotePlatformLocationRawGit + '/fonts/visitor.woff?raw=true") format("woff");}');
+		that.addCssRule('@font-face {font-family: individigital; src: url("' + that.settings.remotePlatformLocationRawGit + '/fonts/individigital.woff?raw=true") format("woff");}');
 		that.addCssRule('* {box-sizing: border-box;}');
 		that.addCssRule('html {height: 100%; font-size: 8px;}');
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: individigital, sans-serif;}');
