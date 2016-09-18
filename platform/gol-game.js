@@ -253,14 +253,14 @@
 		};
 
 		that.playMusic = function playMusic(music) {
-			var audio = new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/music/' + music.file);
+			var audio = new Audio(that.settings.remotePlatformLocation + '/music/' + music.file);
 			audio.volume = music.volume;
 			audio.loop = true;
 			audio.play();
 		};
 
 		that.playSound = function playSound(sound) {
-			var audio = new Audio('https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/sound/' + sound.file);
+			var audio = new Audio(that.settings.remotePlatformLocation + '/sound/' + sound.file);
 			audio.volume = sound.volume;
 			audio.play();
 		};

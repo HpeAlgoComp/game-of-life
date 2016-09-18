@@ -20,4 +20,6 @@ function GolSettings() {
 	that.millisEndRoundMessageDuration = 3000;
 
 	that.winRoundLimit = 3;
+
+	that.remotePlatformLocation = 'https://rawgit.com/HpeAlgoComp/game-of-life/master/platform';
 }

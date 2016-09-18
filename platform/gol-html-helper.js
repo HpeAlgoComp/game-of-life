@@ -16,8 +16,8 @@ function GolHtmlHelper() {
 	that.addCssRules = function addCssRules() {
 		var i;
 
-		that.addCssRule('@font-face {font-family: visitor; src: url("https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/fonts/visitor.woff") format("woff");}');
-		that.addCssRule('@font-face {font-family: individigital; src: url("https://rawgit.com/HpeAlgoComp/game-of-life/master/platform/fonts/individigital.woff") format("woff");}');
+		that.addCssRule('@font-face {font-family: visitor; src: url("' + that.settings.remotePlatformLocation + '/fonts/visitor.woff") format("woff");}');
+		that.addCssRule('@font-face {font-family: individigital; src: url("' + that.settings.remotePlatformLocation + '/fonts/individigital.woff") format("woff");}');
 		that.addCssRule('* {box-sizing: border-box;}');
 		that.addCssRule('html {height: 100%; font-size: 8px;}');
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: individigital, sans-serif;}');
@@ -33,13 +33,13 @@ function GolHtmlHelper() {
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#time-display {position: absolute; left: 7px; top: 5px; font-size: 8px; color: #666;');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
+		that.addCssRule('.gol-army-img {margin-left: 1px;}');
 		for (i = 0; i < 2; i++) {
 			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#army-vs-army-name-' + i + ' {display: inline-block; position: relative; top: -25px; color: #' + that.colorsHex[i] + '}');
 			that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; text-align: left; height: 10px; line-height: 10px; width: ' + that.cols + 'px; position:relative;}');
 			that.addCssRule('#gol-army-name-' + i + ' {height: 10px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-stats-' + i + ' {height: 10px; display: flex; align-items: center;}');
-			that.addCssRule('#gol-army-img-' + i + ' {height: 15px; margin-left: 1px;}');
 			that.addCssRule('#gol-army-score-' + i + ' {height: 10px; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-power-' + i + ' {height: 2px; margin-left: 2px; background-color: #' + that.colorsHex[i] + '; box-shadow: 0px 0px 10px #' + that.colorsHex[i] +'; transition: 1s width ease;}');
 		}
@@ -134,7 +134,7 @@ function GolHtmlHelper() {
 	};
 
 	that.addArmyLine = function addArmyLine(container, index, army) {
-		var textNode, armyLine, armyIconDiv, armyIcon, armyName, armyStats, armyPower, armyScore;
+		var textNode, armyLine, armyIcon, armyName, armyStats, armyPower, armyScore;
 		armyLine = document.createElement('div');
 		armyLine.setAttribute('id', 'gol-army-line-' + index);
 
@@ -151,7 +151,9 @@ function GolHtmlHelper() {
 
 		armyIcon = document.createElement('img');
 		armyIcon.setAttribute('id', 'gol-army-img-' + index);
-		armyIcon.setAttribute('src', 'platform/icons/' + army.icon + '.png');
+		armyIcon.className = 'gol-army-img';
+		armyIcon.setAttribute('height', '15px');
+		armyIcon.setAttribute('src', that.settings.remotePlatformLocation + '/icons/' + army.icon + '.png');
 		armyStats.appendChild(armyIcon);
 
 		armyScore = document.createElement('div');
