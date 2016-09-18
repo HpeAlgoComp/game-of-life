@@ -56,6 +56,7 @@
 		that.startGame = function startGame(isTournament) {
 			_dbg('startGame()');
 			that.isTournament = !!isTournament;
+			that.settings.isTournament = that.isTournament;
 			_log('tournament: ' + that.isTournament);
 			if (that.isTournament) {
 				that.htmlHelper.fadeInLoadSourcesPanel();
