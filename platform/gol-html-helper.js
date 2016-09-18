@@ -187,8 +187,6 @@ function GolHtmlHelper() {
 		var timeDisplay, textNode;
 		timeDisplay = document.createElement('div');
 		timeDisplay.setAttribute('id', 'time-display');
-		textNode = document.createTextNode('59');
-		timeDisplay.appendChild(textNode);
 		return container.appendChild(timeDisplay);
 	};
 
@@ -312,6 +310,7 @@ function GolHtmlHelper() {
 		seconds = secondsLeft - minutes * 60;
 		timeStr = (minutes >= 10 ? '' + minutes : '0' + minutes) + ':' + (seconds >= 10 ? '' + seconds : '0' + seconds);
 		document.getElementById('time-display').innerHTML = timeStr;
+		document.getElementById('time-display').style.color = secondsLeft > 10 ? '#666666' : '#ffffff';
 		document.getElementById('time-display').style['display'] = 'block';
 	};
 
