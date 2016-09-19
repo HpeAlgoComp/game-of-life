@@ -17,7 +17,7 @@ function GolSettings() {
 
 	that.secondsMaxRoundDuration = 60;
 
-	that.millisArmyVsArmyMessageDuration = 3000;
+	that.millisArmyVsArmyMessageDuration = 5000;
 	that.millisEndRoundBoardFreezeDuration = 3000;
 	that.millisEndRoundMessageDuration = 3000;
 
