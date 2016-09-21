@@ -217,7 +217,7 @@
 			var winnerIndex;
 			_dbg('endGame()');
 			that.playSound(that.endGameSound);
-			winnerIndex = (that.armies[1].power <= 0) ? 0 : 1;
+			winnerIndex = (that.armies[0].power > that.armies[1].power) ? 0 : 1;
 			that.htmlHelper.endGame(that.armies, winnerIndex, that.roundWins);
 		};
 
