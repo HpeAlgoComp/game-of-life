@@ -405,7 +405,7 @@ function GolHtmlHelper() {
 		that.ctx.textAlign = 'center';
 		that.ctx.font = '16px visitor';
 		that.ctx.fillStyle = 'rgb(255, 255, 255)';
-		that.ctx.fillText('winner', that.cols / 2, that.rows / 2 - 6);
+		that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 6);
 		that.ctx.font = '24px visitor';
 		that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 		that.ctx.fillText(armies[winnerIndex].name, that.cols / 2, that.rows / 2 + 16);
