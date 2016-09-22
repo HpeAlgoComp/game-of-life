@@ -22,8 +22,8 @@ function GolHtmlHelper() {
 		that.addCssRule('html {height: 100%; font-size: 12px;}');
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: visitor, consolas, monospace, sans-serif;}');
 		that.addCssRule('#pre-game-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
-		that.addCssRule('#load-src-panel {width: 400px; text-align: center; opacity: 0; transition: 1s all ease;}');
-		that.addCssRule('#load-src-title {text-align: left; color: #fff; font-size: 35px;}');
+		that.addCssRule('#load-src-panel {width: 400px; text-align: center; opacity: 0; padding: 1px; transition: 1s all ease;}');
+		that.addCssRule('#load-src-title {text-align: left; color: #fff; font-size: 32px;}');
 		that.addCssRule('.load-src-msg {text-align: left; font-size: 12px; color: #333; transition: 1s color ease;}');
 		that.addCssRule('.load-src-msg:nth-child(3) {margin-bottom: 2px;}');
 		that.addCssRule('.load-src-input {outline: none !important; margin-bottom: 1px; width: 100%; height: 8px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #666; cursor: pointer; transition: 1s all ease;}');
