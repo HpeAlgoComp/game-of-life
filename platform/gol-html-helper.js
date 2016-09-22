@@ -366,6 +366,7 @@ function GolHtmlHelper() {
 
 	that.endRoundByDraw = function endRoundByDraw()  {
 		var i;
+		that.hideTimeDisplay();
 		for (i = 0; i < 2; i++) {
 			document.getElementById('gol-army-score-' + i).style['color'] = '#' + that.colorsHex[i];
 			document.getElementById('gol-army-power-' + i).style['background-color'] = '#' + that.colorsHex[i];
@@ -374,7 +375,7 @@ function GolHtmlHelper() {
 		that.ctx.textAlign = 'center';
 		that.ctx.fillStyle = 'rgb(255, 255, 255)';
 		that.ctx.font = '16px visitor';
-		that.ctx.fillText('DRAW', that.cols / 2, that.rows / 2);
+		that.ctx.fillText('DRAW', that.cols / 2, that.rows / 2 + 3);
 	};
 
 	that.endRound = function endRound(round, roundWins, armies, winnerIndex)  {
