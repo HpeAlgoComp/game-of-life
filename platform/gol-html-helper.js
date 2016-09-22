@@ -395,16 +395,16 @@ function GolHtmlHelper() {
 		that.updateArmyNamesAndWins(armies, roundWins);
 	};
 
-	that.endGame = function endGame(armies, winnerIndex, roundWins) {
-		var winnerRoundCount = roundWins[winnerIndex];
-		var loserRoundCount = roundWins[winnerIndex*-1+1];
+	that.endGame = function endGame(armies, winnerIndex /*roundWins*/) {
+		//var winnerRoundCount = roundWins[winnerIndex];
+		//var loserRoundCount = roundWins[winnerIndex*-1+1];
 		document.getElementById('gol-army-stats-0').style['visibility'] = 'hidden';
 		document.getElementById('gol-army-stats-1').style['visibility'] = 'hidden';
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
 		that.ctx.textAlign = 'center';
 		that.ctx.font = '16px visitor';
 		that.ctx.fillStyle = 'rgb(255, 255, 255)';
-		that.ctx.fillText('winner ( ' + winnerRoundCount + ' : ' + loserRoundCount + ' )', that.cols / 2, that.rows / 2 - 12);
+		that.ctx.fillText('winner', that.cols / 2, that.rows / 2 - 12);
 		that.ctx.font = '24px visitor';
 		that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 		that.ctx.fillText(armies[winnerIndex].name, that.cols / 2, that.rows / 2 + 12);
