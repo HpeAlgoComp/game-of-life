@@ -31,7 +31,7 @@ function GolHtmlHelper() {
 		that.addCssRule('#army-vs-army-panel {width: 400px; text-align: center; display: none; opacity: 0; transition: 5s all ease;}');
 		that.addCssRule('.army-vs-army-vs {margin: 20px;}');
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
-		that.addCssRule('#time-display {display: none; position: absolute; left: calc(50% + 205px); top: calc(50% - 5px); font-size: 10px;');
+		that.addCssRule('#time-display {display: none; position: absolute; left: calc(50% - 13px); top: calc(50% - 5px); font-size: 10px; opacity: 0.5');
 		that.addCssRule('#time-display-bar {position: absolute; left: calc(50% + 202px); top: calc(50% - 100px); height: 200px; width: 1px;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin-top: 6px; margin-bottom: 6px;}');
 		that.addCssRule('.gol-army-img {position: relative; top: 0px; margin-right: 1px; height: 16px}');
@@ -317,12 +317,15 @@ function GolHtmlHelper() {
 
 	that.updateTimeDisplay = function updateTimeDisplay(secondsLeft) {
 		var minutes, seconds, timeStr, borderHeight;
-		minutes = Math.floor(secondsLeft / 60);
-		seconds = secondsLeft - minutes * 60;
-		timeStr = (minutes >= 10 ? '' + minutes : '0' + minutes) + ':' + (seconds >= 10 ? '' + seconds : '0' + seconds);
-		document.getElementById('time-display').innerHTML = timeStr;
-		document.getElementById('time-display').style['color'] = secondsLeft > 10 ? '#999' : '#fff';
-		document.getElementById('time-display').style['display'] = 'block';
+
+		if (secondsLeft <= 10) {
+			minutes = Math.floor(secondsLeft / 60);
+			seconds = secondsLeft - minutes * 60;
+			timeStr = (minutes >= 10 ? '' + minutes : '0' + minutes) + ':' + (seconds >= 10 ? '' + seconds : '0' + seconds);
+			document.getElementById('time-display').innerHTML = timeStr;
+			document.getElementById('time-display').style['color'] = secondsLeft > 10 ? '#999' : '#fff';
+			document.getElementById('time-display').style['display'] = 'block';
+		}
 
 		borderHeight = Math.floor(that.settings.rows / 2 - (that.settings.rows / 2 * secondsLeft / that.settings.secondsMaxRoundDuration));
 		document.getElementById('time-display-bar').style['background-color'] = secondsLeft > 10 ? '#999' : '#fff';
