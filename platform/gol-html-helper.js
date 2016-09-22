@@ -321,11 +321,11 @@ function GolHtmlHelper() {
 		seconds = secondsLeft - minutes * 60;
 		timeStr = (minutes >= 10 ? '' + minutes : '0' + minutes) + ':' + (seconds >= 10 ? '' + seconds : '0' + seconds);
 		document.getElementById('time-display').innerHTML = timeStr;
-		document.getElementById('time-display').style['color'] = secondsLeft > 10 ? '#666' : '#fff';
+		document.getElementById('time-display').style['color'] = secondsLeft > 10 ? '#999' : '#fff';
 		document.getElementById('time-display').style['display'] = 'block';
 
 		borderHeight = Math.floor(that.settings.rows / 2 - (that.settings.rows / 2 * secondsLeft / that.settings.secondsMaxRoundDuration));
-		document.getElementById('time-display-bar').style['background-color'] = secondsLeft > 10 ? '#666' : '#fff';
+		document.getElementById('time-display-bar').style['background-color'] = secondsLeft > 10 ? '#999' : '#fff';
 		document.getElementById('time-display-bar').style['border-top'] =	'' + borderHeight + 'px solid #333';
 		document.getElementById('time-display-bar').style['border-bottom'] =	'' + borderHeight + 'px solid #333';
 		document.getElementById('time-display-bar').style['top'] = 'calc(50% - 100px)';
