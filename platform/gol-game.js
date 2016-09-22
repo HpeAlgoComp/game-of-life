@@ -145,13 +145,11 @@
 			that.roundStartTime = (new Date()).getTime();
 			that.secondsLeft = that.settings.secondsMaxRoundDuration;
 			that.htmlHelper.updateTimeDisplay(that.secondsLeft);
-			//setTimeout(that.onGeneration, 0);
-			requestAnimationFrame(that.onGeneration);
+			setTimeout(that.onGeneration, 0);
 		};
 
 		that.onGeneration = function onGeneration() {
 			var curArray, nxtArray, newPixels, scoringPixelCount, roundEnded;
-			//_dbg('onGeneration()');
 			that.generation++;
 			curArray = that.board.arrays[(that.generation % 2) * (-1) + 1];
 			nxtArray = that.board.arrays[that.generation % 2];
@@ -167,8 +165,8 @@
 			if (!roundEnded) {
 				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
 				that.board.deleteScoringPixels(nxtArray);
-				//setTimeout(that.onGeneration, 0);
-				requestAnimationFrame(that.onGeneration);
+				setTimeout(that.onGeneration, 0);
+				//requestAnimationFrame(that.onGeneration);
 			} else {
 				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
 				setTimeout(that.endRound, that.settings.millisEndRoundBoardFreezeDuration);
