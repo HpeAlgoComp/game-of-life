@@ -32,7 +32,7 @@ function GolHtmlHelper() {
 		that.addCssRule('.army-vs-army-vs {margin: 20px;}');
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#time-display {position: absolute; left: 7px; top: 5px; font-size: 12px; color: #666;');
-		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
+		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin-top: 6px; margin-bottom: 6px;}');
 		that.addCssRule('.gol-army-img {position: relative; top: 0px; margin-right: 1px; height: 16px}');
 		for (i = 0; i < 2; i++) {
 			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
