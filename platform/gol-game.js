@@ -142,6 +142,7 @@
 			if (that.round === 1) {
 				that.htmlHelper.drawUserInterface(that.armies);
 			}
+			that.htmlHelper.updateArmyNamesAndWins(that.armies, that.roundWins);
 			that.roundStartTime = (new Date()).getTime();
 			that.secondsLeft = that.settings.secondsMaxRoundDuration;
 			that.htmlHelper.updateTimeDisplay(that.secondsLeft);
