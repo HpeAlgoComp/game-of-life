@@ -21,23 +21,23 @@ function GolHtmlHelper() {
 		that.addCssRule('* {box-sizing: border-box;}');
 		that.addCssRule('html {height: 100%; font-size: 12px;}');
 		that.addCssRule('body {height: 100%; margin: 0; overflow: hidden; background-color: #202020; color: #fff; font-family: visitor, consolas, monospace, sans-serif;}');
-		that.addCssRule('#load-src-panel {margin-top: 10px; margin-left: calc(50% - 200px); width: 400px; text-align: center; opacity: 0; transition: 1s all ease;}');
-		that.addCssRule('.load-src-title {text-align: left; color: #fff; font-size: 35px;}');
+		that.addCssRule('#pre-game-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
+		that.addCssRule('#load-src-panel {width: 400px; text-align: center; opacity: 0; transition: 1s all ease;}');
+		that.addCssRule('#load-src-title {text-align: left; color: #fff; font-size: 35px;}');
 		that.addCssRule('.load-src-msg {text-align: left; font-size: 12px; color: #333; transition: 1s color ease;}');
 		that.addCssRule('.load-src-msg:nth-child(3) {margin-bottom: 2px;}');
 		that.addCssRule('.load-src-input {outline: none !important; margin-bottom: 1px; width: 100%; height: 8px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #666; cursor: pointer; transition: 1s all ease;}');
 		that.addCssRule('#load-src-button {margin-top: 8px; width: 50px; height: 15px; border: 1px solid #666; background: #666; color: #fff; font-family: visitor, consolas, monospace, sans-serif; font-size: 12px; cursor: pointer; outline: none; opacity: 0; transition: 1s opacity ease;}');
-		that.addCssRule('#army-vs-army-panel {margin-left: calc(50% - 200px); width: 400px; text-align: center; opacity: 0; transition: 4s all ease;}');
-		that.addCssRule('.army-vs-army-line {margin-top: 25px;}');
-		that.addCssRule('.army-vs-army-vs {margin-top: 25px; color: #fff;}');
+		that.addCssRule('#army-vs-army-panel {width: 400px; text-align: center; display: none; opacity: 0; transition: 5s all ease;}');
+		that.addCssRule('.army-vs-army-vs {margin: 20px;}');
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#time-display {position: absolute; left: 7px; top: 5px; font-size: 12px; color: #666;');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin: 5px;}');
 		that.addCssRule('.gol-army-img {position: relative; top: 0px; margin-left: 2px;}');
 		for (i = 0; i < 2; i++) {
 			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
-		that.addCssRule('#army-vs-army-img-' + i + ' {display: inline-block; height: 100px; vertical-align: middle;}');
-		that.addCssRule('#army-vs-army-name-' + i + ' {display: inline-block; vertical-align: middle; font-size: 16px; color: #' + that.colorsHex[i] + '}');
+		that.addCssRule('#army-vs-army-img-' + i + ' {visibility: hidden; display: inline-block; height: 100px; vertical-align: middle;}');
+		that.addCssRule('#army-vs-army-name-' + i + ' {visibility: hidden; display: inline-block; vertical-align: middle; font-size: 16px; color: #' + that.colorsHex[i] + '}');
 		that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; text-align: left; height: 10px; line-height: 10px; width: ' + that.cols + 'px; position:relative;}');
 		that.addCssRule('#gol-army-name-' + i + ' {height: 10px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
 		that.addCssRule('#gol-army-stats-' + i + ' {height: 10px; display: flex; align-items: center;}');
@@ -101,6 +101,7 @@ function GolHtmlHelper() {
 	};
 
 	that.hideLoadSourcesPanel = function hideLoadSourcesPanel() {
+		document.getElementById('load-src-title').style['color'] = '#202020';
 		document.getElementById('load-src-panel').style['display'] = 'none';
 	};
 
@@ -110,11 +111,19 @@ function GolHtmlHelper() {
 			document.getElementById('army-vs-army-img-' + i).setAttribute('src', 'platform/icons/' + armies[i].icon + '.png');
 			document.getElementById('army-vs-army-name-' + i).innerHTML = armies[i].name;
 		}
-		document.getElementById('army-vs-army-panel').style['opacity'] = '1';
+		setTimeout(function() {
+			for (i = 0; i < 2; i++) {
+				document.getElementById('army-vs-army-img-' + i).style['visibility'] = 'visible';
+				document.getElementById('army-vs-army-name-' + i).style['visibility'] = 'visible';
+			}
+			document.getElementById('army-vs-army-panel').style['display'] = 'block';
+			document.getElementById('army-vs-army-panel').style['opacity'] = '1';
+		}, 0);
 	};
 
 	that.hideArmyVsArmyPanel = function hideArmyVsArmyPanel() {
-		document.getElementById('army-vs-army-panel').style['display'] = 'none';
+		//document.getElementById('army-vs-army-panel').style['display'] = 'none';
+		document.getElementById('pre-game-container').style['display'] = 'none';
 	};
 
 	that.drawUserInterface = function drawUserInterface(armies) {
