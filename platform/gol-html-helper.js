@@ -353,8 +353,8 @@ function GolHtmlHelper() {
 		}
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
 		that.ctx.textAlign = 'center';
-		that.ctx.fillStyle = 'rgb(66, 66, 66)';
-		that.ctx.font = '14px visitor';
+		that.ctx.fillStyle = 'rgb(255, 255, 255)';
+		that.ctx.font = '16px visitor';
 		that.ctx.fillText('DRAW', that.cols / 2, that.rows / 2);
 	};
 
@@ -368,10 +368,10 @@ function GolHtmlHelper() {
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
 		that.ctx.textAlign = 'center';
 		that.ctx.fillStyle = 'rgb(' + armies[1].color[0] + ',' + armies[1].color[1] + ',' + armies[1].color[2] + ')';
-		that.ctx.font = (winnerIndex === 1) ? '24px visitor' : '12px visitor';
+		that.ctx.font = (winnerIndex === 1) ? '24px visitor' : '16px visitor';
 		that.ctx.fillText(armies[1].name + ' : ' + roundWins[1], that.cols / 2, that.rows / 2 - 12);
 		that.ctx.fillStyle = 'rgb(' + armies[0].color[0] + ',' + armies[0].color[1] + ',' + armies[0].color[2] + ')';
-		that.ctx.font = (winnerIndex === 0) ? '24px visitor' : '12px visitor';
+		that.ctx.font = (winnerIndex === 0) ? '24px visitor' : '16px visitor';
 		that.ctx.fillText(armies[0].name + ' : ' + roundWins[0], that.cols / 2, that.rows / 2 + 12);
 	};
 
@@ -382,7 +382,7 @@ function GolHtmlHelper() {
 		document.getElementById('gol-army-stats-1').style['visibility'] = 'hidden';
 		that.ctx.clearRect(0, 0, that.cols, that.rows);
 		that.ctx.textAlign = 'center';
-		that.ctx.font = '12px visitor';
+		that.ctx.font = '16px visitor';
 		that.ctx.fillStyle = 'rgb(255, 255, 255)';
 		that.ctx.fillText('winner ( ' + winnerRoundCount + ' : ' + loserRoundCount + ' )', that.cols / 2, that.rows / 2 - 12);
 		that.ctx.font = '24px visitor';
