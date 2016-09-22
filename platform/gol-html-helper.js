@@ -160,7 +160,7 @@ function GolHtmlHelper() {
 			armyIcon = document.createElement('img');
 			armyIcon.setAttribute('id', 'gol-army-img-' + index);
 			armyIcon.className = 'gol-army-img';
-			armyIcon.setAttribute('height', '20px');
+			armyIcon.setAttribute('height', '15px');
 			armyIcon.setAttribute('src', 'platform/icons/' + army.icon + '.png');
 			armyStats.appendChild(armyIcon);
 		}
