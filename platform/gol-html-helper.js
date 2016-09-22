@@ -31,7 +31,8 @@ function GolHtmlHelper() {
 		that.addCssRule('#army-vs-army-panel {width: 400px; text-align: center; display: none; opacity: 0; transition: 5s all ease;}');
 		that.addCssRule('.army-vs-army-vs {margin: 20px;}');
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
-		that.addCssRule('#time-display {position: absolute; left: 7px; top: 5px; font-size: 12px; color: #666;');
+		that.addCssRule('#time-display {display: none; position: absolute; left: calc(50% + 205px); top: calc(50% - 5px); font-size: 10px;');
+		that.addCssRule('#time-display-bar {position: absolute; left: calc(50% + 202px); top: calc(50% - 100px); height: 200px; width: 1px;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin-top: 6px; margin-bottom: 6px;}');
 		that.addCssRule('.gol-army-img {position: relative; top: 0px; margin-right: 1px; height: 16px}');
 		for (i = 0; i < 2; i++) {
@@ -190,10 +191,14 @@ function GolHtmlHelper() {
 	};
 
 	that.addTimeDisplay = function addTimeDisplay(container) {
-		var timeDisplay;
+		var timeDisplay, timeDisplayBar;
 		timeDisplay = document.createElement('div');
 		timeDisplay.setAttribute('id', 'time-display');
-		return container.appendChild(timeDisplay);
+		container.appendChild(timeDisplay);
+
+		timeDisplayBar = document.createElement('div');
+		timeDisplayBar.setAttribute('id', 'time-display-bar');
+		container.appendChild(timeDisplayBar);
 	};
 
 	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, armies, roundEnded) {
@@ -311,17 +316,25 @@ function GolHtmlHelper() {
 	};
 
 	that.updateTimeDisplay = function updateTimeDisplay(secondsLeft) {
-		var minutes, seconds, timeStr;
+		var minutes, seconds, timeStr, borderHeight;
 		minutes = Math.floor(secondsLeft / 60);
 		seconds = secondsLeft - minutes * 60;
 		timeStr = (minutes >= 10 ? '' + minutes : '0' + minutes) + ':' + (seconds >= 10 ? '' + seconds : '0' + seconds);
 		document.getElementById('time-display').innerHTML = timeStr;
-		document.getElementById('time-display').style.color = secondsLeft > 10 ? '#666666' : '#ffffff';
+		document.getElementById('time-display').style['color'] = secondsLeft > 10 ? '#666' : '#fff';
 		document.getElementById('time-display').style['display'] = 'block';
+
+		borderHeight = Math.floor(that.settings.rows / 2 - (that.settings.rows / 2 * secondsLeft / that.settings.secondsMaxRoundDuration));
+		document.getElementById('time-display-bar').style['background-color'] = secondsLeft > 10 ? '#666' : '#fff';
+		document.getElementById('time-display-bar').style['border-top'] =	'' + borderHeight + 'px solid #333';
+		document.getElementById('time-display-bar').style['border-bottom'] =	'' + borderHeight + 'px solid #333';
+		document.getElementById('time-display-bar').style['top'] = 'calc(50% - 100px)';
+		document.getElementById('time-display-bar').style['display'] = 'block';
 	};
 
 	that.hideTimeDisplay = function hideTimeDisplay(time) {
 		document.getElementById('time-display').style['display'] = 'none';
+		document.getElementById('time-display-bar').style['display'] = 'none';
 	};
 
 	that.updateScore = function updateScore(armyIndex, armyPower, scoringPixels) {
