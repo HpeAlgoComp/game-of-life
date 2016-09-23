@@ -146,6 +146,7 @@
 			that.roundStartTime = (new Date()).getTime();
 			that.secondsLeft = that.settings.secondsMaxRoundDuration;
 			that.htmlHelper.updateTimeDisplay(that.secondsLeft);
+			that.htmlHelper.clearExplosions();
 			setTimeout(that.onGeneration, 0);
 		};
 

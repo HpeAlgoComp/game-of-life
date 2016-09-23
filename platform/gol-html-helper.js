@@ -11,6 +11,7 @@ function GolHtmlHelper() {
 		that.powerBarMaxWidth = Math.floor(that.settings.cols / 2 - 50);
 		that.addCssRules();
 		that.shakes = ['shake-little'];//['shake', 'shake-little', 'shake-horizontal', 'shake-rotate'];
+		that.explosions = [];
 	};
 
 	that.addCssRules = function addCssRules() {
@@ -204,12 +205,44 @@ function GolHtmlHelper() {
 		}
 	};
 
-	that.drawExplosions = function drawExplosions(imgData, armies, scoringPixelIndices) {
-		var i, j, index;
+	that.clearExplosions = function clearExplosions() {
+		that.explosions = [];	
+	}
+
+	that.handleExplosions = function handleExplosions(scoringPixelIndices, armies) {
+		var i, j, index, context, x, y, radius, startAngle, endAngle, counterClockWise, oldExplosions;
+		oldExplosions = [];
+		for (i = 0; i < that.explosions.length; i++) {
+			that.explosions[i].age++;
+			if (that.explosions[i].age > 5) {
+				oldExplosions.push(i);
+			}
+		}
+		for (i = 0; i < oldExplosions.length; i++) {
+			that.explosions.splice(oldExplosions[i], 1);
+		}
 		for (i = 0; i < 2; i++) {
 			for (j = 0; j < scoringPixelIndices[i].length; j++) {
 				index = scoringPixelIndices[i][j];
+				that.explosions.push({
+					index: index,
+					armyIndex: i,
+					age: 1
+				});
 			}
+		}
+		for (i = 0; i < that.explosions.length; i++) {
+			x = that.explosions[i].index % that.cols;
+			y = Math.floor(that.explosions[i].index / that.cols);
+			radius = that.explosions[i].age * 2;
+			startAngle = Math.PI;
+			endAngle = 0;
+			counterClockwise = that.explosions[i].armyIndex === 0;
+			that.ctx.beginPath();
+			that.ctx.arc(x, y, radius, startAngle, endAngle, counterClockwise);
+			that.ctx.lineWidth = radius;
+			that.ctx.strokeStyle = '#' + that.colorsHex[that.explosions[i].armyIndex];
+			that.ctx.stroke();			
 		}
 	};
 
@@ -217,10 +250,6 @@ function GolHtmlHelper() {
 		var i, j, k, x, y, r, g, b, a, maxAge, maxDistance, multiplier, distance, index, imgData;
 
 		imgData = that.ctx.createImageData(that.cols, that.rows);
-
-		if (scoringPixelIndices[0].length > 0 || scoringPixelIndices[1].length > 0) {
-			that.drawExplosions(imgData, armies, scoringPixelIndices);
-		}
 
 		// regular matrix
 		for (y = 0; y < that.rows; y++) {
@@ -330,6 +359,8 @@ function GolHtmlHelper() {
 		// }
 		
 		that.ctx.putImageData(imgData, 0, 0);
+
+		that.handleExplosions(scoringPixelIndices, armies);
 	};
 
 	that.shake = function shake() {
