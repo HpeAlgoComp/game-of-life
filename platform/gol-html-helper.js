@@ -210,7 +210,7 @@ function GolHtmlHelper() {
 	}
 
 	that.handleExplosions = function handleExplosions(scoringPixelIndices, armies) {
-		var i, j, index, context, x, y, radius, startAngle, endAngle, counterClockWise, oldExplosions, fadeStart;
+		var i, j, index, context, x, y, radius, startAngle, endAngle, counterClockWise, oldExplosions, fadeStart, c;
 		oldExplosions = [];
 		for (i = 0; i < that.explosions.length; i++) {
 			that.explosions[i].age++;
@@ -232,26 +232,31 @@ function GolHtmlHelper() {
 			}
 		}
 		fadeStart = 5;
+		counterClockwise = false;
 		for (i = 0; i < that.explosions.length; i++) {
 			x = that.explosions[i].index % that.cols;
 			y = Math.floor(that.explosions[i].index / that.cols);
-			radius = that.explosions[i].age * 2;
-			startAngle = Math.PI;
-			endAngle = 0;
-			counterClockwise = that.explosions[i].armyIndex === 0;
-			that.ctx.beginPath();
-			that.ctx.arc(x, y, radius, startAngle, endAngle, counterClockwise);
-			that.ctx.lineWidth = radius;
-			
-			if (that.explosions[i].age < fadeStart) {
-				that.ctx.strokeStyle = '#' + that.colorsHex[that.explosions[i].armyIndex];
-			} else {
-				that.ctx.strokeStyle = 'rgb(' + 
-					Math.floor(that.colorsRGB[that.explosions[i].armyIndex][0] / (that.explosions[i].age - fadeStart + 1)) + ',' +
-					Math.floor(that.colorsRGB[that.explosions[i].armyIndex][1] / (that.explosions[i].age - fadeStart + 1)) + ',' +
-					Math.floor(that.colorsRGB[that.explosions[i].armyIndex][2] / (that.explosions[i].age - fadeStart + 1)) + ')';
-			}
-			that.ctx.stroke();			
+			for (j = 0; j < 10; j++) {
+				radius = that.explosions[i].age * 3 * Math.random();
+				startAngle = that.explosions[i].armyIndex === 0 ? Math.random() * Math.PI / 2 : Math.PI + Math.random()* Math.PI / 2;
+				endAngle = that.explosions[i].armyIndex === 0 ? Math.PI - Math.random()* Math.PI / 2 : - Math.random() * Math.PI / 2;
+				that.ctx.beginPath();
+				that.ctx.arc(x, y, radius, startAngle, endAngle, counterClockwise);
+				that.ctx.lineWidth = radius;
+				c = 0.4 + Math.random() * 0.6;			
+				if (that.explosions[i].age < fadeStart) {
+					that.ctx.strokeStyle = 'rgb(' + 
+						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][0] * c) + ',' +
+						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][1] * c) + ',' +
+						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][2] * c) + ')';
+				} else {
+					that.ctx.strokeStyle = 'rgb(' + 
+						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][0] * c / (that.explosions[i].age - fadeStart + 1)) + ',' +
+						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][1] * c / (that.explosions[i].age - fadeStart + 1)) + ',' +
+						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][2] * c / (that.explosions[i].age - fadeStart + 1)) + ')';
+				}
+			that.ctx.stroke();
+			}			
 		}
 	};
 
