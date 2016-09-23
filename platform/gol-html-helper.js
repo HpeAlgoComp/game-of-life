@@ -204,11 +204,23 @@ function GolHtmlHelper() {
 		}
 	};
 
+	that.drawExplosions = function drawExplosions(imgData, armies, scoringPixelIndices) {
+		var i, j, index;
+		for (i = 0; i < 2; i++) {
+			for (j = 0; j < scoringPixelIndices[i].length; j++) {
+				index = scoringPixelIndices[i][j];
+			}
+		}
+	};
+
 	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelIndices, armies, roundEnded) {
-		var i, j, k, x, y, r, g, b, a, maxAge, maxDistance, multiplier, distance, index, imgData, scoringPixelCount;
-		
-		scoringPixelCount = [scoringPixelIndices[0].length, scoringPixelIndices[1].length];
+		var i, j, k, x, y, r, g, b, a, maxAge, maxDistance, multiplier, distance, index, imgData;
+
 		imgData = that.ctx.createImageData(that.cols, that.rows);
+
+		if (scoringPixelIndices[0].length > 0 || scoringPixelIndices[1].length > 0) {
+			that.drawExplosions(imgData, armies, scoringPixelIndices);
+		}
 
 		// regular matrix
 		for (y = 0; y < that.rows; y++) {
@@ -246,7 +258,7 @@ function GolHtmlHelper() {
 						}
 					} else {
 						// regular back line
-						if (scoringPixelCount[i * -1 + 1] === 0) {
+						if (scoringPixelIndices[i * -1 + 1].length === 0) {
 							r = that.colorsRGB[i][0];
 							g = that.colorsRGB[i][1];
 							b = that.colorsRGB[i][2];

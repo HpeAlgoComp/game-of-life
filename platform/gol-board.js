@@ -142,7 +142,7 @@ function GolBoard() {
 			for (c = 0; c < that.cols; c++) {
 				i = r * that.cols + c;
 				if (array[i] === a) {
-					scoringPixelIndices[a].push(a);					
+					scoringPixelIndices[a].push(i);					
 				}
 			}
 		}
