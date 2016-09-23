@@ -165,12 +165,12 @@
 			that.newPixelsAge[1]++;
 			that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
 			if (!roundEnded) {
-				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelIndices, that.armies, roundEnded);
+				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelIndices);
 				that.board.deleteScoringPixels(nxtArray);
 				setTimeout(that.onGeneration, 0);
 				//requestAnimationFrame(that.onGeneration);
 			} else {
-				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelIndices, that.armies, roundEnded);
+				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelIndices);
 				setTimeout(that.endRound, that.settings.millisEndRoundBoardFreezeDuration);
 			}
 		};

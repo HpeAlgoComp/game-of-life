@@ -209,18 +209,24 @@ function GolHtmlHelper() {
 		that.explosions = [];	
 	}
 
-	that.handleExplosions = function handleExplosions(scoringPixelIndices, armies) {
-		var i, j, index, context, x, y, radius, startAngle, endAngle, counterClockWise, oldExplosions, fadeStart, c;
-		oldExplosions = [];
+	that.updateExplosionCollection = function updateExplosionCollection(scoringPixelIndices) {
+		var i, oldExplosions, maxAge;
+
+		maxAge = 10;
+
+		// delete old explosions
+		oldExplosions = [];		
 		for (i = 0; i < that.explosions.length; i++) {
 			that.explosions[i].age++;
-			if (that.explosions[i].age > 10) {
+			if (that.explosions[i].age > maxAge) {
 				oldExplosions.push(i);
 			}
 		}
 		for (i = 0; i < oldExplosions.length; i++) {
 			that.explosions.splice(oldExplosions[i], 1);
 		}
+
+		// add new explosions
 		for (i = 0; i < 2; i++) {
 			for (j = 0; j < scoringPixelIndices[i].length; j++) {
 				index = scoringPixelIndices[i][j];
@@ -231,11 +237,65 @@ function GolHtmlHelper() {
 				});
 			}
 		}
+	};
+
+	that.drawExplosionsCore = function drawExplosionsCore(array, imgData) {
+		var i, k, index, x, y, c, maxDistance, multiplier, distance, corePixels, age, armyIndex;
+		
+		counterClockwise = false;
+		for (i = 0; i < that.explosions.length; i++) {
+			x = that.explosions[i].index % that.cols;
+			y = Math.floor(that.explosions[i].index / that.cols);
+			armyIndex = that.explosions[i].armyIndex;
+			age = that.explosions[i].age;
+
+			maxDistance = Math.floor(64 / that.explosions[i].age);
+			multiplier = Math.floor(256 / maxDistance);
+
+			if (that.explosions[i].armyIndex === 0){
+				corePixels = [[x-1,y], [x,y], [x+1,y], [x-1,y+1], [x,y+1], [x+1,y+1], [x-1,y+2], [x,y+2], [x+1,y+2]];	
+			} else {
+				corePixels = [[x-1,y], [x,y], [x+1,y], [x-1,y-1], [x,y-1], [x+1,y-1], [x-1,y-2], [x,y-2], [x+1,y-2]];	
+			}
+			for (c = 0; c < corePixels.length; c++) {
+				for (k = 0; k < that.rows; k++) {
+					distance = Math.abs(k - corePixels[c][1]);
+					if (distance < maxDistance) {
+						index = k * that.cols + corePixels[c][0];
+						if (array[index] === -1) {
+							imgData.data[index * 4] = imgData.data[index * 4 + 1] = imgData.data[index * 4 + 2] = 255;
+							imgData.data[index * 4 + 3] = (1 / age) * (maxDistance - distance) * multiplier - 1;
+						}
+					}
+				}
+				for (k = 0; k < that.cols; k++) {
+					distance = Math.abs(k - corePixels[c][0]);
+					if (distance < maxDistance) {
+						index = corePixels[c][1] * that.cols + k;
+						if (array[index] === -1) {
+							imgData.data[index * 4] = imgData.data[index * 4 + 1] = imgData.data[index * 4 + 2] = 255;
+							imgData.data[index * 4 + 3] = (1 / age) * (maxDistance - distance) * multiplier - 1;
+						}
+					}
+				}
+			}				
+		}
+	};
+
+	that.drawExplosionsHalo = function drawExplosionsHalo() {
+		var i, j, k, l, index, context, x, y, radius, startAngle, endAngle, counterClockWise, oldExplosions, fadeStart, 
+			c, maxAge, age, armyIndex;
+		
+		maxAge = 10;
+
 		fadeStart = 5;
 		counterClockwise = false;
 		for (i = 0; i < that.explosions.length; i++) {
 			x = that.explosions[i].index % that.cols;
 			y = Math.floor(that.explosions[i].index / that.cols);
+			armyIndex = that.explosions[i].armyIndex;
+			age = that.explosions[i].age;
+
 			for (j = 0; j < 10; j++) {
 				radius = 4 + that.explosions[i].age * 2 * Math.random();
 				startAngle = that.explosions[i].armyIndex === 0 ? Math.random() * Math.PI / 2 : Math.PI + Math.random()* Math.PI / 2;
@@ -246,21 +306,21 @@ function GolHtmlHelper() {
 				c = 0.4 + Math.random() * 0.6;			
 				if (that.explosions[i].age < fadeStart) {
 					that.ctx.strokeStyle = 'rgb(' + 
-						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][0] * c) + ',' +
-						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][1] * c) + ',' +
-						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][2] * c) + ')';
+						Math.floor(that.colorsRGB[armyIndex][0] * c) + ',' +
+						Math.floor(that.colorsRGB[armyIndex][1] * c) + ',' +
+						Math.floor(that.colorsRGB[armyIndex][2] * c) + ')';
 				} else {
 					that.ctx.strokeStyle = 'rgb(' + 
-						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][0] * c / (that.explosions[i].age - fadeStart + 1)) + ',' +
-						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][1] * c / (that.explosions[i].age - fadeStart + 1)) + ',' +
-						Math.floor(that.colorsRGB[that.explosions[i].armyIndex][2] * c / (that.explosions[i].age - fadeStart + 1)) + ')';
+						Math.floor(that.colorsRGB[armyIndex][0] * c / (age - fadeStart + 1)) + ',' +
+						Math.floor(that.colorsRGB[armyIndex][1] * c / (age - fadeStart + 1)) + ',' +
+						Math.floor(that.colorsRGB[armyIndex][2] * c / (age - fadeStart + 1)) + ')';
 				}
 			that.ctx.stroke();
 			}			
 		}
 	};
 
-	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelIndices, armies, roundEnded) {
+	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelIndices) {
 		var i, j, k, x, y, r, g, b, a, maxAge, maxDistance, multiplier, distance, index, imgData;
 
 		imgData = that.ctx.createImageData(that.cols, that.rows);
@@ -286,31 +346,10 @@ function GolHtmlHelper() {
 			for (x = 0; x < that.cols; x++) {
 				index = y * that.cols + x;
 				if (array[index] === -1) {
-					if (roundEnded) {
-						if (armies[i].power !== 0 || armies[0].power === 0 && armies[1].power === 0) {
-							// draw
-							r = that.colorsRGB[i][0];
-							g = that.colorsRGB[i][1];
-							b = that.colorsRGB[i][2];
-							a = Math.floor(Math.random() * 255);
-						} else if (armies[i].power === 0) {
-							r = that.colorsRGB[i * -1 + 1][0];
-							g = that.colorsRGB[i * -1 + 1][1];
-							b = that.colorsRGB[i * -1 + 1][2];
-							a = Math.floor(Math.random() * 255);
-						}
-					} else {
-						// regular back line
-						if (scoringPixelIndices[i * -1 + 1].length === 0) {
-							r = that.colorsRGB[i][0];
-							g = that.colorsRGB[i][1];
-							b = that.colorsRGB[i][2];
-							a = Math.floor(Math.random() * 255);
-						} else {
-							// hit
-							r = g = b = a = 255;
-						}
-					}
+					r = that.colorsRGB[i][0];
+					g = that.colorsRGB[i][1];
+					b = that.colorsRGB[i][2];
+					a = Math.floor(Math.random() * 255);
 					imgData.data[index * 4] = r;
 					imgData.data[index * 4 + 1] = g;
 					imgData.data[index * 4 + 2] = b;
@@ -364,6 +403,9 @@ function GolHtmlHelper() {
 			}
 		}
 
+		that.updateExplosionCollection(scoringPixelIndices);
+		that.drawExplosionsCore(array, imgData);
+
 		// boardcenter mark
 		// for (y = 99; y <= 100; y++) {
 		// 	for (x = 199; x <= 200; x++) {
@@ -374,7 +416,7 @@ function GolHtmlHelper() {
 		
 		that.ctx.putImageData(imgData, 0, 0);
 
-		that.handleExplosions(scoringPixelIndices, armies);
+		that.drawExplosionsHalo();		
 	};
 
 	that.shake = function shake() {
