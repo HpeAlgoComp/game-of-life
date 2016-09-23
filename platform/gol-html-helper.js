@@ -253,9 +253,9 @@ function GolHtmlHelper() {
 			multiplier = Math.floor(256 / maxDistance);
 
 			if (that.explosions[i].armyIndex === 0){
-				corePixels = [[x-1,y], [x,y], [x+1,y], [x-1,y+1], [x,y+1], [x+1,y+1], [x-1,y+2], [x,y+2], [x+1,y+2]];	
+				corePixels = [[x,y], [x-1,y+1], [x,y+1], [x+1,y+1], [x,y+2]];	
 			} else {
-				corePixels = [[x-1,y], [x,y], [x+1,y], [x-1,y-1], [x,y-1], [x+1,y-1], [x-1,y-2], [x,y-2], [x+1,y-2]];	
+				corePixels = [[x,y], [x-1,y-1], [x,y-1], [x+1,y-1], [x,y-2]];	
 			}
 			for (c = 0; c < corePixels.length; c++) {
 				for (k = 0; k < that.rows; k++) {
