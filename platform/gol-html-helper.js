@@ -204,8 +204,10 @@ function GolHtmlHelper() {
 		}
 	};
 
-	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, armies, roundEnded) {
-		var i, j, k, x, y, r, g, b, a, maxAge, maxDistance, multiplier, distance, index, imgData;
+	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelIndices, armies, roundEnded) {
+		var i, j, k, x, y, r, g, b, a, maxAge, maxDistance, multiplier, distance, index, imgData, scoringPixelCount;
+		
+		scoringPixelCount = [scoringPixelIndices[0].length, scoringPixelIndices[1].length];
 		imgData = that.ctx.createImageData(that.cols, that.rows);
 
 		// regular matrix
@@ -307,7 +309,7 @@ function GolHtmlHelper() {
 			}
 		}
 
-		// board center point
+		// boardcenter mark
 		// for (y = 99; y <= 100; y++) {
 		// 	for (x = 199; x <= 200; x++) {
 		// 		i = y * that.cols + x;
