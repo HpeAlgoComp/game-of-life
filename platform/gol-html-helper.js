@@ -32,7 +32,8 @@ function GolHtmlHelper() {
 		that.addCssRule('.army-vs-army-vs {margin: 20px;}');
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
 		that.addCssRule('#time-display {display: none; position: absolute; left: calc(50% - 13px); top: calc(50% - 5px); font-size: 10px; opacity: 0.5');
-		that.addCssRule('#time-display-bar {position: absolute; left: calc(50% + 202px); top: calc(50% - 100px); height: 200px; width: 1px;}');
+		that.addCssRule('#time-display-bar-0 {position: absolute; left: calc(50% + 200px); top: calc(50% - 100px); height: 200px; width: 2px;}');
+		that.addCssRule('#time-display-bar-1 {position: absolute; left: calc(50% - 202px); top: calc(50% - 100px); height: 200px; width: 2px;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin-top: 6px; margin-bottom: 6px;}');
 		that.addCssRule('.gol-army-img {position: relative; top: 0px; margin-right: 1px; height: 16px}');
 		for (i = 0; i < 2; i++) {
@@ -191,14 +192,16 @@ function GolHtmlHelper() {
 	};
 
 	that.addTimeDisplay = function addTimeDisplay(container) {
-		var timeDisplay, timeDisplayBar;
+		var i, timeDisplay, timeDisplayBar;
 		timeDisplay = document.createElement('div');
 		timeDisplay.setAttribute('id', 'time-display');
 		container.appendChild(timeDisplay);
 
-		timeDisplayBar = document.createElement('div');
-		timeDisplayBar.setAttribute('id', 'time-display-bar');
-		container.appendChild(timeDisplayBar);
+		for (i = 0; i < 2; i++) {
+			timeDisplayBar = document.createElement('div');
+			timeDisplayBar.setAttribute('id', 'time-display-bar-' + i);
+			container.appendChild(timeDisplayBar);	
+		}
 	};
 
 	that.drawArrayToCanvas = function drawArrayToCanvas(array, newPixels, newPixelsAge, scoringPixelCount, armies, roundEnded) {
@@ -316,28 +319,35 @@ function GolHtmlHelper() {
 	};
 
 	that.updateTimeDisplay = function updateTimeDisplay(secondsLeft) {
-		var minutes, seconds, timeStr, borderHeight;
+		var i, elm, minutes, seconds, timeStr, borderHeight;
 
 		if (secondsLeft <= 10) {
 			minutes = Math.floor(secondsLeft / 60);
 			seconds = secondsLeft - minutes * 60;
 			timeStr = (minutes >= 10 ? '' + minutes : '0' + minutes) + ':' + (seconds >= 10 ? '' + seconds : '0' + seconds);
-			document.getElementById('time-display').innerHTML = timeStr;
-			document.getElementById('time-display').style['color'] = secondsLeft > 10 ? '#999' : '#fff';
-			document.getElementById('time-display').style['display'] = 'block';
+			elm = document.getElementById('time-display');
+			elm.innerHTML = timeStr;
+			elm.style['color'] = secondsLeft > 10 ? '#999' : '#fff';
+			elm.style['display'] = 'block';
 		}
 
 		borderHeight = Math.floor(that.settings.rows / 2 - (that.settings.rows / 2 * secondsLeft / that.settings.secondsMaxRoundDuration));
-		document.getElementById('time-display-bar').style['background-color'] = secondsLeft > 10 ? '#999' : '#fff';
-		document.getElementById('time-display-bar').style['border-top'] =	'' + borderHeight + 'px solid #333';
-		document.getElementById('time-display-bar').style['border-bottom'] =	'' + borderHeight + 'px solid #333';
-		document.getElementById('time-display-bar').style['top'] = 'calc(50% - 100px)';
-		document.getElementById('time-display-bar').style['display'] = 'block';
+		for (i = 0; i < 2; i++) {
+			elm = document.getElementById('time-display-bar-' + i);
+			elm.style['background-color'] = secondsLeft > 10 ? '#999' : '#fff';
+			elm.style['border-top'] =	'' + borderHeight + 'px solid #333';
+			elm.style['border-bottom'] =	'' + borderHeight + 'px solid #333';
+			elm.style['top'] = 'calc(50% - 100px)';
+			elm.style['display'] = 'block';
+		}
 	};
 
 	that.hideTimeDisplay = function hideTimeDisplay(time) {
+		var i;
 		document.getElementById('time-display').style['display'] = 'none';
-		document.getElementById('time-display-bar').style['display'] = 'none';
+		for (i = 0; i < 2; i++) {
+			document.getElementById('time-display-bar-' + i).style['display'] = 'none';
+		}
 	};
 
 	that.updateScore = function updateScore(armyIndex, armyPower, scoringPixels) {
