@@ -237,7 +237,7 @@ function GolHtmlHelper() {
 			x = that.explosions[i].index % that.cols;
 			y = Math.floor(that.explosions[i].index / that.cols);
 			for (j = 0; j < 10; j++) {
-				radius = that.explosions[i].age * 3 * Math.random();
+				radius = 4 + that.explosions[i].age * 2 * Math.random();
 				startAngle = that.explosions[i].armyIndex === 0 ? Math.random() * Math.PI / 2 : Math.PI + Math.random()* Math.PI / 2;
 				endAngle = that.explosions[i].armyIndex === 0 ? Math.PI - Math.random()* Math.PI / 2 : - Math.random() * Math.PI / 2;
 				that.ctx.beginPath();
