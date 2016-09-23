@@ -210,11 +210,11 @@ function GolHtmlHelper() {
 	}
 
 	that.handleExplosions = function handleExplosions(scoringPixelIndices, armies) {
-		var i, j, index, context, x, y, radius, startAngle, endAngle, counterClockWise, oldExplosions;
+		var i, j, index, context, x, y, radius, startAngle, endAngle, counterClockWise, oldExplosions, fadeStart;
 		oldExplosions = [];
 		for (i = 0; i < that.explosions.length; i++) {
 			that.explosions[i].age++;
-			if (that.explosions[i].age > 5) {
+			if (that.explosions[i].age > 10) {
 				oldExplosions.push(i);
 			}
 		}
@@ -231,6 +231,7 @@ function GolHtmlHelper() {
 				});
 			}
 		}
+		fadeStart = 5;
 		for (i = 0; i < that.explosions.length; i++) {
 			x = that.explosions[i].index % that.cols;
 			y = Math.floor(that.explosions[i].index / that.cols);
@@ -241,7 +242,15 @@ function GolHtmlHelper() {
 			that.ctx.beginPath();
 			that.ctx.arc(x, y, radius, startAngle, endAngle, counterClockwise);
 			that.ctx.lineWidth = radius;
-			that.ctx.strokeStyle = '#' + that.colorsHex[that.explosions[i].armyIndex];
+			
+			if (that.explosions[i].age < fadeStart) {
+				that.ctx.strokeStyle = '#' + that.colorsHex[that.explosions[i].armyIndex];
+			} else {
+				that.ctx.strokeStyle = 'rgb(' + 
+					Math.floor(that.colorsRGB[that.explosions[i].armyIndex][0] / (that.explosions[i].age - fadeStart + 1)) + ',' +
+					Math.floor(that.colorsRGB[that.explosions[i].armyIndex][1] / (that.explosions[i].age - fadeStart + 1)) + ',' +
+					Math.floor(that.colorsRGB[that.explosions[i].armyIndex][2] / (that.explosions[i].age - fadeStart + 1)) + ')';
+			}
 			that.ctx.stroke();			
 		}
 	};
