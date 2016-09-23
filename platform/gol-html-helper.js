@@ -31,7 +31,7 @@ function GolHtmlHelper() {
 		that.addCssRule('#army-vs-army-panel {width: 400px; text-align: center; display: none; opacity: 0; transition: 5s all ease;}');
 		that.addCssRule('.army-vs-army-vs {margin: 20px;}');
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
-		that.addCssRule('#time-display {display: none; position: absolute; left: calc(50% - 13px); top: calc(50% - 5px); font-size: 10px; opacity: 0.5');
+		that.addCssRule('#time-display {display: none; position: absolute; left: calc(50% - 30px); top: calc(50% - 11px); font-size: 24px; opacity: 0.5');
 		that.addCssRule('#time-display-bar-0 {position: absolute; left: calc(50% + 200px); top: calc(50% - 100px); height: 200px; width: 2px;}');
 		that.addCssRule('#time-display-bar-1 {position: absolute; left: calc(50% - 202px); top: calc(50% - 100px); height: 200px; width: 2px;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin-top: 6px; margin-bottom: 6px;}');
@@ -307,6 +307,14 @@ function GolHtmlHelper() {
 			}
 		}
 
+		// board center point
+		// for (y = 99; y <= 100; y++) {
+		// 	for (x = 199; x <= 200; x++) {
+		// 		i = y * that.cols + x;
+		// 		imgData.data[i * 4] = imgData.data[i * 4 + 1] = imgData.data[i * 4 + 2] = imgData.data[i * 4 + 3] = 255;
+		// 	}
+		// }
+		
 		that.ctx.putImageData(imgData, 0, 0);
 	};
 
