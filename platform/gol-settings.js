@@ -4,7 +4,7 @@ function GolSettings() {
 
 	that.isTournament = false;
 
-	that.colorsRGB = [ [0x11, 0xFF, 0xBB], [0xFF, 0x22, 0x33] ];
+	that.colorsRGB = [ [0x11, 0xFF, 0xCC], [0xFF, 0x33, 0x33] ];
 
 	that.cols = 400;
 	that.rows = 200;
