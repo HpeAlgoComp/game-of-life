@@ -114,8 +114,10 @@
 		};
 
 		that.showArmyVsArmyIntro = function showArmyVsArmyIntro() {
-			that.playSound(that.armyVsArmySound);
 			that.htmlHelper.showArmyVsArmyPanel(that.armies);
+			setTimeout(function() {
+				that.playSound(that.armyVsArmySound);
+			}, 1000);
 			setTimeout(that.hideArmyVsArmyIntro, that.settings.millisArmyVsArmyMessageDuration);
 		};
 
