@@ -2,7 +2,13 @@ function GolSettings() {
 
 	var that = this;
 
-	that.isTournament = false;
+	that.gameModes = {
+		EXTERNAL: 0,
+		PLAYOFF: 1,
+		ALL_VS_ALL: 2
+	};
+
+	that.gameMode = that.gameModes.EXTERNAL;
 
 	that.colorsRGB = [ [0x11, 0xFF, 0xCC], [0xFF, 0x33, 0x33] ];
 

@@ -166,14 +166,13 @@ function GolHtmlHelper() {
 
 		armyStats.setAttribute('id', 'gol-army-stats-' + index);
 
-		if (that.settings.isTournament) {
+		if (that.settings.gameMode !== that.settings.gameModes.EXTERNAL) {
 			armyIcon = document.createElement('img');
 			armyIcon.setAttribute('id', 'gol-army-img-' + index);
 			armyIcon.className = 'gol-army-img';
 			armyIcon.setAttribute('src', 'platform/icons/' + army.icon + '.png');
 			armyStats.appendChild(armyIcon);
 		}
-
 		armyScore = document.createElement('div');
 		armyScore.setAttribute('id', 'gol-army-score-' + index);
 		textNode = document.createTextNode('' + that.settings.powerMaxValue);
