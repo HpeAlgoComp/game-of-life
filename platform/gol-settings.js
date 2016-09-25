@@ -10,7 +10,7 @@ function GolSettings() {
 	that.rows = 200;
 
 	that.powerMaxValue = 100;
-	that.powerHitQuantum = 50;
+	that.powerHitQuantum = 5;
 
 	that.initialBudget = 0;
 	that.budgetTickQuantum = 1;
