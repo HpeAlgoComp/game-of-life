@@ -43,6 +43,7 @@ function GolHtmlHelper() {
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin-top: 6px; margin-bottom: 6px;}');
 		that.addCssRule('.gol-army-img {position: relative; top: 0px; margin-right: 1px; height: 16px}');
     that.addCssRule('#winner-loser-panel {display: none; height: 100%; flex-direction: column; justify-content: space-around; text-align: center;}');
+		that.addCssRule('#start-tournament-button {position: absolute; bottom: 20px; right: 20px; background: #666; color: #fff; font-family: visitor, consolas, monospace, sans-serif; font-size: 8px; cursor: pointer; outline: none; border: none;}');
 		for (i = 0; i < 2; i++) {
 			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
 		that.addCssRule('#army-vs-army-img-' + i + ' {display: inline-block; height: 100px; vertical-align: middle;}');
