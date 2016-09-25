@@ -536,7 +536,7 @@ function GolHtmlHelper() {
 	        document.getElementById('lose-army-img').setAttribute('src', 'armies/pictures/' + armies[loserIndex].icon + 'Lose.jpg');
 	        document.getElementById('lose-army-img').onerror = function () {this.src = 'platform/icons/' + armies[loserIndex].icon + '.png';};
 	        document.getElementById('lose-army-name').innerHTML = '<img src="platform/icons/' + armies[loserIndex].icon + '.png" class="winner-and-loser-army-name">' + armies[loserIndex].name + ' - Loser';
-	        document.getElementById('lose-army-name').style['color'] = '#' + that.colorsHex[winnerIndex];
+	        document.getElementById('lose-army-name').style['color'] = '#' + that.colorsHex[loserIndex];
 	    }
 	    else {
 		    document.getElementById('gol-army-stats-0').style['visibility'] = 'hidden';
