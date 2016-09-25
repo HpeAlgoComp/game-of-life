@@ -254,7 +254,7 @@
 			that.playSound(that.endGameSound);
 			winnerIndex = (that.armies[0].power > that.armies[1].power) ? 0 : 1;
 			that.htmlHelper.endGame(that.armies, winnerIndex /*that.roundWins*/);
-			if (that.tournament.runningTournament) {
+			if (that.tournament != null && that.tournament!=undefined && that.tournament.runningTournament) {
                 that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name].winner = that.armies[winnerIndex].name;
 			    that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name]['roundWins '+that.armies[0].name] = that.roundWins[0];
 			    that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name]['roundWins ' + that.armies[1].name] = that.roundWins[1];
