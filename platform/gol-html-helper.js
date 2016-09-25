@@ -33,7 +33,7 @@ function GolHtmlHelper() {
 		that.addCssRule('.load-src-msg {text-align: left; font-size: 12px; color: #333; transition: 1s color ease;}');
 		that.addCssRule('.load-src-msg:nth-child(3) {margin-bottom: 2px;}');
 		that.addCssRule('.load-src-input {outline: none !important; margin-bottom: 1px; width: 100%; height: 8px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #666; cursor: pointer; transition: 1s all ease;}');
-		that.addCssRule('#load-src-button {margin-top: 8px; width: 50px; height: 20px; border: 1px solid #666; background: #666; color: #fff; font-family: visitor, consolas, monospace, sans-serif; font-size: 16px; cursor: pointer; outline: none; opacity: 0; transition: 1s opacity ease;}');
+		that.addCssRule('#load-src-button {margin-top: 8px; width: 50px; height: 20px; border: 1px solid #333; background-color: #202020; color: #333; font-family: visitor, consolas, monospace, sans-serif; font-size: 16px; outline: none; transition: 1s all ease;}');
 		that.addCssRule('#army-vs-army-panel {width: 400px; text-align: center; display: none;}');
 		that.addCssRule('.army-vs-army-vs {margin: 20px;}');
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
@@ -82,7 +82,7 @@ function GolHtmlHelper() {
 	};
 
 	that.markSrcLines = function markSrcLines(srcIndices) {
-		var i, elm;
+		var i, elm, readyToLoad, loadBtn;
 		for (i = 0; i < 16; i++) {
 			elm = document.getElementById('src-' + i);
 			if ('' + i === srcIndices[0]) {
@@ -98,7 +98,14 @@ function GolHtmlHelper() {
 		}
 		document.getElementById('load-src-msg-1').style['color'] = srcIndices[1] === -1 ? '#' + that.colorsHex[1] : '#333';
 		document.getElementById('load-src-msg-0').style['color'] = srcIndices[0] === -1 && srcIndices[1] !== -1 ? '#' + that.colorsHex[0] : '#333';
-		document.getElementById('load-src-button').style['opacity'] = (srcIndices[1] !== -1 && srcIndices[0] !== -1) ? '1' : '0';
+
+		readyToLoad = srcIndices[1] !== -1 && srcIndices[0] !== -1;
+		loadBtn = document.getElementById('load-src-button');
+		loadBtn.style['border'] = readyToLoad ? '1px solid #666' : '1px solid #333';
+		loadBtn.style['background-color'] = readyToLoad ? '#666' : '#202020';
+		loadBtn.style['color'] = readyToLoad ? '#fff' : '#333';
+		loadBtn.style['cursor'] = readyToLoad ? 'pointer' : 'default';
+		loadBtn.setAttribute('onclick', readyToLoad ? 'loadSources()' : '');
 	};
 
 	that.loadSource = function loadSource(index) {
