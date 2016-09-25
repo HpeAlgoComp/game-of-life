@@ -167,7 +167,7 @@ function GolHtmlHelper() {
 
 		armyStats.setAttribute('id', 'gol-army-stats-' + index);
 
-		if (that.settings.gameMode !== that.settings.gameModes.EXTERNAL) {
+		if (that.settings.gameMode !== that.settings.gameModes.AUTO_START) {
 			armyIcon = document.createElement('img');
 			armyIcon.setAttribute('id', 'gol-army-img-' + index);
 			armyIcon.className = 'gol-army-img';

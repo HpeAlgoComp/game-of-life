@@ -12,7 +12,7 @@
 			that.htmlHelper.init(settings);
 			that.srcIndices = [-1, -1];
 			that.armies = [];
-			that.gameMode = settings.gameModes.EXTERNAL;
+			that.gameMode = settings.gameModes.AUTO_START;
 			that.round = 0;
 			that.roundWins = [0, 0];
 			that.lastWinner = '';
@@ -48,7 +48,7 @@
 			m = (m + 1) % that.musicFiles.length;
 			localStorage.setItem('game-of-life-music-index', m);
 			window.startGame = that.startGame;
-			window.startPlayoff = that.startPlayoff;
+			window.startSingleGame = that.startSingleGame;
 			window.startTournament = that.startTournament;
 			window.registerArmy = that.registerArmy;
 			window.toggleSrc = that.toggleSrc;
@@ -57,13 +57,13 @@
 
 		that.startGame = function startGame() {
 			_dbg('startGame()');
-			that.settings.gameMode = that.gameModes.EXTERNAL;
+			that.settings.gameMode = that.gameModes.AUTO_START;
 			that.waitForArmies();
 		};
 
-		that.startPlayoff = function startPlayoff() {
-			_dbg('startPlayoff()');
-			that.settings.gameMode = that.settings.gameModes.PLAYOFF;
+		that.startSingleGame = function startSingleGame() {
+			_dbg('startSingleGame()');
+			that.settings.gameMode = that.settings.gameModes.SINGLE_GAME;
 			that.htmlHelper.fadeInLoadSourcesPanel();
 			that.htmlHelper.markSrcLines(that.srcIndices);
 		};
@@ -144,7 +144,7 @@
 				if (that.tournament && that.tournament.runningTournament) {
 					that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name] = {};
 				}
-				if (that.settings.gameMode === that.settings.gameModes.EXTERNAL) {
+				if (that.settings.gameMode === that.settings.gameModes.AUTO_START) {
 					that.startRound();
 				} else {
 					that.showArmyVsArmyIntro();
