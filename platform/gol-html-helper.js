@@ -119,7 +119,8 @@ function GolHtmlHelper() {
 				document.getElementById('army-vs-army-img-' + i).style['visibility'] = 'visible';
 				document.getElementById('army-vs-army-name-' + i).style['visibility'] = 'visible';
 			}
-			document.getElementById('army-vs-army-panel').style['display'] = 'block';			
+			document.getElementById('army-vs-army-panel').style['display'] = 'block';
+			document.getElementById('winArmy-loseArmy-panel').style['display'] = 'none';
 		}, 1000);
 	};
 
@@ -139,10 +140,13 @@ function GolHtmlHelper() {
 	};
 
 	that.addContainer = function addContainer() {
-		var container;
-		container = document.createElement('div');
-		container.setAttribute('id', 'gol-container');
-		return document.body.appendChild(container);
+	    if (document.getElementById('gol-container') == null || document.getElementById('gol-container') == undefined) {
+            var container;
+		    container = document.createElement('div');
+		    container.setAttribute('id', 'gol-container');
+		    return document.body.appendChild(container);
+	    }
+	    return document.getElementById('gol-container');
 	};
 
 	that.addArmyLine = function addArmyLine(container, index, army) {
@@ -530,8 +534,8 @@ function GolHtmlHelper() {
 	    var loseIndex = 0;
 	    if (winnerIndex == 0) loseIndex = 1;
 	    document.getElementById('winArmy-loseArmy-panel').style['display'] = 'block'; 
-	    document.getElementById('pre-game-container').style['display'] = 'block';
-	    document.getElementById('gol-container').style['display'] = 'none';
+	    document.getElementById('pre-game-container').style['display'] = 'flex';
+	    document.getElementById('gol-container').innerHTML = "";
 	    document.getElementById('army-vs-army-panel').style['display'] = 'none';
 	    document.getElementById('winArmy-img').setAttribute('src', 'platform/pictures/' + armies[winnerIndex].icon + 'Win.jpg');
 	    document.getElementById('winArmy-img').onerror = function () {
