@@ -137,7 +137,7 @@
 				_log('waiting for armies...');
 				setTimeout(that.waitForArmies, 500);
 			} else {
-			    that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name] = {};
+			    if (that.tournament != null && that.tournament != undefined && that.tournament.runningTournament) that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name] = {};
 				if (that.isTournament) {
 					that.showArmyVsArmyIntro();
 				} else {
