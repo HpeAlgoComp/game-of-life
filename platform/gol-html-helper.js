@@ -12,6 +12,8 @@ function GolHtmlHelper() {
 		that.addCssRules();
 		that.shakes = ['shake-little'];//['shake', 'shake-little', 'shake-horizontal', 'shake-rotate'];
 		that.explosions = [];
+		that.explosionMaxAge = 25;
+		that.explosionFadeStart = 10;
 	};
 
 	that.addCssRules = function addCssRules() {
@@ -209,19 +211,17 @@ function GolHtmlHelper() {
 	};
 
 	that.clearExplosions = function clearExplosions() {
-		that.explosions = [];	
-	}
+		that.explosions = [];
+	};
 
 	that.updateExplosionCollection = function updateExplosionCollection(scoringPixelIndices) {
-		var i, oldExplosions, maxAge;
-
-		maxAge = 10;
+		var i, j, index, oldExplosions;
 
 		// delete old explosions
-		oldExplosions = [];		
+		oldExplosions = [];
 		for (i = 0; i < that.explosions.length; i++) {
 			that.explosions[i].age++;
-			if (that.explosions[i].age > maxAge) {
+			if (that.explosions[i].age > that.explosionMaxAge) {
 				oldExplosions.push(i);
 			}
 		}
@@ -244,8 +244,7 @@ function GolHtmlHelper() {
 
 	that.drawExplosionsCore = function drawExplosionsCore(array, imgData) {
 		var i, k, index, x, y, c, maxDistance, multiplier, distance, corePixels, age, armyIndex;
-		
-		counterClockwise = false;
+
 		for (i = 0; i < that.explosions.length; i++) {
 			x = that.explosions[i].index % that.cols;
 			y = Math.floor(that.explosions[i].index / that.cols);
@@ -256,9 +255,9 @@ function GolHtmlHelper() {
 			multiplier = Math.floor(256 / maxDistance);
 
 			if (that.explosions[i].armyIndex === 0){
-				corePixels = [[x,y], [x-1,y+1], [x,y+1], [x+1,y+1], [x,y+2]];	
+				corePixels = [[x,y], [x-1,y+1], [x,y+1], [x+1,y+1], [x,y+2]];
 			} else {
-				corePixels = [[x,y], [x-1,y-1], [x,y-1], [x+1,y-1], [x,y-2]];	
+				corePixels = [[x,y], [x-1,y-1], [x,y-1], [x+1,y-1], [x,y-2]];
 			}
 			for (c = 0; c < corePixels.length; c++) {
 				for (k = 0; k < that.rows; k++) {
@@ -281,17 +280,13 @@ function GolHtmlHelper() {
 						}
 					}
 				}
-			}				
+			}
 		}
 	};
 
 	that.drawExplosionsHalo = function drawExplosionsHalo() {
-		var i, j, k, l, index, context, x, y, radius, startAngle, endAngle, counterClockWise, oldExplosions, fadeStart, 
-			c, maxAge, age, armyIndex;
-		
-		maxAge = 10;
+		var i, j, x, y, radius, startAngle, endAngle, counterClockwise, c, age, armyIndex;
 
-		fadeStart = 5;
 		counterClockwise = false;
 		for (i = 0; i < that.explosions.length; i++) {
 			x = that.explosions[i].index % that.cols;
@@ -306,20 +301,20 @@ function GolHtmlHelper() {
 				that.ctx.beginPath();
 				that.ctx.arc(x, y, radius, startAngle, endAngle, counterClockwise);
 				that.ctx.lineWidth = radius;
-				c = 0.4 + Math.random() * 0.6;			
-				if (that.explosions[i].age < fadeStart) {
-					that.ctx.strokeStyle = 'rgb(' + 
+				c = 0.4 + Math.random() * 0.6;
+				if (that.explosions[i].age < that.explosionFadeStart) {
+					that.ctx.strokeStyle = 'rgb(' +
 						Math.floor(that.colorsRGB[armyIndex][0] * c) + ',' +
 						Math.floor(that.colorsRGB[armyIndex][1] * c) + ',' +
 						Math.floor(that.colorsRGB[armyIndex][2] * c) + ')';
 				} else {
-					that.ctx.strokeStyle = 'rgb(' + 
-						Math.floor(that.colorsRGB[armyIndex][0] * c / (age - fadeStart + 1)) + ',' +
-						Math.floor(that.colorsRGB[armyIndex][1] * c / (age - fadeStart + 1)) + ',' +
-						Math.floor(that.colorsRGB[armyIndex][2] * c / (age - fadeStart + 1)) + ')';
+					that.ctx.strokeStyle = 'rgb(' +
+						Math.floor(that.colorsRGB[armyIndex][0] * c / (age - that.explosionFadeStart + 1)) + ',' +
+						Math.floor(that.colorsRGB[armyIndex][1] * c / (age - that.explosionFadeStart + 1)) + ',' +
+						Math.floor(that.colorsRGB[armyIndex][2] * c / (age - that.explosionFadeStart + 1)) + ')';
 				}
-			that.ctx.stroke();
-			}			
+				that.ctx.stroke();
+			}
 		}
 	};
 
