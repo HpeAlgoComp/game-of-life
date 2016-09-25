@@ -12,7 +12,7 @@ function GolHtmlHelper() {
 		that.addCssRules();
 		that.shakes = ['shake-little'];//['shake', 'shake-little', 'shake-horizontal', 'shake-rotate'];
 		that.explosions = [];
-		that.explosionMaxAge = 20;
+		that.explosionMaxAge = 25;
 		that.explosionFadeStart = 10;
 	};
 
