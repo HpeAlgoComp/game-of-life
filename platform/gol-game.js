@@ -147,8 +147,10 @@
 		};
 
 		that.showArmyVsArmyIntro = function showArmyVsArmyIntro() {
-			that.playSound(that.armyVsArmySound);
 			that.htmlHelper.showArmyVsArmyPanel(that.armies);
+			setTimeout(function() {
+				that.playSound(that.armyVsArmySound);
+			}, 1000);
 			setTimeout(that.hideArmyVsArmyIntro, that.settings.millisArmyVsArmyMessageDuration);
 		};
 
@@ -175,20 +177,22 @@
 			if (that.round === 1) {
 				that.htmlHelper.drawUserInterface(that.armies);
 			}
+			that.htmlHelper.updateArmyNamesAndWins(that.armies, that.roundWins);
 			that.roundStartTime = (new Date()).getTime();
 			that.secondsLeft = that.settings.secondsMaxRoundDuration;
 			that.htmlHelper.updateTimeDisplay(that.secondsLeft);
+			that.htmlHelper.clearExplosions();
 			setTimeout(that.onGeneration, 0);
 		};
 
 		that.onGeneration = function onGeneration() {
-			var curArray, nxtArray, newPixels, scoringPixelCount, roundEnded;
+			var curArray, nxtArray, newPixels, scoringPixelIndices, roundEnded;
 			that.generation++;
 			curArray = that.board.arrays[(that.generation % 2) * (-1) + 1];
 			nxtArray = that.board.arrays[that.generation % 2];
 			that.board.computeNextState(curArray, nxtArray);
-			scoringPixelCount = that.board.countScoringPixels(nxtArray);
-      that.handleScore(scoringPixelCount);
+			scoringPixelIndices = that.board.getScoringPixelIndices(nxtArray);
+      		that.handleScore(scoringPixelIndices);
 			that.updateTime();
 			roundEnded = that.armies[0].power <= 0 || that.armies[1].power <= 0 || that.secondsLeft <= 0;
 			newPixels = that.getNewPixels();
@@ -196,12 +200,12 @@
 			that.newPixelsAge[1]++;
 			that.board.placeNewPixelsOnBoard(nxtArray, newPixels);
 			if (!roundEnded) {
-				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
+				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelIndices);
 				that.board.deleteScoringPixels(nxtArray);
 				setTimeout(that.onGeneration, 0);
 				//requestAnimationFrame(that.onGeneration);
 			} else {
-				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelCount, that.armies, roundEnded);
+				that.htmlHelper.drawArrayToCanvas(nxtArray, that.newPixels, that.newPixelsAge, scoringPixelIndices);
 				setTimeout(that.endRound, that.settings.millisEndRoundBoardFreezeDuration);
 			}
 		};
@@ -249,7 +253,7 @@
 			_dbg('endGame()');
 			that.playSound(that.endGameSound);
 			winnerIndex = (that.armies[0].power > that.armies[1].power) ? 0 : 1;
-			that.htmlHelper.endGame(that.armies, winnerIndex, that.roundWins);
+			that.htmlHelper.endGame(that.armies, winnerIndex /*that.roundWins*/);
 			if (that.tournament.runningTournament) {
                 that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name].winner = that.armies[winnerIndex].name;
 			    that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name]['roundWins '+that.armies[0].name] = that.roundWins[0];
@@ -308,23 +312,24 @@
 			audio.play();
 		};
 
-		that.handleScore = function handleScore(scoringPixelsCount) {
-			if (scoringPixelsCount[0] !== 0 || scoringPixelsCount[1] !== 0) {
+		that.handleScore = function handleScore(scoringPixelIndices) {
+			var scoringPixelCount = [scoringPixelIndices[0].length, scoringPixelIndices[1].length];
+			if (scoringPixelCount[0] !== 0 || scoringPixelCount[1] !== 0) {
 				that.playSound(that.hitSounds[Math.floor(Math.random() * that.hitSounds.length)]);
 				that.htmlHelper.shake();
-				that.armies[1].power -= scoringPixelsCount[0] * that.settings.powerHitQuantum;
-				that.armies[0].power -= scoringPixelsCount[1] * that.settings.powerHitQuantum;
-				if (scoringPixelsCount[0] !== 0) {
+				that.armies[1].power -= scoringPixelCount[0] * that.settings.powerHitQuantum;
+				that.armies[0].power -= scoringPixelCount[1] * that.settings.powerHitQuantum;
+				if (scoringPixelCount[0] !== 0) {
 					_log(that.armies[0].name + ' scores');
 				}
-				if (scoringPixelsCount[1] !== 0) {
+				if (scoringPixelCount[1] !== 0) {
 					_log(that.armies[1].name + ' scores');
 				}
 			}
 			that.armies[0].power = Math.max(that.armies[0].power, 0);
 			that.armies[1].power = Math.max(that.armies[1].power, 0);
-			that.htmlHelper.updateScore(that.armies[0].index, that.armies[0].power, scoringPixelsCount[1]);
-			that.htmlHelper.updateScore(that.armies[1].index, that.armies[1].power, scoringPixelsCount[0]);
+			that.htmlHelper.updateScore(that.armies[0].index, that.armies[0].power, scoringPixelCount[1]);
+			that.htmlHelper.updateScore(that.armies[1].index, that.armies[1].power, scoringPixelCount[0]);
 		};
 
 	}
