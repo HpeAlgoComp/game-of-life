@@ -528,12 +528,16 @@ function GolHtmlHelper() {
 	        document.getElementById('winArmy-img').onerror = function () {
 	            this.src = 'platform/icons/' + armies[winnerIndex].icon + '.png'
 	        };
-	        document.getElementById('winArmy-name').innerHTML = armies[winnerIndex].name +" Wins";
+	        document.getElementById('winArmy-name').innerHTML = '<img src="platform/icons/' + armies[winnerIndex].icon + '.png" style="height:30px;margin-bottom: -10px;">' +
+                                                                armies[winnerIndex].name + " Wins";
+	        document.getElementById('winArmy-name').style.color = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
 	        document.getElementById('loseArmy-img').setAttribute('src', 'platform/pictures/' + armies[loseIndex].icon + 'Lose.jpg');
 	        document.getElementById('loseArmy-img').onerror = function () {
 	            this.src = 'platform/icons/' + armies[loseIndex].icon + '.png';
 	        }
-	        document.getElementById('loseArmy-name').innerHTML = armies[loseIndex].name+ " Lose";
+	        document.getElementById('loseArmy-name').innerHTML = '<img src="platform/icons/' + armies[loseIndex].icon + '.png" style="height:30px;margin-bottom: -10px;">' +
+                                                                   armies[loseIndex].name + " Lose";
+	        document.getElementById('loseArmy-name').style.color = 'rgb(' + armies[loseIndex].color[0] + ',' + armies[loseIndex].color[1] + ',' + armies[loseIndex].color[2] + ')';
 	    }
 	    else {
             document.getElementById('gol-army-stats-0').style['visibility'] = 'hidden';

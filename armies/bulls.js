@@ -98,7 +98,7 @@
 		} else if (data.generation < 440) {
 			plan = ['fence'];
 		} else {
-			plan = ['spaceship', 'glider', 'mine', 'fence'];
+			plan = ['glider'];
 		}
 		if (plan[planIndex] === 'mine') {
 			pixels = tryPlaceMine(data);
@@ -122,7 +122,7 @@
 			planIndex = 0;
 			fenceLocation = 0;
 		}
-		plan = ['mine', 'glider'];
+		plan = ['glider'];
 		if (plan[planIndex] === 'mine') {
 			pixels = tryPlaceMine(data);
 		} else if (plan[planIndex] === 'glider') {
@@ -136,20 +136,7 @@
 
 	var cb3 = function cb3(data) {
 		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['glider', 'spaceship'];
-		if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
+		pixels = tryPlaceSpaceship(data, null, 0);
 		return pixels;
 	};
 
@@ -162,7 +149,7 @@
 		window.registerArmy({
 			name: 'BULLS',
 			icon: 'bull',
-			cb: cbs[getRnd(0, cbs.length-1)]
+			cb: cb3
 		});
 	}, 0);
 
