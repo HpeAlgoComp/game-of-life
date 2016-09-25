@@ -85,7 +85,7 @@
 		that.startTournament = function startTournament() {
 		    that.tournament = {};
 		    that.tournament.size = that.srcIndices.length;
-		    that.tournament.size = 3;
+		    that.tournament.size = 16;
 		    if (that.tournament.size <= 2) return;
 		    that.tournament.rounds = {};
 		    that.tournament.runningTournament = true;
