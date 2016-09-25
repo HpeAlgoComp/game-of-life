@@ -53,7 +53,8 @@ function GolHtmlHelper() {
 		that.addCssRule('#gol-army-stats-' + i + ' {height: 10px; display: flex; align-items: center;}');
 		that.addCssRule('#gol-army-score-' + i + ' {height: 10px; color: #' + that.colorsHex[i] + ';}');
 		that.addCssRule('#gol-army-power-' + i + ' {height: 2px; margin-left: 2px; background-color: #' + that.colorsHex[i] + '; box-shadow: 0px 0px 5px #' + that.colorsHex[i] +'; transition: 1s width ease;}');
-			that.addCssRule('#winner-loser-result-and-name-' + i + ' {display: inline-block; vertical-align: middle; font-size: 14px; color: #' + that.colorsHex[i] + '}');
+			that.addCssRule('#winner-loser-result-' + i + ' {display: inline-block; vertical-align: middle; font-size: 24px; color: #fff;}');
+			that.addCssRule('#winner-loser-name-' + i + ' {display: inline-block; vertical-align: middle; font-size: 12px; color: #' + that.colorsHex[i] + '}');
 			that.addCssRule('#winner-loser-icon-' + i + ' {display: inline-block; height: 100px; vertical-align: middle;}');
 			that.addCssRule('#winner-loser-pic-' + i + ' {display: inline-block; height: 120px; vertical-align: middle;}');
 		}
@@ -527,7 +528,8 @@ function GolHtmlHelper() {
     if (document.getElementById('winner-loser-panel')) {
       document.getElementById('gol-container').style['display'] = 'none';
       for (i = 0; i < 2; i++) {
-        document.getElementById('winner-loser-result-and-name-' + i).innerHTML = (i === winnerIndex ? 'Winner' : 'Loser') + ': ' + armies[i].name;
+        document.getElementById('winner-loser-result-' + i).innerHTML = (i === winnerIndex ? 'Winner' : 'Loser');
+	      document.getElementById('winner-loser-name-' + i).innerHTML = armies[i].name;
         // document.getElementById('winner-loser-icon-' + i).setAttribute('src', 'platform/icons/' + armies[i].icon + '.png');
         document.getElementById('winner-loser-pic-' + i).setAttribute('src', 'armies/pictures/' + armies[i].icon + (i === winnerIndex ? 'Win' : 'Lose') + '.jpg');
       }
