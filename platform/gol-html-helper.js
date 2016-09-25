@@ -120,7 +120,7 @@ function GolHtmlHelper() {
 				document.getElementById('army-vs-army-name-' + i).style['visibility'] = 'visible';
 			}
 			document.getElementById('army-vs-army-panel').style['display'] = 'block';
-			document.getElementById('winArmy-loseArmy-panel').style['display'] = 'none';
+			if (document.getElementById('winArmy-loseArmy-panel') != null && document.getElementById('winArmy-loseArmy-panel')!=undefined) document.getElementById('winArmy-loseArmy-panel').style['display'] = 'none';
 		}, 1000);
 	};
 
@@ -521,32 +521,37 @@ function GolHtmlHelper() {
 	that.endGame = function endGame(armies, winnerIndex /*roundWins*/) {
 		//var winnerRoundCount = roundWins[winnerIndex];
 		//var loserRoundCount = roundWins[winnerIndex*-1+1];
-		/*document.getElementById('gol-army-stats-0').style['visibility'] = 'hidden';
-		document.getElementById('gol-army-stats-1').style['visibility'] = 'hidden';
-		that.ctx.clearRect(0, 0, that.cols, that.rows);
-		that.ctx.textAlign = 'center';
-		that.ctx.font = '16px visitor';
-		that.ctx.fillStyle = 'rgb(255, 255, 255)';
-		that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 6);
-		that.ctx.font = '24px visitor';
-		that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
-		that.ctx.fillText(armies[winnerIndex].name, that.cols / 2, that.rows / 2 + 16);*/
-	    var loseIndex = 0;
-	    if (winnerIndex == 0) loseIndex = 1;
-	    document.getElementById('winArmy-loseArmy-panel').style['display'] = 'block'; 
-	    document.getElementById('pre-game-container').style['display'] = 'flex';
-	    document.getElementById('gol-container').innerHTML = "";
-	    document.getElementById('army-vs-army-panel').style['display'] = 'none';
-	    document.getElementById('winArmy-img').setAttribute('src', 'platform/pictures/' + armies[winnerIndex].icon + 'Win.jpg');
-	    document.getElementById('winArmy-img').onerror = function () {
-	        this.src = 'platform/icons/' + armies[winnerIndex].icon + '.png'
-	    };
-	    document.getElementById('winArmy-name').innerHTML = armies[winnerIndex].name +" Wins";
-	    document.getElementById('loseArmy-img').setAttribute('src', 'platform/pictures/' + armies[loseIndex].icon + 'Lose.jpg');
-	    document.getElementById('loseArmy-img').onerror = function () {
-	        this.src = 'platform/icons/' + armies[loseIndex].icon + '.png';
+	    
+	    if (document.getElementById('winArmy-loseArmy-panel') != null && document.getElementById('winArmy-loseArmy-panel') != undefined) {
+            var loseIndex = 0;
+	        if (winnerIndex == 0) loseIndex = 1;
+	        document.getElementById('winArmy-loseArmy-panel').style['display'] = 'block';
+	        document.getElementById('pre-game-container').style['display'] = 'flex';
+	        document.getElementById('gol-container').innerHTML = "";
+	        document.getElementById('army-vs-army-panel').style['display'] = 'none';
+	        document.getElementById('winArmy-img').setAttribute('src', 'platform/pictures/' + armies[winnerIndex].icon + 'Win.jpg');
+	        document.getElementById('winArmy-img').onerror = function () {
+	            this.src = 'platform/icons/' + armies[winnerIndex].icon + '.png'
+	        };
+	        document.getElementById('winArmy-name').innerHTML = armies[winnerIndex].name +" Wins";
+	        document.getElementById('loseArmy-img').setAttribute('src', 'platform/pictures/' + armies[loseIndex].icon + 'Lose.jpg');
+	        document.getElementById('loseArmy-img').onerror = function () {
+	            this.src = 'platform/icons/' + armies[loseIndex].icon + '.png';
+	        }
+	        document.getElementById('loseArmy-name').innerHTML = armies[loseIndex].name+ " Lose";
 	    }
-	    document.getElementById('loseArmy-name').innerHTML = armies[loseIndex].name+ " Lose";
+	    else {
+            document.getElementById('gol-army-stats-0').style['visibility'] = 'hidden';
+		    document.getElementById('gol-army-stats-1').style['visibility'] = 'hidden';
+		    that.ctx.clearRect(0, 0, that.cols, that.rows);
+		    that.ctx.textAlign = 'center';
+		    that.ctx.font = '16px visitor';
+		    that.ctx.fillStyle = 'rgb(255, 255, 255)';
+		    that.ctx.fillText('winner:', that.cols / 2, that.rows / 2 - 6);
+		    that.ctx.font = '24px visitor';
+		    that.ctx.fillStyle = 'rgb(' + armies[winnerIndex].color[0] + ',' + armies[winnerIndex].color[1] + ',' + armies[winnerIndex].color[2] + ')';
+		    that.ctx.fillText(armies[winnerIndex].name, that.cols / 2, that.rows / 2 + 16);
+	    }
 	};
 
 }
