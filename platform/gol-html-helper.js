@@ -48,7 +48,9 @@ function GolHtmlHelper() {
 		that.addCssRule('#time-display-bar-0 {position: absolute; left: calc(50% + 200px); top: calc(50% - 100px); height: 200px; width: 2px;}');
 		that.addCssRule('#time-display-bar-1 {position: absolute; left: calc(50% - 202px); top: calc(50% - 100px); height: 200px; width: 2px;}');
 		that.addCssRule('#gol-canvas {background-color: #000; cursor: crosshair; margin-top: 6px; margin-bottom: 6px;}');
+		that.addCssRule('.gol-army-line {display: flex; justify-content: space-between; align-items: center; text-align: left; height: 10px; line-height: 10px; width: ' + that.cols + 'px; position:relative;}');
 		that.addCssRule('.gol-army-img {position: relative; top: 0px; margin-right: 1px; height: 16px}');
+		that.addCssRule('.gol-army-stats {height: 10px; display: flex; align-items: center;}');
 
     that.addCssRule('#winner-loser-panel {display: none; height: 100%; flex-direction: column; justify-content: center; text-align: center;}');
 		that.addCssRule('.winner-loser-line {margin: 15px 0;}');
@@ -58,12 +60,11 @@ function GolHtmlHelper() {
 		for (i = 0; i < 2; i++) {
 			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#army-vs-army-name-' + i + ' {color: #' + that.colorsHex[i] + '}');
-			that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; text-align: left; height: 10px; line-height: 10px; width: ' + that.cols + 'px; position:relative;}');
 			that.addCssRule('#gol-army-name-and-wins-' + i + ' {height: 10px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
-			that.addCssRule('#gol-army-stats-' + i + ' {height: 10px; display: flex; align-items: center;}');
 			that.addCssRule('#gol-army-score-' + i + ' {height: 10px; color: #' + that.colorsHex[i] + ';}');
 			that.addCssRule('#gol-army-power-' + i + ' {height: 2px; margin-left: 2px; background-color: #' + that.colorsHex[i] + '; box-shadow: 0px 0px 5px #' + that.colorsHex[i] +'; transition: 1s width ease;}');
 			that.addCssRule('#winner-loser-name-' + i + ' {display: inline-block; vertical-align: middle; font-size: 12px; color: #' + that.colorsHex[i] + '}');
+
 			// that.addCssRule('#winner-loser-icon-' + i + ' {display: inline-block; height: 100px; vertical-align: middle;}');
 		}
 		//css shake effects
@@ -174,6 +175,7 @@ function GolHtmlHelper() {
 		var textNode, armyLine, armyIcon, armyName, armyStats, armyPower, armyScore;
 		armyLine = document.createElement('div');
 		armyLine.setAttribute('id', 'gol-army-line-' + index);
+		armyLine.classList.add('gol-army-line');
 
 		armyName = document.createElement('div');
 		armyName.setAttribute('id', 'gol-army-name-and-wins-' + index);
@@ -182,6 +184,7 @@ function GolHtmlHelper() {
 		armyStats = document.createElement('div');
 
 		armyStats.setAttribute('id', 'gol-army-stats-' + index);
+		armyStats.classList.add('gol-army-stats');
 
 		if (that.settings.gameMode !== that.settings.gameModes.AUTO_START) {
 			armyIcon = document.createElement('img');
