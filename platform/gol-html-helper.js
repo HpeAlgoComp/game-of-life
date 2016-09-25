@@ -39,6 +39,7 @@ function GolHtmlHelper() {
 		that.addCssRule('#start-tournament-button {position: absolute; bottom: 20px; right: 20px; background: #444; color: #888; font-family: visitor, consolas, monospace, sans-serif; font-size: 8px; cursor: pointer; outline: none; border: none;}');
 
 		that.addCssRule('#army-vs-army-panel {width: 400px; text-align: center; display: none;}');
+		that.addCssRule('.army-vs-army-icon {display: inline-block; height: 100px; vertical-align: middle;}');
 		that.addCssRule('.army-vs-army-vs {margin: 20px;}');
 
 		that.addCssRule('#gol-container {position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;}');
@@ -55,7 +56,6 @@ function GolHtmlHelper() {
 
 		for (i = 0; i < 2; i++) {
 			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
-		that.addCssRule('#army-vs-army-img-' + i + ' {display: inline-block; height: 100px; vertical-align: middle;}');
 		that.addCssRule('#army-vs-army-name-' + i + ' {display: inline-block; vertical-align: middle; font-size: 16px; color: #' + that.colorsHex[i] + '}');
 		that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; text-align: left; height: 10px; line-height: 10px; width: ' + that.cols + 'px; position:relative;}');
 		that.addCssRule('#gol-army-name-and-wins-' + i + ' {height: 10px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
@@ -136,7 +136,7 @@ function GolHtmlHelper() {
 	that.showArmyVsArmyPanel = function showArmyVsArmyPanel(armies) {
 		var i;
 		for (i = 0; i < 2; i++) {
-			document.getElementById('army-vs-army-img-' + i).setAttribute('src', 'platform/icons/' + armies[i].icon + '.png');
+			document.getElementById('army-vs-army-icon-' + i).setAttribute('src', 'platform/icons/' + armies[i].icon + '.png');
 			document.getElementById('army-vs-army-name-' + i).innerHTML = armies[i].name;
 		}
 		setTimeout(function() {
