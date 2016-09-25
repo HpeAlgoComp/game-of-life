@@ -12,8 +12,11 @@ function GolHtmlHelper() {
 		that.addCssRules();
 		that.shakes = ['shake-little'];//['shake', 'shake-little', 'shake-horizontal', 'shake-rotate'];
 		that.explosions = [];
-		that.explosionMaxAge = 25;
-		that.explosionFadeStart = 10;
+		that.explosionSettings = {
+			explosionArcs: 10,
+			explosionFadeStart: 15,
+			explosionMaxAge: 30
+		};
 	};
 
 	that.addCssRules = function addCssRules() {
@@ -221,7 +224,7 @@ function GolHtmlHelper() {
 		oldExplosions = [];
 		for (i = 0; i < that.explosions.length; i++) {
 			that.explosions[i].age++;
-			if (that.explosions[i].age > that.explosionMaxAge) {
+			if (that.explosions[i].age > that.explosionSettings.explosionMaxAge) {
 				oldExplosions.push(i);
 			}
 		}
@@ -294,24 +297,24 @@ function GolHtmlHelper() {
 			armyIndex = that.explosions[i].armyIndex;
 			age = that.explosions[i].age;
 
-			for (j = 0; j < 10; j++) {
-				radius = 4 + that.explosions[i].age * 2 * Math.random();
+			for (j = 0; j < that.explosionSettings.explosionArcs; j++) {
+				radius = 4 + that.explosions[i].age * 1.5 * Math.random();
 				startAngle = that.explosions[i].armyIndex === 0 ? Math.random() * Math.PI / 2 : Math.PI + Math.random()* Math.PI / 2;
 				endAngle = that.explosions[i].armyIndex === 0 ? Math.PI - Math.random()* Math.PI / 2 : - Math.random() * Math.PI / 2;
 				that.ctx.beginPath();
 				that.ctx.arc(x, y, radius, startAngle, endAngle, counterClockwise);
 				that.ctx.lineWidth = radius;
 				c = 0.4 + Math.random() * 0.6;
-				if (that.explosions[i].age < that.explosionFadeStart) {
+				if (that.explosions[i].age < that.explosionSettings.explosionFadeStart) {
 					that.ctx.strokeStyle = 'rgb(' +
 						Math.floor(that.colorsRGB[armyIndex][0] * c) + ',' +
 						Math.floor(that.colorsRGB[armyIndex][1] * c) + ',' +
 						Math.floor(that.colorsRGB[armyIndex][2] * c) + ')';
 				} else {
 					that.ctx.strokeStyle = 'rgb(' +
-						Math.floor(that.colorsRGB[armyIndex][0] * c / (age - that.explosionFadeStart + 1)) + ',' +
-						Math.floor(that.colorsRGB[armyIndex][1] * c / (age - that.explosionFadeStart + 1)) + ',' +
-						Math.floor(that.colorsRGB[armyIndex][2] * c / (age - that.explosionFadeStart + 1)) + ')';
+						Math.floor(that.colorsRGB[armyIndex][0] * c / (age - that.explosionSettings.explosionFadeStart + 1)) + ',' +
+						Math.floor(that.colorsRGB[armyIndex][1] * c / (age - that.explosionSettings.explosionFadeStart + 1)) + ',' +
+						Math.floor(that.colorsRGB[armyIndex][2] * c / (age - that.explosionSettings.explosionFadeStart + 1)) + ')';
 				}
 				that.ctx.stroke();
 			}
