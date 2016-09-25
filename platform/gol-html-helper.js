@@ -45,8 +45,8 @@ function GolHtmlHelper() {
     that.addCssRule('#winner-loser-panel {display: none; height: 100%; flex-direction: column; justify-content: space-around; text-align: center;}');
 		for (i = 0; i < 2; i++) {
 			that.addCssRule('.src-' + i + ' {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #' + that.colorsHex[i] + ';}');
-		that.addCssRule('#army-vs-army-img-' + i + ' {visibility: hidden; display: inline-block; height: 100px; vertical-align: middle;}');
-		that.addCssRule('#army-vs-army-name-' + i + ' {visibility: hidden; display: inline-block; vertical-align: middle; font-size: 16px; color: #' + that.colorsHex[i] + '}');
+		that.addCssRule('#army-vs-army-img-' + i + ' {display: inline-block; height: 100px; vertical-align: middle;}');
+		that.addCssRule('#army-vs-army-name-' + i + ' {display: inline-block; vertical-align: middle; font-size: 16px; color: #' + that.colorsHex[i] + '}');
 		that.addCssRule('#gol-army-line-' + i + ' {display: flex; justify-content: space-between; align-items: center; text-align: left; height: 10px; line-height: 10px; width: ' + that.cols + 'px; position:relative;}');
 		that.addCssRule('#gol-army-name-and-wins-' + i + ' {height: 10px; width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #' + that.colorsHex[i] + ';}');
 		that.addCssRule('#gol-army-stats-' + i + ' {height: 10px; display: flex; align-items: center;}');
@@ -124,12 +124,7 @@ function GolHtmlHelper() {
 			document.getElementById('army-vs-army-name-' + i).innerHTML = armies[i].name;
 		}
 		setTimeout(function() {
-			for (i = 0; i < 2; i++) {
-				document.getElementById('army-vs-army-img-' + i).style['visibility'] = 'visible';
-				document.getElementById('army-vs-army-name-' + i).style['visibility'] = 'visible';
-			}
 			document.getElementById('army-vs-army-panel').style['display'] = 'block';
-			if (document.getElementById('win-army-lose-army-panel') != null && document.getElementById('win-army-lose-army-panel')!=undefined) document.getElementById('win-army-lose-army-panel').style['display'] = 'none';
 		}, 1000);
 	};
 
