@@ -392,7 +392,7 @@ function GolHtmlHelper() {
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
 				if (newPixelsAge[i] <= maxAge) {
-					maxDistance = Math.floor(42 / newPixelsAge[i]);
+					maxDistance = Math.floor(32 / newPixelsAge[i]);
 					multiplier = Math.floor(256 / maxDistance);
 					for (k = 0; k < that.rows; k++) {
 						distance = Math.abs(k - newPixels[i][j][1]);
