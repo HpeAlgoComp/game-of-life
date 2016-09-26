@@ -172,6 +172,9 @@ function GolHtmlHelper() {
 		    container.setAttribute('id', 'gol-container');
 		    return document.body.appendChild(container);
 	    }
+	    document.getElementById('gol-container').innerHTML = "";
+	    document.getElementById('gol-container').style['display'] = 'flex';
+	    document.getElementById('winner-loser-panel').style['display'] = 'none';
 	    return document.getElementById('gol-container');
 	};
 
