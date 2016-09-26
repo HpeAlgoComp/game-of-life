@@ -392,7 +392,7 @@ function GolHtmlHelper() {
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
 				if (newPixelsAge[i] <= maxAge) {
-					maxDistance = Math.floor(32 / newPixelsAge[i]);
+					maxDistance = Math.floor(42 / newPixelsAge[i]);
 					multiplier = Math.floor(256 / maxDistance);
 					for (k = 0; k < that.rows; k++) {
 						distance = Math.abs(k - newPixels[i][j][1]);
@@ -552,7 +552,7 @@ function GolHtmlHelper() {
         document.getElementById('winner-loser-result-' + i).innerHTML = (i === winnerIndex ? 'Winner' : 'Loser');
 	      document.getElementById('winner-loser-name-' + i).innerHTML = armies[i].name;
         // document.getElementById('winner-loser-icon-' + i).setAttribute('src', 'platform/icons/' + armies[i].icon + '.png');
-        document.getElementById('winner-loser-pic-' + i).setAttribute('src', 'armies/pictures/' + armies[i].icon + (i === winnerIndex ? 'Win' : 'Lose') + '.jpg');
+        document.getElementById('winner-loser-pic-' + i).setAttribute('src', 'armies/pictures/' + armies[i].icon + (i === winnerIndex ? '-win' : '-lose') + '.jpg');
       }
 	    setTimeout(function() {
         document.getElementById('winner-loser-panel').style['display'] = 'flex';
