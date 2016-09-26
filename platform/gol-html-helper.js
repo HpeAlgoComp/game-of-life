@@ -549,7 +549,7 @@ function GolHtmlHelper() {
         document.getElementById('winner-loser-result-' + i).innerHTML = (i === winnerIndex ? 'Winner' : 'Loser');
 	      document.getElementById('winner-loser-name-' + i).innerHTML = armies[i].name;
         // document.getElementById('winner-loser-icon-' + i).setAttribute('src', 'platform/icons/' + armies[i].icon + '.png');
-        document.getElementById('winner-loser-pic-' + i).setAttribute('src', 'armies/pictures/' + armies[i].icon + (i === winnerIndex ? 'Win' : 'Lose') + '.jpg');
+        document.getElementById('winner-loser-pic-' + i).setAttribute('src', 'armies/pictures/' + armies[i].icon + (i === winnerIndex ? '-win' : '-lose') + '.jpg');
       }
 	    setTimeout(function() {
         document.getElementById('winner-loser-panel').style['display'] = 'flex';
