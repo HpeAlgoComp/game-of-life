@@ -31,4 +31,6 @@ function GolSettings() {
 	that.winRoundLimit = 3;
 
 	that.remotePlatformLocationRawGit = 'https://rawgit.com/HpeAlgoComp/game-of-life/master/platform';
+
+	that.statsLocalStorageKey = 'game-of-life-stats';
 }
