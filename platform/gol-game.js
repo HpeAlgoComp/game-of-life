@@ -57,7 +57,7 @@
 
 		that.startGame = function startGame() {
 			_dbg('startGame()');
-			that.settings.gameMode = that.gameModes.AUTO_START;
+			that.settings.gameMode = that.settings.gameModes.AUTO_START;
 			that.waitForArmies();
 		};
 
