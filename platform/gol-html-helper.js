@@ -35,7 +35,7 @@ function GolHtmlHelper() {
 		that.addCssRule('.load-src-msg {text-align: left; font-size: 12px; color: #333; transition: 1s color ease;}');
 		that.addCssRule('.load-src-msg:nth-child(3) {margin-bottom: 2px;}');
 		that.addCssRule('.load-src-input {outline: none !important; margin-bottom: 1px; width: 100%; height: 8px; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #666; cursor: pointer; transition: 1s all ease;}');
-		that.addCssRule('#load-src-button {margin-top: 8px; width: 50px; height: 20px; border: 1px solid #333; background-color: #202020; color: #333; font-family: visitor, consolas, monospace, sans-serif; font-size: 16px; outline: none; transition: 1s all ease;}');
+		that.addCssRule('#load-src-button {margin-top: 8px; border: 1px solid #333; background-color: #202020; color: #333; font-family: visitor, consolas, monospace, sans-serif; font-size: 16px; outline: none; transition: 1s all ease;}');
 		that.addCssRule('#start-tournament-button {position: absolute; bottom: 20px; right: 20px; background: #444; color: #888; font-family: visitor, consolas, monospace, sans-serif; font-size: 8px; cursor: pointer; outline: none; border: none;}');
 
 		that.addCssRule('#army-vs-army-panel {width: 400px; text-align: center; display: none;}');
