@@ -38,6 +38,8 @@ function GolHtmlHelper() {
 		that.addCssRule('#load-src-button {margin-top: 8px; border: 1px solid #333; background-color: #202020; color: #333; font-family: visitor, consolas, monospace, sans-serif; font-size: 16px; outline: none; transition: 1s all ease;}');
 		that.addCssRule('#start-tournament-button {position: absolute; bottom: 20px; right: 20px; background: #444; color: #888; font-family: visitor, consolas, monospace, sans-serif; font-size: 8px; cursor: pointer; outline: none; border: none;}');
 
+		that.addCssRule('#load-demo-src-msg {text-align: left; font-size: 12px; color: #fff; transition: 1s color ease;}');
+		that.addCssRule('.load-demo-src-selected {margin-bottom: 1px; width: 100%; border: none; background-color: #000; padding-left: 3px; font-family: visitor, consolas, monospace, sans-serif; font-size: 9px; color: #fff;}');
 		that.addCssRule('.load-demo-button {margin-top: 8px; border: 1px solid #333; background-color: #202020; color: #333; font-family: visitor, consolas, monospace, sans-serif; font-size: 16px; outline: none; transition: 1s all ease;}');
 
 		that.addCssRule('#army-vs-army-panel {width: 400px; text-align: center; display: none;}');
@@ -97,7 +99,7 @@ function GolHtmlHelper() {
 		document.getElementById('load-src-panel').style['opacity'] = 1;
 	};
 
-	that.markSrcLines = function markSrcLines(srcIndices) {
+	that.markSrcLinesSingleGame = function markSrcLinesSingleGame(srcIndices) {
 		var i, elm, readyToLoad, btn;
 		for (i = 0; i < 16; i++) {
 			elm = document.getElementById('src-' + i);
@@ -114,25 +116,42 @@ function GolHtmlHelper() {
 		}
 		document.getElementById('load-src-msg-1').style['color'] = srcIndices[1] === -1 ? '#' + that.colorsHex[1] : '#333';
 		document.getElementById('load-src-msg-0').style['color'] = srcIndices[0] === -1 && srcIndices[1] !== -1 ? '#' + that.colorsHex[0] : '#333';
+		btn = document.getElementById('load-src-button');
+		readyToLoad = srcIndices[1] !== -1 && srcIndices[0] !== -1;
+		btn.style['border'] = readyToLoad ? '1px solid #666' : '1px solid #333';
+		btn.style['background-color'] = readyToLoad ? '#666' : '#202020';
+		btn.style['color'] = readyToLoad ? '#fff' : '#333';
+		btn.style['cursor'] = readyToLoad ? 'pointer' : 'default';
+		btn.setAttribute('onclick', readyToLoad ? 'loadSources()' : '');
+	};
 
-		if (that.settings.gameMode === that.settings.gameModes.SINGLE_GAME) {
-			btn = document.getElementById('load-src-button');
-			readyToLoad = srcIndices[1] !== -1 && srcIndices[0] !== -1;
-			btn.style['border'] = readyToLoad ? '1px solid #666' : '1px solid #333';
-			btn.style['background-color'] = readyToLoad ? '#666' : '#202020';
-			btn.style['color'] = readyToLoad ? '#fff' : '#333';
-			btn.style['cursor'] = readyToLoad ? 'pointer' : 'default';
-			btn.setAttribute('onclick', readyToLoad ? 'loadSources()' : '');
-		} else if (that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO) {
-			for (i = 0; i < 2; i++) {
-				btn = document.getElementById('load-demo-button-' + i);
-				readyToLoad = srcIndices[i] !== -1;
-				btn.style['border'] = readyToLoad ? '1px solid #666' : '1px solid #333';
-				btn.style['background-color'] = readyToLoad ? '#333' : '#202020';
-				btn.style['color'] = readyToLoad ? '#' + that.colorsHex[i] : '#333';
-				btn.style['cursor'] = readyToLoad ? 'pointer' : 'default';
-				btn.setAttribute('onclick', readyToLoad ? 'loadDemo(' + i + ')' : '');
+	that.markSrcLinesStrategyDemo = function markSrcLinesStrategyDemo(srcIndices) {
+		var i, elm, readyToLoad, btn;
+		for (i = 0; i < 16; i++) {
+			elm = document.getElementById('src-' + i);
+			if ('' + i === srcIndices[1]) {
+				elm.classList.add('load-demo-src-selected');
+			} else {
+				elm.classList.remove('load-demo-src-selected');
 			}
+		}
+		document.getElementById('load-demo-src-msg').style['color'] = srcIndices[1] === -1 ? '#fff' : '#333';
+		for (i = 0; i < 2; i++) {
+			btn = document.getElementById('load-demo-button-' + i);
+			readyToLoad = srcIndices[1] !== -1;
+			btn.style['border'] = readyToLoad ? '1px solid #666' : '1px solid #333';
+			btn.style['background-color'] = readyToLoad ? '#333' : '#202020';
+			btn.style['color'] = readyToLoad ? '#' + that.colorsHex[i] : '#333';
+			btn.style['cursor'] = readyToLoad ? 'pointer' : 'default';
+			btn.setAttribute('onclick', readyToLoad ? 'loadDemo(' + i + ')' : '');
+		}
+	};
+
+	that.markSrcLines = function markSrcLines(srcIndices) {
+		if (that.settings.gameMode === that.settings.gameModes.SINGLE_GAME) {
+			that.markSrcLinesSingleGame(srcIndices);
+		} else if (that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO) {
+			that.markSrcLinesStrategyDemo(srcIndices);
 		}
 	};
 

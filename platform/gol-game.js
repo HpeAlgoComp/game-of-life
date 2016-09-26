@@ -147,7 +147,7 @@
 			that.playSound(that.startRoundSound);
 			that.htmlHelper.hideLoadSourcesPanel();
 			if (armyIndex === 0) {
-				that.htmlHelper.loadSource(that.srcIndices[0]);
+				that.htmlHelper.loadSource(that.srcIndices[1]);
 				setTimeout(function() {
 					that.registerDummyArmy();
 				}, 2000);
