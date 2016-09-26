@@ -12,6 +12,7 @@
 			that.htmlHelper.init(settings);
 			that.srcIndices = [-1, -1];
 			that.armies = [];
+			that.allArmies=[];
 			that.gameMode = settings.gameModes.AUTO_START;
 			that.round = 0;
 			that.roundWins = [0, 0];
@@ -43,14 +44,14 @@
 				{file: 'battlestar_galactica.mp3', volume: 1}
 			];
 			window.startGame = that.startGame;
-			window.startSingleGame = that.startSingleGame;
-			window.startAllVsAll = that.startAllVsAll;
-			window.startTournament = that.startTournament;
+			window.startSingleGame = that.startSingleGame;						
 			window.startStrategyDemo = that.startStrategyDemo;
+			window.startAllVsAll = that.startAllVsAll;
 			window.registerArmy = that.registerArmy;
 			window.toggleSrc = that.toggleSrc;
 			window.loadSources = that.loadSources;
 			window.loadDemo = that.loadDemo;
+			window.loadAll = that.loadAll;
 		};
 
 		that.startMusic = function startMusic() {
@@ -84,8 +85,8 @@
 		};
 
 		that.startTournament = function startTournament() {
-			_dbg('startTournament()');
-			that.settings.gameMode = that.settings.gameModes.ALL_VS_ALL;
+		_dbg('startTournament()');
+		that.settings.gameMode = that.settings.gameModes.ALL_VS_ALL;
 		var prevTournament= localStorage.getItem("TournamentRoundResualt");
 	    that.tournament = {};
 	    that.tournament.size = that.srcIndices.length;
@@ -168,6 +169,19 @@
 			}, 1000);
 		};
 
+		that.loadAll = function loadAll() {
+			var i;
+			that.playSound(that.startRoundSound);
+			that.htmlHelper.hideLoadSourcesPanel();
+			window.registerArmy = that.registerArmyForAllVsAll;
+			for (i = 0; i < 16; i++) {
+				that.htmlHelper.loadSource(i);	
+			}
+			setTimeout(function() {
+				that.waitForAllArmies();
+			}, 1000);
+		};
+
 		that.registerDummyArmy = function registerDummyArmy() {
 			that.registerArmy({
 				name: '',
@@ -179,30 +193,70 @@
 		};
 
 		that.registerArmy = function registerArmy(data) {
-			var army = new GolArmy(that.armies.length, data.name, data.icon, data.cb, that.settings.colorsRGB[that.armies.length], that.settings.powerMaxValue, 0);
+			var army;
 			_dbg('registerArmy()');
 			_log('army name: ' + data.name + ', icon: ' + data.icon);
+			army = new GolArmy(that.armies.length, data.name, data.icon, data.cb, that.settings.colorsRGB[that.armies.length], that.settings.powerMaxValue, 0);
 			that.armies.push(army);
 			_dbg('number of armies: ' + that.armies.length);
 		};
 
+		that.registerArmyForAllVsAll = function registerArmyForAllVsAll(data) {
+			var army;
+			_dbg('registerArmyForAllVsAll()');
+			_log('army name: ' + data.name + ', icon: ' + data.icon);
+			army = new GolArmy(-1, data.name, data.icon, data.cb, null, that.settings.powerMaxValue, 0);
+			that.allArmies.push(army);
+			_dbg('number of armies: ' + that.allArmies.length);
+		};
+
 		that.waitForArmies = function waitForArmies() {
+			var expectedNumberOfArmies;
 			_dbg('waitForArmies()');
-			if (that.armies.length < 2) {
+			expectedNumberOfArmies = 2;			
+			if (that.armies.length < expectedNumberOfArmies) {
 				_log('waiting for armies...');
 				setTimeout(that.waitForArmies, 500);
 			} else {
-				if (that.tournament && that.tournament.runningTournament) {
-					that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name] = {};
-				}
 				if (that.settings.gameMode === that.settings.gameModes.AUTO_START) {
 					that.startRound();
 				} else if (that.settings.gameMode === that.settings.gameModes.SINGLE_GAME) {
 					that.showArmyVsArmyIntro();
 				} else if (that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO) {
 					that.prepareForStrategyDemo();
-				}
+				}				
 			}
+		};
+
+		that.waitForAllArmies = function waitForArmies() {
+			var expectedNumberOfArmies;
+			_dbg('waitForArmies()');
+			expectedNumberOfArmies = 16;			
+			if (that.allArmies.length < expectedNumberOfArmies) {
+				_log('waiting for all armies...');
+				setTimeout(that.waitForAllArmies, 500);
+			} else {
+				that.startAllVsAllRound();
+			}
+		};
+
+		that.startAllVsAllRound = function startAllVsAllRound() {
+			var i, indices = [];
+			_dbg('startAllVsAllRound()');
+			that.htmlHelper.hidePreGameContainer();
+			indices[0] = Math.floor(Math.random()* 16);
+			do {
+				indices[1] = Math.floor(Math.random()* 16);	
+			} while (indices[0] === indices[1]);
+			for (i = 0; i < 2; i++) {
+				that.armies[i] = that.allArmies[indices[i]];
+				that.armies[i].index = i;
+				that.armies[i].color = that.settings.colorsRGB[i];
+			}
+			that.round = 0;
+			that.roundWins = [0, 0];
+			that.lastWinner = '';
+			setTimeout(that.startRound, 1000);
 		};
 
 		that.prepareForStrategyDemo = function prepareForStrategyDemo() {
@@ -298,11 +352,7 @@
 			that.playSound(that.endRoundSound);
 			if (that.armies[0].power === that.armies[1].power) {
 			    _log('draw');
-			    if (that.tournament != null && that.tournament != undefined && that.tournament.runningTournament) {
-			        if (that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name].draw == null || that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name].draw == undefined) that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name].draw = 0;
-			        that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name].draw ++;
-			    }
-				that.htmlHelper.endRoundByDraw();
+			    that.htmlHelper.endRoundByDraw();
 			} else {
 				winnerIndex = (that.armies[0].power > that.armies[1].power) ? 0 : 1;
 				_log(that.armies[winnerIndex].name + ' wins');
@@ -310,16 +360,29 @@
 				that.roundWins[winnerIndex]++;
 				that.htmlHelper.endRound(that.round, that.roundWins, that.armies, winnerIndex);
 			}
-			if (that.roundWins[0] < that.settings.winRoundLimit && that.roundWins[1] < that.settings.winRoundLimit) {
-				setTimeout(that.restartRound, that.settings.millisEndRoundMessageDuration);
+			if (that.settings.gameMode !== that.settings.gameModes.ALL_VS_ALL) {
+				if (that.roundWins[0] < that.settings.winRoundLimit && that.roundWins[1] < that.settings.winRoundLimit) {
+					setTimeout(that.restartRound, that.settings.millisEndRoundMessageDuration);
+				} else {
+					setTimeout(that.endGame, that.settings.millisEndRoundMessageDuration);
+				}
 			} else {
-				setTimeout(that.endGame, that.settings.millisEndRoundMessageDuration);
+				that.endRoundAllVsAll();	
 			}
 		};
 
 		that.restartRound = function restartRound() {
 			that.round++;
 			that.startRound();
+		};
+
+		that.endRoundAllVsAll = function endRoundAllVsAll() {
+			_dbg('endRoundAllVsAll()');
+			setTimeout(that.restartRoundAllVsAll, that.settings.millisEndRoundMessageDuration);			
+		};		
+
+		that.restartRoundAllVsAll = function restartRoundAllVsAll() {
+			that.startAllVsAllRound();
 		};
 
 		that.endGame= function endGame() {
