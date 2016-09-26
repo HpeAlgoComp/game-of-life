@@ -429,7 +429,7 @@ function GolHtmlHelper() {
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
 				if (newPixelsAge[i] <= maxAge) {
-					maxDistance = Math.floor(64 / newPixelsAge[i]);
+					maxDistance = Math.floor((that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO ? 32 : 64) / newPixelsAge[i]);
 					multiplier = Math.floor(256 / maxDistance);
 					for (k = 0; k < that.rows; k++) {
 						distance = Math.abs(k - newPixels[i][j][1]);
@@ -469,8 +469,10 @@ function GolHtmlHelper() {
 			}
 		}
 
-		that.updateExplosionCollection(scoringPixelIndices);
-		that.drawExplosionsCore(array, imgData);
+		//if (that.settings.gameMode !== that.settings.gameModes.STRATEGY_DEMO) {
+			that.updateExplosionCollection(scoringPixelIndices);
+			that.drawExplosionsCore(array, imgData);
+		//}
 
 		// board center mark
 		// for (y = 99; y <= 100; y++) {
@@ -482,7 +484,9 @@ function GolHtmlHelper() {
 		
 		that.ctx.putImageData(imgData, 0, 0);
 
-		that.drawExplosionsHalo();		
+		if (that.settings.gameMode !== that.settings.gameModes.STRATEGY_DEMO) {
+			that.drawExplosionsHalo();
+		}
 	};
 
 	that.shake = function shake() {

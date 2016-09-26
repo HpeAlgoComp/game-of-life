@@ -386,8 +386,8 @@
 			if (scoringPixelCount[0] !== 0 || scoringPixelCount[1] !== 0) {
 				if (that.settings.gameMode !== that.settings.gameModes.STRATEGY_DEMO) {
 					that.playSound(that.hitSounds[Math.floor(Math.random() * that.hitSounds.length)]);
+					that.htmlHelper.shake();
 				}
-				that.htmlHelper.shake();
 				that.armies[1].power -= scoringPixelCount[0] * that.settings.powerHitQuantum;
 				that.armies[0].power -= scoringPixelCount[1] * that.settings.powerHitQuantum;
 				if (scoringPixelCount[0] !== 0) {
