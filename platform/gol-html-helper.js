@@ -233,17 +233,24 @@ function GolHtmlHelper() {
 			armyIcon.setAttribute('src', 'platform/icons/' + army.icon + '.png');
 			armyStats.appendChild(armyIcon);
 		}
+
 		armyScore = document.createElement('div');
 		armyScore.setAttribute('id', 'gol-army-score-' + index);
 		armyScore.classList.add('gol-army-score');
 		textNode = document.createTextNode('' + that.settings.powerMaxValue);
 		armyScore.appendChild(textNode);
+		if (that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO) {
+			armyScore.style['display'] = 'none';
+		}
 		armyStats.appendChild(armyScore);
 
 		armyPower = document.createElement('div');
 		armyPower.setAttribute('id', 'gol-army-power-' + index);
 		armyPower.classList.add('gol-army-power');
 		armyPower.style['width'] = that.powerBarMaxWidth + 'px';
+		if (that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO) {
+			armyPower.style['display'] = 'none';
+		}
 		armyStats.appendChild(armyPower);
 
 		armyLine.appendChild(armyStats);
@@ -274,8 +281,12 @@ function GolHtmlHelper() {
 	};
 
 	that.prepareForStrategyDemo = function prepareForStrategyDemo(realArmyIndex) {
-		var dummyArmyIndex = realArmyIndex * -1 + 1;
+		var i, dummyArmyIndex;
+		dummyArmyIndex = realArmyIndex * -1 + 1;
 		document.getElementById('gol-army-line-' + dummyArmyIndex).style['visibility'] = 'hidden';
+		for (i = 0; i < 2; i++) {
+			document.getElementById('time-display-bar-' + i).style['visibility'] = 'hidden';
+		}
 	};
 
 	that.clearExplosions = function clearExplosions() {
@@ -547,9 +558,14 @@ function GolHtmlHelper() {
 	};
 
 	that.updateArmyNamesAndWins = function updateArmyNamesAndWins(armies, roundWins) {
-		var i;
+		var i, str;
 		for (i = 0; i < 2; i++) {
-			document.getElementById('gol-army-name-and-wins-' + i).innerHTML = armies[i].name + ' : ' + roundWins[i];
+			if (that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO) {
+				str = armies[i].name;
+			} else {
+				str = armies[i].name + ' : ' + roundWins[i];
+			}
+			document.getElementById('gol-army-name-and-wins-' + i).innerHTML = str;
 		}
 	};
 
