@@ -21,7 +21,7 @@ function GolSettings() {
 	that.initialBudget = 0;
 	that.budgetTickQuantum = 1;
 
-	that.secondsMaxRoundDuration = 60;
+	that.secondsMaxRoundDuration = 45;
 
 	that.millisArmyVsArmyMessageDuration = 5000;
 	that.millisEndRoundBoardFreezeDuration = 3000;
