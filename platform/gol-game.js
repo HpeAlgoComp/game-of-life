@@ -44,6 +44,7 @@
 			];
 			window.startGame = that.startGame;
 			window.startSingleGame = that.startSingleGame;
+			window.startAllVsAll = that.startAllVsAll;
 			window.startTournament = that.startTournament;
 			window.startStrategyDemo = that.startStrategyDemo;
 			window.registerArmy = that.registerArmy;
@@ -73,6 +74,13 @@
 			that.htmlHelper.fadeInLoadSourcesPanel();
 			that.htmlHelper.markSrcLines(that.srcIndices);
 			that.startMusic();
+		};
+
+		that.startAllVsAll = function startAllVsAll() {
+			_dbg('startAllVsAll()');
+			that.settings.gameMode = that.settings.gameModes.ALL_VS_ALL;
+			that.htmlHelper.fadeInLoadSourcesPanel();
+			that.htmlHelper.markSrcLines(that.srcIndices);
 		};
 
 		that.startTournament = function startTournament() {
