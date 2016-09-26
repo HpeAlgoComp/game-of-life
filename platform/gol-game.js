@@ -377,7 +377,52 @@
 		};
 
 		that.endRoundAllVsAll = function endRoundAllVsAll() {
+			var storageKey, statsStorageStr, stats, i, item, winnerIndex, loserIndex;
 			_dbg('endRoundAllVsAll()');
+			storageKey = 'game-of-life-stats-111';
+			statsStorageStr = localStorage.getItem(storageKey);
+			if (statsStorageStr) {
+				stats = JSON.parse(statsStorageStr);
+			} else {
+				stats = {
+					rounds: 0,
+					armies: {},
+					draws: []
+				};
+				for (i = 0; i < that.allArmies.length; i++) {
+					stats.armies[that.allArmies[i].icon] = {
+						g: 0,
+						w: 0,
+						l: 0,
+						d: 0,
+						p: 0
+					};
+				}
+			}
+			stats.rounds++;
+			if (that.armies[0].power === that.armies[1].power) {
+				item = stats.armies[that.armies[0].icon];
+				item.g++;
+				item.d++;
+				item.p = item.w / item.g;
+				item = stats.armies[that.armies[1].icon];
+				item.g++;
+				item.d++;
+				item.p = item.w / item.g;
+				stats.draws.push(that.armies[0].icon + ':' + that.armies[1].icon);
+			} else {
+				winnerIndex = (that.armies[0].power > that.armies[1].power) ? 0 : 1;
+				loserIndex = winnerIndex * -1 + 1;
+				item = stats.armies[that.armies[winnerIndex].icon];
+				item.g++;
+				item.w++;
+				item.p = item.w / item.g;
+				item = stats.armies[that.armies[loserIndex].icon];
+				item.g++;
+				item.l++;
+				item.p = item.w / item.g;
+			}
+			localStorage.setItem(storageKey, JSON.stringify(stats));
 			setTimeout(that.restartRoundAllVsAll, that.settings.millisEndRoundMessageDuration);			
 		};		
 
