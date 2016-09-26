@@ -42,22 +42,28 @@
 				{file: 'blade_runner.mp3', volume: 1},
 				{file: 'battlestar_galactica.mp3', volume: 1}
 			];
-			m = (localStorage.getItem('game-of-life-music-index') || 0) % that.musicFiles.length;
+			window.startGame = that.startGame;
+			window.startSingleGame = that.startSingleGame;
+			window.startTournament = that.startTournament;
+			window.startStrategyDemo = that.startStrategyDemo;
+			window.registerArmy = that.registerArmy;
+			window.toggleSrc = that.toggleSrc;
+			window.loadSources = that.loadSources;
+			window.loadDemo = that.loadDemo;
+		};
+
+		that.startMusic = function startMusic() {
+			var m = (localStorage.getItem('game-of-life-music-index') || 0) % that.musicFiles.length;
 			that.music = that.musicFiles[m];
 			that.playMusic(that.music);
 			m = (m + 1) % that.musicFiles.length;
 			localStorage.setItem('game-of-life-music-index', m);
-			window.startGame = that.startGame;
-			window.startSingleGame = that.startSingleGame;
-			window.startTournament = that.startTournament;
-			window.registerArmy = that.registerArmy;
-			window.toggleSrc = that.toggleSrc;
-			window.loadSources = that.loadSources;
 		};
 
 		that.startGame = function startGame() {
 			_dbg('startGame()');
 			that.settings.gameMode = that.settings.gameModes.AUTO_START;
+			that.startMusic();
 			that.waitForArmies();
 		};
 
@@ -66,6 +72,7 @@
 			that.settings.gameMode = that.settings.gameModes.SINGLE_GAME;
 			that.htmlHelper.fadeInLoadSourcesPanel();
 			that.htmlHelper.markSrcLines(that.srcIndices);
+			that.startMusic();
 		};
 
 		that.startTournament = function startTournament() {
@@ -83,6 +90,13 @@
 		    if (prevTournament != null && prevTournament != undefined) that.tournament = JSON.parse(prevTournament);
 		    that.startTournamentRound();
 	    }
+		};
+
+		that.startStrategyDemo = function startStrategyDemo() {
+			_dbg('startStrategyDemo()');
+			that.settings.gameMode = that.settings.gameModes.STRATEGY_DEMO;
+			that.htmlHelper.fadeInLoadSourcesPanel();
+			that.htmlHelper.markSrcLines(that.srcIndices);
 		};
 
 		that.startTournamentRound = function startTournamentRound() {
@@ -129,6 +143,33 @@
 			}, 1000);
 		};
 
+		that.loadDemo = function loadDemo(armyIndex) {
+			that.playSound(that.startRoundSound);
+			that.htmlHelper.hideLoadSourcesPanel();
+			if (armyIndex === 0) {
+				that.htmlHelper.loadSource(that.srcIndices[0]);
+				setTimeout(function() {
+					that.registerDummyArmy();
+				}, 2000);
+			} else {
+				that.registerDummyArmy();
+				that.htmlHelper.loadSource(that.srcIndices[1]);
+			}
+			setTimeout(function() {
+				that.waitForArmies();
+			}, 1000);
+		};
+
+		that.registerDummyArmy = function registerDummyArmy() {
+			that.registerArmy({
+				name: '',
+				icon: '',
+				cb: function() {
+					return [];
+				}
+			});
+		};
+
 		that.registerArmy = function registerArmy(data) {
 			var army = new GolArmy(that.armies.length, data.name, data.icon, data.cb, that.settings.colorsRGB[that.armies.length], that.settings.powerMaxValue, 0);
 			_dbg('registerArmy()');
@@ -148,10 +189,19 @@
 				}
 				if (that.settings.gameMode === that.settings.gameModes.AUTO_START) {
 					that.startRound();
-				} else {
+				} else if (that.settings.gameMode === that.settings.gameModes.SINGLE_GAME) {
 					that.showArmyVsArmyIntro();
+				} else if (that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO) {
+					that.prepareForStrategyDemo();
 				}
 			}
+		};
+
+		that.prepareForStrategyDemo = function prepareForStrategyDemo() {
+			that.htmlHelper.hidePreGameContainer();
+			that.settings.powerHitQuantum = 0;
+			that.settings.secondsMaxRoundDuration = 3600;
+			that.startRound();
 		};
 
 		that.showArmyVsArmyIntro = function showArmyVsArmyIntro() {
@@ -164,12 +214,12 @@
 
 		that.hideArmyVsArmyIntro = function hideArmyVsArmyIntro() {
 			that.playSound(that.startRoundSound);
-			that.htmlHelper.hideArmyVsArmyPanel();
+			that.htmlHelper.hidePreGameContainer();
 			setTimeout(that.startRound, 1000);
 		};
 
 		that.startRound = function startRound() {
-			var i;
+			var i, realArmyIndex;
 			_dbg('startRound()');
 			that.playSound(that.startRoundSound);
 			that.round++;
@@ -184,6 +234,10 @@
 			that.generation = 0;
 			if (that.round === 1) {
 				that.htmlHelper.drawUserInterface(that.armies);
+				if (that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO) {
+					realArmyIndex = (that.armies[0].name ? 0 : 1);
+					that.htmlHelper.prepareForStrategyDemo(realArmyIndex);
+				}
 			}
 			that.htmlHelper.updateArmyNamesAndWins(that.armies, that.roundWins);
 			that.roundStartTime = (new Date()).getTime();
@@ -312,11 +366,13 @@
 			return adjustedPixels;
 		};
 
+
 		that.playMusic = function playMusic(music) {
 			var audio = new Audio(that.settings.remotePlatformLocationRawGit + '/music/' + music.file);
 			audio.volume = music.volume;
 			audio.loop = true;
 			audio.play();
+			return audio;
 		};
 
 		that.playSound = function playSound(sound) {
@@ -328,7 +384,9 @@
 		that.handleScore = function handleScore(scoringPixelIndices) {
 			var scoringPixelCount = [scoringPixelIndices[0].length, scoringPixelIndices[1].length];
 			if (scoringPixelCount[0] !== 0 || scoringPixelCount[1] !== 0) {
-				that.playSound(that.hitSounds[Math.floor(Math.random() * that.hitSounds.length)]);
+				if (that.settings.gameMode !== that.settings.gameModes.STRATEGY_DEMO) {
+					that.playSound(that.hitSounds[Math.floor(Math.random() * that.hitSounds.length)]);
+				}
 				that.htmlHelper.shake();
 				that.armies[1].power -= scoringPixelCount[0] * that.settings.powerHitQuantum;
 				that.armies[0].power -= scoringPixelCount[1] * that.settings.powerHitQuantum;

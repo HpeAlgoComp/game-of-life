@@ -38,6 +38,8 @@ function GolHtmlHelper() {
 		that.addCssRule('#load-src-button {margin-top: 8px; border: 1px solid #333; background-color: #202020; color: #333; font-family: visitor, consolas, monospace, sans-serif; font-size: 16px; outline: none; transition: 1s all ease;}');
 		that.addCssRule('#start-tournament-button {position: absolute; bottom: 20px; right: 20px; background: #444; color: #888; font-family: visitor, consolas, monospace, sans-serif; font-size: 8px; cursor: pointer; outline: none; border: none;}');
 
+		that.addCssRule('.load-demo-button {margin-top: 8px; border: 1px solid #333; background-color: #202020; color: #333; font-family: visitor, consolas, monospace, sans-serif; font-size: 16px; outline: none; transition: 1s all ease;}');
+
 		that.addCssRule('#army-vs-army-panel {width: 400px; text-align: center; display: none;}');
 		that.addCssRule('.army-vs-army-icon {display: inline-block; height: 100px; vertical-align: middle;}');
 		that.addCssRule('.army-vs-army-name {display: inline-block; vertical-align: middle; font-size: 16px;}');
@@ -96,7 +98,7 @@ function GolHtmlHelper() {
 	};
 
 	that.markSrcLines = function markSrcLines(srcIndices) {
-		var i, elm, readyToLoad, loadBtn;
+		var i, elm, readyToLoad, btn;
 		for (i = 0; i < 16; i++) {
 			elm = document.getElementById('src-' + i);
 			if ('' + i === srcIndices[0]) {
@@ -113,13 +115,25 @@ function GolHtmlHelper() {
 		document.getElementById('load-src-msg-1').style['color'] = srcIndices[1] === -1 ? '#' + that.colorsHex[1] : '#333';
 		document.getElementById('load-src-msg-0').style['color'] = srcIndices[0] === -1 && srcIndices[1] !== -1 ? '#' + that.colorsHex[0] : '#333';
 
-		readyToLoad = srcIndices[1] !== -1 && srcIndices[0] !== -1;
-		loadBtn = document.getElementById('load-src-button');
-		loadBtn.style['border'] = readyToLoad ? '1px solid #666' : '1px solid #333';
-		loadBtn.style['background-color'] = readyToLoad ? '#666' : '#202020';
-		loadBtn.style['color'] = readyToLoad ? '#fff' : '#333';
-		loadBtn.style['cursor'] = readyToLoad ? 'pointer' : 'default';
-		loadBtn.setAttribute('onclick', readyToLoad ? 'loadSources()' : '');
+		if (that.settings.gameMode === that.settings.gameModes.SINGLE_GAME) {
+			btn = document.getElementById('load-src-button');
+			readyToLoad = srcIndices[1] !== -1 && srcIndices[0] !== -1;
+			btn.style['border'] = readyToLoad ? '1px solid #666' : '1px solid #333';
+			btn.style['background-color'] = readyToLoad ? '#666' : '#202020';
+			btn.style['color'] = readyToLoad ? '#fff' : '#333';
+			btn.style['cursor'] = readyToLoad ? 'pointer' : 'default';
+			btn.setAttribute('onclick', readyToLoad ? 'loadSources()' : '');
+		} else if (that.settings.gameMode === that.settings.gameModes.STRATEGY_DEMO) {
+			for (i = 0; i < 2; i++) {
+				btn = document.getElementById('load-demo-button-' + i);
+				readyToLoad = srcIndices[i] !== -1;
+				btn.style['border'] = readyToLoad ? '1px solid #666' : '1px solid #333';
+				btn.style['background-color'] = readyToLoad ? '#333' : '#202020';
+				btn.style['color'] = readyToLoad ? '#' + that.colorsHex[i] : '#333';
+				btn.style['cursor'] = readyToLoad ? 'pointer' : 'default';
+				btn.setAttribute('onclick', readyToLoad ? 'loadDemo(' + i + ')' : '');
+			}
+		}
 	};
 
 	that.loadSource = function loadSource(index) {
@@ -150,8 +164,7 @@ function GolHtmlHelper() {
 		}, 1000);
 	};
 
-	that.hideArmyVsArmyPanel = function hideArmyVsArmyPanel() {
-		//document.getElementById('army-vs-army-panel').style['display'] = 'none';
+	that.hidePreGameContainer = function hidePreGameContainer() {
 		document.getElementById('pre-game-container').style['display'] = 'none';
 	};
 
@@ -194,7 +207,7 @@ function GolHtmlHelper() {
 		armyStats.setAttribute('id', 'gol-army-stats-' + index);
 		armyStats.classList.add('gol-army-stats');
 
-		if (that.settings.gameMode !== that.settings.gameModes.AUTO_START) {
+		if (army.icon && that.settings.gameMode !== that.settings.gameModes.AUTO_START) {
 			armyIcon = document.createElement('img');
 			armyIcon.setAttribute('id', 'gol-army-img-' + index);
 			armyIcon.className = 'gol-army-img';
@@ -239,6 +252,11 @@ function GolHtmlHelper() {
 			timeDisplayBar.setAttribute('id', 'time-display-bar-' + i);
 			container.appendChild(timeDisplayBar);	
 		}
+	};
+
+	that.prepareForStrategyDemo = function prepareForStrategyDemo(realArmyIndex) {
+		var dummyArmyIndex = realArmyIndex * -1 + 1;
+		document.getElementById('gol-army-line-' + dummyArmyIndex).style['visibility'] = 'hidden';
 	};
 
 	that.clearExplosions = function clearExplosions() {
@@ -392,7 +410,7 @@ function GolHtmlHelper() {
 		for (i = 0; i < newPixels.length; i++) {
 			for (j = 0; j < newPixels[i].length; j++) {
 				if (newPixelsAge[i] <= maxAge) {
-					maxDistance = Math.floor(32 / newPixelsAge[i]);
+					maxDistance = Math.floor(64 / newPixelsAge[i]);
 					multiplier = Math.floor(256 / maxDistance);
 					for (k = 0; k < that.rows; k++) {
 						distance = Math.abs(k - newPixels[i][j][1]);
