@@ -387,8 +387,7 @@
 				stats = {
 					total: {
 						r: 0,
-						d: 0,
-						pd: 0
+						d: 0
 					},
 					armies: {},
 					draws: []
@@ -398,23 +397,19 @@
 						r: 0,
 						w: 0,
 						l: 0,
-						d: 0,
-						pw: 0
+						d: 0
 					};
 				}
 			}
 			stats.total.r++;
 			if (that.armies[0].power === that.armies[1].power) {
 				stats.total.d++;
-				stats.total.pd = stats.total.d / stats.total.r;
 				item = stats.armies[that.armies[0].icon];
 				item.r++;
 				item.d++;
-				item.pw = item.w / item.r;
 				item = stats.armies[that.armies[1].icon];
 				item.r++;
 				item.d++;
-				item.pw = item.w / item.r;
 				stats.draws.push(that.armies[0].icon + ':' + that.armies[1].icon);
 			} else {
 				winnerIndex = (that.armies[0].power > that.armies[1].power) ? 0 : 1;
@@ -422,11 +417,9 @@
 				item = stats.armies[that.armies[winnerIndex].icon];
 				item.r++;
 				item.w++;
-				item.pw = item.w / item.r;
 				item = stats.armies[that.armies[loserIndex].icon];
 				item.r++;
 				item.l++;
-				item.pw = item.w / item.r;
 			}
 			localStorage.setItem(storageKey, JSON.stringify(stats));
 			setTimeout(that.restartRoundAllVsAll, that.settings.millisEndRoundMessageDuration);			
