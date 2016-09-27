@@ -24,13 +24,14 @@ function GolSettings() {
 
 	that.secondsMaxRoundDuration = 45;
 
-	that.millisArmyVsArmyMessageDuration = 5000;
+	that.millisArmyVsArmyMessageDuration = 10000;
 	that.millisEndRoundBoardFreezeDuration = 3000;
 	that.millisEndRoundMessageDuration = 3000;
 
 	that.winRoundLimit = 3;
 
-	that.remotePlatformLocationRawGit = 'https://rawgit.com/HpeAlgoComp/game-of-life/master/platform';
+	//that.alternativePlatformLocation = 'https://rawgit.com/HpeAlgoComp/game-of-life/master/platform';
+	that.alternativePlatformLocation = 'platform';
 
 	that.statsLocalStorageKey = 'game-of-life-stats';
 }
