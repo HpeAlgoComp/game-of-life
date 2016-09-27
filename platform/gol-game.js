@@ -387,10 +387,10 @@
 				stats = {
 					total: {
 						r: 0,
-						d: 0
+						i: 0
 					},
 					armies: {},
-					draws: []
+					issues: []
 				};
 				for (i = 0; i < that.allArmies.length; i++) {
 					stats.armies[that.allArmies[i].icon] = {
@@ -403,14 +403,16 @@
 			}
 			stats.total.r++;
 			if (that.armies[0].power === that.armies[1].power) {
-				stats.total.d++;
 				item = stats.armies[that.armies[0].icon];
 				item.r++;
 				item.d++;
 				item = stats.armies[that.armies[1].icon];
 				item.r++;
 				item.d++;
-				stats.draws.push(that.armies[0].icon + ':' + that.armies[1].icon);
+				if (that.armies[0].power === that.settings.powerMaxValue) {
+					stats.total.i++;
+					stats.issues.push(that.armies[0].icon + ':' + that.armies[1].icon);
+				}
 			} else {
 				winnerIndex = (that.armies[0].power > that.armies[1].power) ? 0 : 1;
 				loserIndex = winnerIndex * -1 + 1;
