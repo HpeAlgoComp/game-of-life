@@ -5,7 +5,8 @@ function GolSettings() {
 	that.gameModes = {
 		AUTO_START: 0,
 		SINGLE_GAME: 1,
-		ALL_VS_ALL: 2
+		STRATEGY_DEMO: 2,
+		ALL_VS_ALL: 3
 	};
 
 	that.gameMode = that.gameModes.AUTO_START;
@@ -30,4 +31,6 @@ function GolSettings() {
 	that.winRoundLimit = 3;
 
 	that.remotePlatformLocationRawGit = 'https://rawgit.com/HpeAlgoComp/game-of-life/master/platform';
+
+	that.statsLocalStorageKey = 'game-of-life-stats';
 }

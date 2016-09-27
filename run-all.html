@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>Game of Life</title>
+    	<script src='platform/gol-funcs.js'></script>
+    	<script src='platform/gol-html-helper.js'></script>
+    	<script src='platform/gol-settings.js'></script>
+    	<script src='platform/gol-army.js'></script>
+    	<script src='platform/gol-board.js'></script>
+    	<script src='platform/gol-game.js'></script>
+	</head>
+	<body onload="startAllVsAll()">
+		<div id="pre-game-container">
+		    <div id="load-src-panel">
+		        <div id="load-src-title">RUN-ALL</div>
+		        <div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-0"  src-ind="0"  value="armies/bulls.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-1"  src-ind="1"  value="armies/cobras.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-2"  src-ind="2"  value="armies/dragons.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-3"  src-ind="3"  value="armies/eagles.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-4"  src-ind="4"  value="armies/gladiators.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-5"  src-ind="5"  value="armies/hornets.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-6"  src-ind="6"  value="armies/kings.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-7"  src-ind="7"  value="armies/knights.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-8"  src-ind="8"  value="armies/lions.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-9"  src-ind="9"  value="armies/pirates.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-10" src-ind="10" value="armies/robots.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-11" src-ind="11" value="armies/scorpions.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-12" src-ind="12" value="armies/sharks.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-13" src-ind="13" value="armies/tigers.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-14" src-ind="14" value="armies/vikings.js"/></div>
+				<div><input type="text" class="load-src-input" onclick="toggleSrc(this)" id="src-15" src-ind="15" value="armies/wizards.js"/></div>
+			    <div><button id="start-tournament-button" onclick="loadAll()">RUN ALL</button></div>
+		    </div>
+		    <div id="army-vs-army-panel">
+		        <div class="army-vs-army-line">
+		            <img id="army-vs-army-icon-1" class="army-vs-army-icon" src="">
+		            <div id="army-vs-army-name-1" class="army-vs-army-name"></div>
+		        </div>
+		        <div class="army-vs-army-vs">VS</div>
+		        <div class="army-vs-army-line">
+		            <div id="army-vs-army-name-0" class="army-vs-army-name"></div>
+		            <img id="army-vs-army-icon-0" class="army-vs-army-icon" src=""/>
+		        </div>
+		    </div>
+		</div>
+		<div id="winner-loser-panel">
+			<div class="winner-loser-line">
+				<img id="winner-loser-pic-1" class="winner-loser-pic" src="">
+				<!--<img id="winner-loser-icon-1" src="">-->
+				<div id="winner-loser-result-1" class="winner-loser-result"></div>
+				<div id="winner-loser-name-1" class="winner-loser-name"></div>
+			</div>
+            <div class="winner-loser-line">
+	            <div id="winner-loser-name-0" class="winner-loser-name"></div>
+				<div id="winner-loser-result-0" class="winner-loser-result"></div>
+				<!--<img id="winner-loser-icon-0" src=""/>-->
+				<img id="winner-loser-pic-0" class="winner-loser-pic" src=""/>
+			</div>
+		</div>
+	</body>
+</html>
