@@ -236,6 +236,8 @@
 				_log('waiting for all armies...');
 				setTimeout(that.waitForAllArmies, 500);
 			} else {
+				that.settings.millisEndRoundBoardFreezeDuration = 1000;
+				that.settings.millisEndRoundMessageDuration = 1000;
 				that.startAllVsAllRound();
 			}
 		};
