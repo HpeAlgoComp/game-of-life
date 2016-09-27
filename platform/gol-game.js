@@ -35,13 +35,13 @@
 			that.endGameSound = {file: 'explosion1.mp3', volume: 1};
 			that.musicFiles = [
 				{file: 'terminator_genisys.mp3', volume: 1},
-				{file: 'dark_knight_rises.mp3', volume: 1},
 				{file: 'wonder_woman.mp3', volume: 1},
-				{file: 'transformers.mp3', volume: 1},
 				{file: 'fury_road.mp3', volume: 1},
+				{file: 'dark_knight_rises.mp3', volume: 1},
+				{file: 'transformers.mp3', volume: 1},
 				{file: 'battleship.mp3', volume: 1},
-				{file: 'blade_runner.mp3', volume: 1},
-				{file: 'battlestar_galactica.mp3', volume: 1}
+				{file: 'battlestar_galactica.mp3', volume: 1},
+				{file: 'blade_runner.mp3', volume: 1}
 			];
 			window.startGame = that.startGame;
 			window.startSingleGame = that.startSingleGame;						
