@@ -1,141 +1,279 @@
-(function() {
+//IMPROVE THIS CODE
 
-	// utilities ---------------------------------------------------------------------------------------------------------
+(function () {
+    function getRnd(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
-	function getRnd(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
+    function tryPlaceHorizontal(data) {
+        var defence = [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1];
+        var pixels = [];
+        var r, c;
+        if (data.budget >= defence.length) {
+            //console.log('=== horizontal', horizontalCounter++);
+            //horizontalCounter++;
+            //c = Math.floor((data.cols / 6) * horizontalCounter);
+            c = horizontalC;
+            horizontalC += defence.length * 2;
+            r = Math.floor(data.rows /  2);
+            for (var i = 0; i < defence.length; i++) {
+                c++;
+                if (defence[i]) pixels.push([c, r]);
+            }
+        }
+        return pixels;
+    }
 
-	// structures --------------------------------------------------------------------------------------------------------
+    function tryPlaceCrazy(data) {
+        var pixels = [];
+        var r, c;
+        if (data.budget >= 8) {
+            c = getRnd(6, data.cols - 6);
+            r = 10;
+            pixels.push([c, r]);
+            pixels.push([c + 1, r]);
+            pixels.push([c + 2, r]);
+            pixels.push([c, r + 1]);
+            pixels.push([c, r + 3]);
+            pixels.push([c, r + 4]);
+            pixels.push([c - 1, r + 4]);
+            pixels.push([c - 2, r + 4]);
+        }
+        return pixels;
+    }
 
-	function tryPlaceMine(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = (col === 0) ? 0 : col || getRnd(0, data.cols - 2);
-			r = (row === 0) ? 0 : row || getRnd(20, 80);
-			pixels.push([c, r]);
-			pixels.push([c, r+1]);
-			pixels.push([c+1, r]);
-		}
-		return pixels;
-	}
+    function tryPlaceBomb(data) {
+        var pixels = [];
+        var r, c;
+        if (data.budget >= 4) {
+            c = getRnd(1, data.cols - 1);
+            r = 40;
+            pixels.push([c, r]);
+            pixels.push([c - 1, r]);
+            pixels.push([c + 1, r]);
+            pixels.push([c, r + 1]);
+        }
+        return pixels;
+    }
 
-	function tryPlaceFence(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || fenceLocation;
-			r = row || data.rows - 15;
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c, r+1]);
-			fenceLocation += 5;
-			if (fenceLocation > data.cols - 2) {
-				fenceLocation = 0;
-			}
-		}
-		return pixels;
-	}
+    function tryPlaceBigBomb(data) {
+        if (bigBombC > data.cols - 5) {
+            bigBombC = 0;
+        }
+        var pixels = [];
+        var r, c;
+        if (data.budget >= 8) {
+            c = getRnd(3, data.cols - 10);
+            r = 0;
+            pixels.push([c, r]);
+            pixels.push([c - 1, r]);
+            pixels.push([c + 1, r]);
+            pixels.push([c, r + 1]);
 
-	function tryPlaceGlider(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 5) {
-			c = col || getRnd(0, data.cols - 3);
-			r = row || getRnd(0, data.rows - 3);
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c+2, r]);
-			pixels.push(getRnd(0, 1) === 0 ? [c, r+1] : [c+2, r+1]);
-			pixels.push([c+1, r+2]);
-		}
-		return pixels;
-	}
+            c += 6;
 
-	function tryPlaceSpaceship(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 9) {
-			c = col || getRnd(0, data.cols - 4);
-			r = row || 0;
-			if (c < data.cols / 2) {
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c+3, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c+3, r+2]);
-				pixels.push([c+3, r+3]);
-				pixels.push([c, r+4]);
-				pixels.push([c+2, r+4]);
-			} else {
-				pixels.push([c, r]);
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c, r+2]);
-				pixels.push([c, r+3]);
-				pixels.push([c+1, r+4]);
-				pixels.push([c+3, r+4]);
-			}
-		}
-		return pixels;
-	}
+            pixels.push([c, r]);
+            pixels.push([c - 1, r]);
+            pixels.push([c + 1, r]);
+            pixels.push([c, r + 1]);
 
-	function tryPlaceFlower(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 8) {
-			c = col || getRnd(0, data.cols - 6);
-			r = row || 0;
-			pixels.push([c+1, r]);
-			pixels.push([c+2, r]);
-			pixels.push([c+3, r]);
-			pixels.push([c, r+1]);
-			pixels.push([c+4, r+1]);
-			pixels.push([c+1, r+2]);
-			pixels.push([c+2, r+2]);
-			pixels.push([c+3, r+2]);
-			flowerLocation += 20;
-			if (flowerLocation > data.cols - 6) {
-				flowerLocation = 0;
-			}
-		}
-		return pixels;
-	}
+        }
+        return pixels;
+    }
 
-	var cb = function cb(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['glider', 'spaceship'];
-		if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+    function tryPlaceGliderGun(data) {
 
-	// init --------------------------------------------------------------------------------------------------------------
+    }
 
-	var planIndex = 0;
-	var flowerLocation = 15;
-	var fenceLocation = 0;
-	setTimeout(function registerArmy() {
-		window.registerArmy({
-			name: 'VIKINGS',
-			icon: 'viking',
-			cb: cb
-		});
-	}, 0);
+    function tryPlaceMine(data) {
+        var pixels = [];
+        var r, c;
+        if (data.budget >= 4) {
+            if (data.generation <= 4 * 8) {
+                r = 10;
+                c = mineIArr[mineIi++]
+            } else {
+                mineC = (mineC + 6) % data.cols;
+                if (mineC < 6) {
+                    mineR -= 6;
+                }
+                c = mineC;
+                r = mineR;
+            }
 
+            pixels.push([c, r]);
+            pixels.push([c, r + 1]);
+            pixels.push([c + 1, r]);
+            pixels.push([c + 1, r + 1]);
+            //console.log('=== mine', mineCounter++, pixels);
+
+        }
+        return pixels;
+    }
+
+    function tryPlaceGlider(data) {
+        var pixels = [];
+        var r, c;
+        if (data.budget >= 5) {
+
+            c = Math.floor(Math.random() * (data.cols - 2));
+            r = 0;
+            pixels.push([c, r]);
+            pixels.push([c + 1, r]);
+            pixels.push([c + 2, r]);
+            pixels.push(Math.floor(Math.random() * 2) === 0 ? [c, r + 1] : [c + 2, r + 1]);
+            pixels.push([c + 1, r + 2]);
+        }
+        return pixels;
+    }
+
+    function tryPlaceSpaceship(data) {
+        var pixels = [];
+        if (data.budget >= 9) {
+            //console.log('=== spaceship', spaceshipCounter++);
+            spaceshipC = (spaceshipC + 1) % spaceshipCArr.length;
+            var c = data.generation < 600 ? spaceshipCArr[spaceshipC] : getRnd(0, data.cols - 4);
+            var r = 0;
+            pixels.push([c, r]);
+            pixels.push([c + 1, r]);
+            pixels.push([c + 2, r]);
+            pixels.push([c, r + 1]);
+            pixels.push([c + 3, r + 1]);
+            pixels.push([c, r + 2]);
+            pixels.push([c, r + 3]);
+            pixels.push([c + 1, r + 4]);
+            pixels.push([c + 3, r + 4]);
+
+        }
+        return pixels;
+    }
+
+    var getPixels = function (data, pattern) {
+        var pixels = null;
+        switch (pattern) {
+            case 'mine':
+                pixels = tryPlaceMine(data);
+                break;
+            case 'glider':
+                pixels = tryPlaceGlider(data);
+                break;
+            case 'spaceship':
+                pixels = tryPlaceSpaceship(data);
+                break;
+            case 'bomb':
+                pixels = tryPlaceBomb(data);
+                break;
+            case 'bigBomb':
+                pixels = tryPlaceBigBomb(data);
+                break;
+            case 'horizontal':
+                pixels = tryPlaceHorizontal(data);
+                break;
+            case 'crazyMine':
+                pixels = tryPlaceCrazy(data);
+                break;
+            default:
+                pixels = tryPlaceMine(data);
+        }
+        for (var i = 0; i < pixels.length; i++) {
+            if (pixels[i][0] > data.cols || pixels[i][0] < 0 || pixels[i][1] > data.rows || pixels[i][1] < 0) {
+                console.error('=== ', pattern, pixels);
+            }
+        }
+        return pixels;
+    };
+    var spaceshipBudget = 9;
+    var horizontalBudget = 28;
+    var gliderBudget = 4;
+    var mineBudget = 4;
+    var crazyMineBudget = 8;
+
+    // var ph0 = mineBudget * 8;
+    var ph0 = 0;
+    var ph1 = horizontalBudget * 6;
+    var ph2 = spaceshipBudget * 10;
+    var ph3 = spaceshipBudget * 20;
+    var ph4 = crazyMineBudget * 15;
+    var ph5 = mineBudget * 70;
+
+    function getPlan(generation) {
+        var plan = [
+            'horizontal',
+            'glider',
+            'spaceship',
+            'mine',
+            'bomb',
+            'bigBomb',
+            'stop',
+            'crazyMine'
+        ];
+
+        // if (generation <= ph0) {
+        //     plan = ['mine'];
+        // } else
+        if (generation <= ph0 + ph1) {
+            plan = ['horizontal'];
+        } else if (generation <= ph0 + ph1 + ph2) {
+            plan = ['spaceship'];
+        } else if (generation <= ph0 + ph1 + ph2 + ph3) {
+            plan = ['spaceship'];
+        } else if (generation <= ph0 + ph1 + ph2 + ph3 + ph4) {
+            plan = ['crazyMine'];
+        }
+        else if (generation <= ph0 + ph1 + ph2 + ph3 + ph4 + ph5) {
+                plan = ['mine'];
+        } else {
+            plan = ['spaceship', 'mine', 'crazyMine'];
+        }
+        return plan;
+    }
+
+    //REGISTER ARMY
+    setTimeout(function registerArmy() {
+        window.registerArmy({
+            name: 'APP-PULSE-VIKINGS',
+            icon: 'viking',
+            cb: cb
+        });
+    }, 0);
+
+    //ALGORITHM CODE
+    var planIndex;
+    var mineIArr,mineIi, mineC, mineR, mineCounter;
+    var horizontalC, horizontalCounter;
+    var bigBombC;
+    var spaceshipCArr, spaceshipC, spaceshipCounter;
+
+    var initVars = function (rows, cols) {
+        planIndex = 0;
+        mineIArr = [0, cols - 2, 4, cols - 6, 8, cols - 10, 12, cols - 14];
+        mineIi = 0;
+        mineC = 0;
+        mineR = rows - 5;
+        mineCounter = 0;
+        horizontalC = 10;
+        horizontalCounter = 0;
+        bigBombC = 0;
+        spaceshipCArr = [cols - 5, 2, cols - 29, 10, 18, cols - 21, cols - 13, 26];
+        spaceshipC = 0;
+        spaceshipCounter = 0;
+    };
+    initVars(100, 400);
+    function cb(data) {
+        if (data.generation === 1) {
+            initVars(data.rows, data.cols);
+        }
+
+        var plan = getPlan(data.generation);
+
+        var pixels = getPixels(data, plan[planIndex]);
+
+        if (pixels && pixels.length > 0) {
+            if (data.budget < pixels.length) {
+                console.error('=== didn\'t use all budget', data.budget, pixels.length)
+            }
+            planIndex = (planIndex + 1) % plan.length;
+        }
+        return pixels;
+    }
 })();

@@ -1,169 +1,184 @@
-(function() {
 
-	// utilities ---------------------------------------------------------------------------------------------------------
 
-	function getRnd(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
 
-	// structures --------------------------------------------------------------------------------------------------------
 
-	function tryPlaceMine(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || getRnd(0, data.cols - 2);
-			r = row || getRnd(20, 80);
-			pixels.push([c, r]);
-			pixels.push([c, r+1]);
-			pixels.push([c+1, r]);
-		}
-		return pixels;
-	}
+(function () {
 
-	function tryPlaceFence(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || fenceLocation;
-			r = row || data.rows - 15;
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c, r+1]);
-			fenceLocation += 5;
-			if (fenceLocation > data.cols - 2) {
-				fenceLocation = 0;
-			}
-		}
-		return pixels;
-	}
+  //REGISTER ARMY
+  setTimeout(function registerArmy() {
+    window.registerArmy({
+      name: 'HPLN-KINGS',
+      icon: 'king',
+      cb: cb
+    });
+  }, 0);
 
-	function tryPlaceGlider(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 5) {
-			c = col || getRnd(0, data.cols - 3);
-			r = row || getRnd(0, data.rows - 3);
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c+2, r]);
-			pixels.push(getRnd(0, 1) === 0 ? [c, r+1] : [c+2, r+1]);
-			pixels.push([c+1, r+2]);
-		}
-		return pixels;
-	}
+  // utilities ---------------------------------------------------------------------------------------------------------
 
-	function tryPlaceSpaceship(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 9) {
-			c = col || getRnd(0, data.cols - 4);
-			r = row || 0;
-			if (c < data.cols / 2) {
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c+3, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c+3, r+2]);
-				pixels.push([c+3, r+3]);
-				pixels.push([c, r+4]);
-				pixels.push([c+2, r+4]);
-			} else {
-				pixels.push([c, r]);
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c, r+2]);
-				pixels.push([c, r+3]);
-				pixels.push([c+1, r+4]);
-				pixels.push([c+3, r+4]);
-			}
-		}
-		return pixels;
-	}
+  function getRnd(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
-	// cbs ---------------------------------------------------------------------------------------------------------------
+  var gameController = {
+    placeSmallship: 2,
+    placeAcorn: 1,
+    placeBigShip: 0,
+    placeFence: 3,
+    currentPlan: 0
+  };
 
-	var cb1 = function cb1(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-      fenceLocation = 0;
-		}
-		if (data.generation < 200) {
-			plan = ['spaceship'];
-		} else if (data.generation < 440) {
-			plan = ['fence'];
-		} else {
-			plan = ['spaceship', 'glider', 'mine', 'fence'];
-		}
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'fence') {
-			pixels = tryPlaceFence(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+  var plan = [placeBigShip, placeAcorn, placeSmallship,placeFence];
 
-	var cb2 = function cb2(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['mine', 'glider'];
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+  var bigShipColIndex = 0;
+  var acornColIndex = 0;
+  var acornRowIndex = 0;
+  var smallShipLocationIndex = 0;
+  var fenceBlockInitialLoc = 0;
+  var fenceBlockCurrentLoc = fenceBlockInitialLoc;
+  var fenceBlockColJump = 10;
+  var fenceRowIndex = 0;
 
-	var cb3 = function cb3(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['glider', 'spaceship'];
-		if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
 
-	// init --------------------------------------------------------------------------------------------------------------
+  function cb(data) {
 
-	var planIndex = 0;
-	var fenceLocation = 0;
-	var cbs = [cb1, cb2, cb3];
-	setTimeout(function registerArmy() {
-		window.registerArmy({
-			name: 'KINGS',
-			icon: 'king',
-			cb: cbs[getRnd(0, cbs.length-1)]
-		});
-	}, 0);
+    var pixels = [];
+
+    if (data.generation === 1) {
+
+      bigShipColIndex = 0;
+      acornColIndex = 0;
+      acornRowIndex = 0;
+      fenceBlockCurrentLoc = 0;
+      gameController.currentPlan = 0;
+      //simpleShipColIndex = 0;
+      //simpleShipRowIndex = 0;
+    }
+
+
+    pixels = plan[gameController.currentPlan](data);
+
+
+    return pixels;
+  }
+
+  function placeAcorn(data) {
+
+    var locations = [10, 390, 30, 350 , 130, 270, 180,220,200];
+    var rowLocations = [30];
+    acornColIndex = acornColIndex % locations.length;
+    acornRowIndex = acornRowIndex % rowLocations.length;
+    var pixels = [];
+    var row = rowLocations[acornRowIndex];
+    var col = locations[acornColIndex];
+
+
+    if (data.budget >= 7) {
+      pixels = library('acorn', col, row);
+      acornColIndex++;
+
+      if (acornColIndex === locations.length - 1) {
+        gameController.currentPlan = gameController.placeSmallship;
+      }
+    }
+
+    return pixels;
+  }
+
+  function placeBigShip(data) {
+
+    var locations = [100, 200, 300];
+    bigShipColIndex = bigShipColIndex % locations.length;
+    var pixels = [];
+    var row = 0;
+    var col = locations[bigShipColIndex];
+
+
+    if (data.budget >= 22) {
+      pixels = library('train', col, row);
+
+      if (bigShipColIndex === locations.length - 1) {
+        gameController.currentPlan = gameController.placeAcorn;
+      }
+
+      bigShipColIndex++;
+    }
+
+    return pixels;
+  }
+
+  function placeSmallship(data) {
+
+    var locations = [2, 395, 30, 365, 60, 270, 240, 210, 395, 100, 150, 200];
+
+    smallShipLocationIndex = smallShipLocationIndex % locations.length;
+
+    var currentLocation = locations[smallShipLocationIndex];
+    var pixels = [];
+    var row = 0;
+
+    if (data.budget >= 9) {
+      pixels = library('lwss', currentLocation, row);
+
+      if (smallShipLocationIndex === locations.length - 1) {
+        gameController.currentPlan = gameController.placeFence;
+      }
+
+      smallShipLocationIndex++;
+    }
+
+    return pixels;
+  }
+
+  function placeFence(data) {
+    var rows = [40, 90];
+    fenceRowIndex = fenceRowIndex % rows.length;
+    var row = rows[fenceRowIndex];
+    var pixels = [];
+
+
+    if (data.budget >= 4) {
+      pixels = library('block', fenceBlockCurrentLoc, row);
+
+      fenceBlockCurrentLoc += fenceBlockColJump;
+
+      if (fenceBlockCurrentLoc > 395) {
+        fenceRowIndex++;
+        fenceBlockCurrentLoc = 0;
+        gameController.currentPlan = gameController.placeBigShip;
+      }
+    }
+
+    return pixels;
+  }
+
+  function library(model, initialC, initialR) {
+    var c = initialC,
+      r = initialR,
+      pixels = [],
+      models = {
+        lwss: "OOO\nO..O\nO\nO\n.O.O",
+        acorn: ".O\n...O\nOO..OOO",
+        upperacorn: "O\nO.O\n..\n.O\nO\nO\nO",
+        train: ".OOO...........OOO\nO..O..........O..O\n...O....OOO......O\n...O....O..O.....O\n..O....O........O",
+        block: ".O.\nOOO"
+      }
+    for (var i = 0, len = models[model].length; i < len; i++) {
+      if (models[model][i] === '.') {
+        c++;
+      }
+      else if (models[model][i] === 'O') {
+        pixels.push([c, r]);
+        c++;
+      } else {
+        c = initialC;
+        r++;
+      }
+    }
+
+    return pixels;
+
+  }
 
 })();
+
+

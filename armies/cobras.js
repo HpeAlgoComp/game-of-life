@@ -1,4 +1,33 @@
-(function() {
+/*
+   MC COBRAS!                                    .o@*hu
+   ------------         ..      .........   .u*"    ^Rc
+   Oren Shalev          oP""*Lo*#"""""""""""7d" .d*N.   $
+   Eyal Luzon          @  u@""           .u*" o*"   #L  ?b
+   Yair Barak         @   "              " .d"  .d@@e$   ?b.
+   Roy Kronenfeld   8                    @*@me@#         '"Nu
+                    @                                        '#b
+                  .P                                           $r
+                .@"                                  $L        $
+              .@"                                   8"R      dP
+           .d#"                                  .dP d"   .d#
+          xP              .e                 .ud#"  dE.o@"(
+          $             s*"              .u@*""     '""\dP"
+          ?L  ..                    ..o@""        .$  uP
+           #c:$"*u.             .u@*""$          uR .@"
+            ?L$. '"""***Nc    x@""   @"         d" JP
+             ^#$.        #L  .$     8"         d" d"
+               '          "b.'$.   @"         $" 8"
+                           '"*@$L $"         $  @
+                           @L    $"         d" 8\
+                           $$u.u$"         dF dF
+                           $ """   o      dP xR
+                           $      dFNu...@"  $
+                           "N..   ?B ^"""   :R
+                             """"* RL       d>
+                                    "$u.   .$
+                                      ^"*bo@"
+ */
+(function () {
 
 	// utilities ---------------------------------------------------------------------------------------------------------
 
@@ -6,150 +35,131 @@
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
+	function _hiss(msg) {
+		//console.log('COBRAS: ' + msg);
+	}
 	// structures --------------------------------------------------------------------------------------------------------
 
-	function tryPlaceMine(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || getRnd(0, data.cols - 2);
-			r = row || getRnd(20, 80);
-			pixels.push([c, r]);
-			pixels.push([c, r+1]);
-			pixels.push([c+1, r]);
-		}
-		return pixels;
-	}
+	function tryInjectGliderVenom(data) {
 
-	function tryPlaceFence(data, col, row) {
 		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || fenceLocation;
-			r = row || data.rows - 15;
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c, r+1]);
-			fenceLocation += 5;
-			if (fenceLocation > data.cols - 2) {
-				fenceLocation = 0;
-			}
-		}
-		return pixels;
-	}
-
-	function tryPlaceGlider(data, col, row) {
-		var pixels = [];
-		var r, c;
 		if (data.budget >= 5) {
-			c = col || getRnd(0, data.cols - 3);
-			r = row || getRnd(0, data.rows - 3);
+
+			var c = lastCol;
+			var r = 0;
+			var isLeft = (c > data.cols/2);
 			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c+2, r]);
-			pixels.push(getRnd(0, 1) === 0 ? [c, r+1] : [c+2, r+1]);
-			pixels.push([c+1, r+2]);
+			pixels.push([c + 1, r]);
+			pixels.push([c + 2, r]);
+			pixels.push(isLeft ? [c, r + 1] : [c + 2, r + 1]);
+			pixels.push([c + 1, r + 2]);
+
+			advanceAttackPosition(data, 20, 3);
 		}
 		return pixels;
 	}
 
-	function tryPlaceSpaceship(data, col, row) {
+	function tryInjectSpaceshipVenom(data, step) {
 		var pixels = [];
-		var r, c;
+		var delta = step || 30;
+		//_hiss('delta = ' + delta);
 		if (data.budget >= 9) {
-			c = col || getRnd(0, data.cols - 4);
-			r = row || 0;
-			if (c < data.cols / 2) {
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c+3, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c+3, r+2]);
-				pixels.push([c+3, r+3]);
-				pixels.push([c, r+4]);
-				pixels.push([c+2, r+4]);
-			} else {
-				pixels.push([c, r]);
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c, r+2]);
-				pixels.push([c, r+3]);
-				pixels.push([c+1, r+4]);
-				pixels.push([c+3, r+4]);
+			var c = lastCol;
+			var r = 0;
+
+			pixels.push([c + 1, r]);
+			pixels.push([c + 2, r]);
+			pixels.push([c + 3, r]);
+			pixels.push([c, r + 1]);
+			pixels.push([c + 3, r + 1]);
+			pixels.push([c + 3, r + 2]);
+			pixels.push([c + 3, r + 3]);
+			pixels.push([c, r + 4]);
+			pixels.push([c + 2, r + 4]);
+
+			advanceAttackPosition(data, delta, 6);
+		}
+		return pixels;
+	}
+
+	function advanceAttackPosition(data, delta, range) {
+		if (sideFlag == 0) {
+			lastCol += delta;
+			if (lastCol >= (data.cols - range)) {
+				lastCol -= (delta * 2);
+				sideFlag = 1;
+			}
+		} else {
+			lastCol -= delta;
+			if (lastCol < 0) {
+				lastCol += (delta * 2);
+				sideFlag = 0;
+			}
+		}
+	}
+
+	function tryInjectMultumVenom(data) {
+		var pixels = [];
+		if (data.budget >= 7) {
+
+			var c = lastCol;
+			var r = 70;
+
+			pixels.push([c, r]);
+			pixels.push([c + 1, r - 1]);
+			pixels.push([c + 2, r - 2]);
+			pixels.push([c + 3, r - 3]);
+			pixels.push([c + 4, r - 3]);
+			pixels.push([c + 5, r - 3]);
+			pixels.push([c + 5, r - 2]);
+
+			sideFlag = 0;
+			lastCol += 30;
+			if (lastCol >= data.cols - 6) {
+				lastCol = 0;
 			}
 		}
 		return pixels;
 	}
 
-	// cbs ---------------------------------------------------------------------------------------------------------------
+	// bot --------------------------------------------------------------------------------------------------------------
 
-	var cb1 = function cb1(data) {
-		var pixels = [];
-		var plan;
+	var bot = function kingCobra(data) {
 		if (data.generation === 1) {
-			planIndex = 0;
-      fenceLocation = 0;
+			switchFlag = 0;
+			sideFlag = 0;
+			lastCol = 20;
 		}
-		if (data.generation < 200) {
-			plan = ['spaceship'];
-		} else if (data.generation < 440) {
-			plan = ['fence'];
+		var pixels = [];
+		if (data.generation % 500 < 100) {
+			pixels = tryInjectMultumVenom(data);
 		} else {
-			plan = ['glider'];
+			if (switchFlag == 0) {
+				pixels = tryInjectGliderVenom(data);
+				if (pixels.length > 0) {
+					switchFlag = 1;
+				}
+			} else {
+				pixels = tryInjectSpaceshipVenom(data, getRnd(1, 4)*30);
+				if (pixels.length > 0) {
+					switchFlag = 0;
+				}
+			}
 		}
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'fence') {
-			pixels = tryPlaceFence(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
-
-	var cb2 = function cb2(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['glider'];
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
-
-	var cb3 = function cb3(data) {
-		var pixels = [];
-		ppixels = tryPlaceSpaceship(data, null, 0);
 		return pixels;
 	};
 
 	// init --------------------------------------------------------------------------------------------------------------
 
-	var planIndex = 0;
-	var fenceLocation = 0;
-	var cbs = [cb1, cb2, cb3];
+	var switchFlag = 0;
+	var sideFlag = 0;
+	var lastCol = 20;
+
 	setTimeout(function registerArmy() {
 		window.registerArmy({
-			name: 'COBRAS',
+			name: 'MC-COBRAS',
 			icon: 'cobra',
-			cb: cb3
+			cb: bot
 		});
 	}, 0);
 

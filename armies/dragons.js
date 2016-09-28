@@ -1,169 +1,118 @@
 (function() {
 
-	// utilities ---------------------------------------------------------------------------------------------------------
+  function registerArmy() {
+    window.registerArmy({
+      name: 'HPLN-DRAGONS',
+      icon: 'dragon',
+      cb: cb
+    });
+  }
 
-	function getRnd(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
+  setTimeout(registerArmy, 0);
 
-	// structures --------------------------------------------------------------------------------------------------------
+  var plan = [
+    'blocker',
+    'glider'
+  ];
+  var planIndex = 0;
+  var fence = 0;
+  var spaceshipCount = 0;
+  var blockIdx = [50, 30, 10];
+  var blockIdxRun = 0;
+  var spaceColIdx = [5, 20, 80, 130, 150, 180];
+  var spaceColIdxRun = 0;
+  
+  var spaceColRightIdx = [395, 375, 350, 330, 300, 280, 260];
+  var spaceColRightIdxRun = 0;
 
-	function tryPlaceMine(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || getRnd(0, data.cols - 2);
-			r = row || getRnd(20, 80);
-			pixels.push([c, r]);
-			pixels.push([c, r+1]);
-			pixels.push([c+1, r]);
-		}
-		return pixels;
-	}
+  function cb(data) {
 
-	function tryPlaceFence(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || fenceLocation;
-			r = row || data.rows - 15;
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c, r+1]);
-			fenceLocation += 5;
-			if (fenceLocation > data.cols - 2) {
-				fenceLocation = 0;
-			}
-		}
-		return pixels;
-	}
+    if (data.generation === 1) {
+      fence = 0;
+      spaceshipCount = 0;
+      blockIdxRun = 0;
+      spaceColRightIdxRun = 0;
+    }
 
-	function tryPlaceGlider(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 5) {
-			c = col || getRnd(0, data.cols - 3);
-			r = row || getRnd(0, data.rows - 3);
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c+2, r]);
-			pixels.push(getRnd(0, 1) === 0 ? [c, r+1] : [c+2, r+1]);
-			pixels.push([c+1, r+2]);
-		}
-		return pixels;
-	}
+    var pixels = [];
+    if (fence <= data.cols) {
+      pixels = tryPlaceBlocker(data, blockIdx[blockIdxRun % blockIdx.length]);
+    }
 
-	function tryPlaceSpaceship(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 9) {
-			c = col || getRnd(0, data.cols - 4);
-			r = row || 0;
-			if (c < data.cols / 2) {
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c+3, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c+3, r+2]);
-				pixels.push([c+3, r+3]);
-				pixels.push([c, r+4]);
-				pixels.push([c+2, r+4]);
-			} else {
-				pixels.push([c, r]);
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c, r+2]);
-				pixels.push([c, r+3]);
-				pixels.push([c+1, r+4]);
-				pixels.push([c+3, r+4]);
-			}
-		}
-		return pixels;
-	}
+    if (fence >= data.cols) {
+      if (data.generation < 370) {
+        pixels = tryPlaceSpaceship(data, spaceColIdx);
+      } else if (data.generation > 370 && data.generation < 580) {
+        fence = 0;
+        blockIdxRun++;
+      } else if (data.generation > 580 && data.generation < 800) {
+      	pixels = tryPlaceSpaceship(data, spaceColRightIdx);
+      } else if (data.generation > 800 && data.generation < 900) {
+        fence = 0;
+        blockIdxRun = 1;
+      } else if (data.generation > 900 && data.generation < 1300) {
+        pixels = tryPlaceSpaceship(data, spaceColIdx);
+      } else if (data.generation > 1300 && data.generation < 1400) {
+        fence = 0;
+        blockIdxRun = 2;
+      } else if (data.generation > 1400 && data.generation < 2000) {
+				pixels = tryPlaceSpaceship(data, spaceColRightIdx);
+      } else {
+        fence = 0;
+        blockIdxRun++;
+      }
 
-	// cbs ---------------------------------------------------------------------------------------------------------------
+    }
 
-	var cb1 = function cb1(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-      fenceLocation = 0;
-		}
-		if (data.generation < 200) {
-			plan = ['spaceship'];
-		} else if (data.generation < 440) {
-			plan = ['fence'];
-		} else {
-			plan = ['spaceship', 'glider', 'mine', 'fence'];
-		}
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'fence') {
-			pixels = tryPlaceFence(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+    return pixels;
+  }
 
-	var cb2 = function cb2(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['mine', 'glider'];
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+  function tryPlaceBlocker(data, low) {
+    var pixels = [];
+    var r, c;
+    if (data.budget >= 4) {
+      //c = Math.floor(Math.random() * (data.cols - 1));
+      c = fence + 10;
+      fence += 15;
+      r = Math.floor(data.rows - low);
+      pixels.push([c, r]);
+      pixels.push([c + 1, r]);
+      pixels.push([c + 2, r]);
+      pixels.push([c + 1, r - 1]);
+    }
+    return pixels;
+  }
 
-	var cb3 = function cb3(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['glider', 'spaceship'];
-		if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+  function tryPlaceSpaceship(data, spaceIndex) {
+    var pixels = [];
+    var r, c;
 
-	// init --------------------------------------------------------------------------------------------------------------
-
-	var planIndex = 0;
-	var fenceLocation = 0;
-	var cbs = [cb1, cb2, cb3];
-	setTimeout(function registerArmy() {
-		window.registerArmy({
-			name: 'DRAGONS',
-			icon: 'dragon',
-			cb: cbs[getRnd(0, cbs.length-1)]
-		});
-	}, 0);
+    if (data.budget >= 9) {
+      c = (Math.floor(data.cols) - spaceIndex[spaceColIdxRun++ % spaceIndex.length]);
+      r = 0;
+      if (c < data.cols / 2) {
+        pixels.push([c + 1, r]);
+        pixels.push([c + 2, r]);
+        pixels.push([c + 3, r]);
+        pixels.push([c, r + 1]);
+        pixels.push([c + 3, r + 1]);
+        pixels.push([c + 3, r + 2]);
+        pixels.push([c + 3, r + 3]);
+        pixels.push([c, r + 4]);
+        pixels.push([c + 2, r + 4]);
+      } else {
+        pixels.push([c, r]);
+        pixels.push([c + 1, r]);
+        pixels.push([c + 2, r]);
+        pixels.push([c, r + 1]);
+        pixels.push([c + 3, r + 1]);
+        pixels.push([c, r + 2]);
+        pixels.push([c, r + 3]);
+        pixels.push([c + 1, r + 4]);
+        pixels.push([c + 3, r + 4]);
+      }
+    }
+    return pixels;
+  }
 
 })();

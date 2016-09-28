@@ -1,169 +1,168 @@
+//IMPROVE THIS CODE
+
 (function() {
 
-	// utilities ---------------------------------------------------------------------------------------------------------
+    //REGISTER ARMY
+    setTimeout(function registerArmy() {
+        window.registerArmy({
+            name: 'TRACE-HORNETS',
+            icon: 'hornet',
+            cb: cb
+        });
+    }, 0);
 
-	function getRnd(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
+    //--------
+    //Utils
+    //--------
+    function getRnd(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
-	// structures --------------------------------------------------------------------------------------------------------
+    function tryPlaceLightSpaceship(data, col, row) {
+        var pixels = [];
+        var r, c;
+        if (data.budget >= 9) {
+            c = col;
+            r = row;
+            pixels.push([c, r]);
+            pixels.push([c+1, r]);
+            pixels.push([c+2, r]);
+            pixels.push([c, r+1]);
+            pixels.push([c+3, r+1]);
+            pixels.push([c, r+2]);
+            pixels.push([c, r+3]);
+            pixels.push([c+1, r+4]);
+            pixels.push([c+3, r+4]);
+        }
+        return pixels;
+    }
 
-	function tryPlaceMine(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || getRnd(0, data.cols - 2);
-			r = row || getRnd(20, 80);
-			pixels.push([c, r]);
-			pixels.push([c, r+1]);
-			pixels.push([c+1, r]);
-		}
-		return pixels;
-	}
+    function tryPlaceFlippedPentomino(data, col, row) {
+        var pixels = [];
+        var r, c;
+        if (data.budget >= 5) {
+            c = col;
+            r = row;
+            pixels.push([c+1, r]);
+            pixels.push([c+1, r+1]);
+            pixels.push([c+2, r+1]);
+            pixels.push([c, r+2]);
+            pixels.push([c+1, r+2]);
+        }
+        return pixels;
+    }
 
-	function tryPlaceFence(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || fenceLocation;
-			r = row || data.rows - 15;
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c, r+1]);
-			fenceLocation += 5;
-			if (fenceLocation > data.cols - 2) {
-				fenceLocation = 0;
-			}
-		}
-		return pixels;
-	}
 
-	function tryPlaceGlider(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 5) {
-			c = col || getRnd(0, data.cols - 3);
-			r = row || getRnd(0, data.rows - 3);
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c+2, r]);
-			pixels.push(getRnd(0, 1) === 0 ? [c, r+1] : [c+2, r+1]);
-			pixels.push([c+1, r+2]);
-		}
-		return pixels;
-	}
+    //--------
+    //Algorithm
+    //--------
+    var currentPlan;
+    var defenceXLocation;
+    var defenceYLocation;
+    var attackXLocation;
+    var pentominoCounter;
+    var defenceYLocationUP;
+    var defenceYLocationDOWN;
+    var isRightSide;
+    var fastAttackCounter;
+    var flowerXLocation;
+    var flowerYLocation;
+    var attackFlip;
 
-	function tryPlaceSpaceship(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 9) {
-			c = col || getRnd(0, data.cols - 4);
-			r = row || 0;
-			if (c < data.cols / 2) {
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c+3, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c+3, r+2]);
-				pixels.push([c+3, r+3]);
-				pixels.push([c, r+4]);
-				pixels.push([c+2, r+4]);
-			} else {
-				pixels.push([c, r]);
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c, r+2]);
-				pixels.push([c, r+3]);
-				pixels.push([c+1, r+4]);
-				pixels.push([c+3, r+4]);
-			}
-		}
-		return pixels;
-	}
 
-	// cbs ---------------------------------------------------------------------------------------------------------------
+    function cb(data) {
+        var pixels = [];
+        //init
+        if (data.generation === 1) {
+            currentPlan = "fastAttack";
+            defenceXLocation = 5;
+            defenceYLocation = 50;
+            defenceYLocationUP = 20;
+            defenceYLocationDOWN = 70;
+            attackXLocation = 30;
+            pentominoCounter = 0;
+            isRightSide = true;
+            fastAttackCounter = 0;
+            flowerXLocation = 5;
+            flowerYLocation = 50;
+            attackFlip = 0;
+        }
 
-	var cb1 = function cb1(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-      fenceLocation = 0;
-		}
-		if (data.generation < 200) {
-			plan = ['spaceship'];
-		} else if (data.generation < 440) {
-			plan = ['fence'];
-		} else {
-			plan = ['spaceship', 'glider', 'mine', 'fence'];
-		}
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'fence') {
-			pixels = tryPlaceFence(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+        if (currentPlan === 'fastAttack') {
+            pixels = tryPlaceLightSpaceship(data, isRightSide ? data.cols - 4 : 1, 1);
+            if (pixels.length > 0) {
+                fastAttackCounter += 1;
+            }
+            isRightSide = !isRightSide;
 
-	var cb2 = function cb2(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['mine', 'glider'];
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+            if (fastAttackCounter > 8) {
+                currentPlan = "defence";
+            }
+        }
 
-	var cb3 = function cb3(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['glider', 'spaceship'];
-		if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+        else if (currentPlan === 'defence') {
+            if (pentominoCounter === 0) {
+                defenceXLocation = 5;
+            }
 
-	// init --------------------------------------------------------------------------------------------------------------
+            // if (defenceXLocation < 0) {
+            //     console.log("defence:" + defenceXLocation);
+            // }
 
-	var planIndex = 0;
-	var fenceLocation = 0;
-	var cbs = [cb1, cb2, cb3];
-	setTimeout(function registerArmy() {
-		window.registerArmy({
-			name: 'HORNETS',
-			icon: 'hornet',
-			cb: cbs[getRnd(0, cbs.length-1)]
-		});
-	}, 0);
+            pixels = tryPlaceFlippedPentomino(data, isRightSide ? ((data.cols - 4) - defenceXLocation) : defenceXLocation, defenceYLocation);
+
+            if (pixels.length > 0) {
+                if (pentominoCounter > 14) {
+                    currentPlan = "attack";
+                }
+                pentominoCounter += 1;
+                defenceXLocation += 25;
+                isRightSide = !isRightSide;
+            }
+
+            if (defenceYLocation === defenceYLocationDOWN) {
+                defenceYLocation = defenceYLocationUP;
+            }
+            else {
+                defenceYLocation = defenceYLocationDOWN;
+            }
+        }
+        else if (currentPlan === 'attack') {
+            pixels = tryPlaceLightSpaceship(data, attackXLocation, 1);
+            attackXLocation += getRnd(5, 15);
+            if (attackXLocation >= data.cols - 30) {
+                attackXLocation = 0;
+            }
+        }
+        else if (currentPlan === 'finalPipe') {
+
+            pixels = tryPlaceLightSpaceship(data, isRightSide ? data.cols - 4 : 1, 1);
+
+            if (pixels.length > 0) {
+                fastAttackCounter += 1;
+            }
+            isRightSide = !isRightSide;
+        }
+
+        attackFlip += 1;
+
+        if (data.generation > 700) {
+            if (attackFlip % 200 === 0) {
+                if (currentPlan === 'attack') {
+                    fastAttackCounter = 0;
+                    currentPlan = 'finalPipe';
+                }
+                else {
+                    attackXLocation = 30;
+                    currentPlan = 'attack';
+                    attackFlip = 0;
+                }
+            }
+        }
+
+        return pixels;
+    };
+
+
 
 })();

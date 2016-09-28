@@ -1,169 +1,122 @@
 (function() {
 
-	// utilities ---------------------------------------------------------------------------------------------------------
+    //REGISTER ARMY
+    setTimeout(function registerArmy() {
+        window.registerArmy({
+            name: 'OCTANE-OMG-PIRATES',
+            icon: 'pirate',
+            cb: piratesCb
+        });
+    }, 0);
 
-	function getRnd(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
+    var counter = 0;
+    var ssCol = 2;
+    var popCol=0;
+    var popRow = 70;
 
-	// structures --------------------------------------------------------------------------------------------------------
+    function piratesCb(data) {
 
-	function tryPlaceMine(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || getRnd(0, data.cols - 2);
-			r = row || getRnd(20, 80);
-			pixels.push([c, r]);
-			pixels.push([c, r+1]);
-			pixels.push([c+1, r]);
-		}
-		return pixels;
-	}
+        function createSS(){
+            counter++;
+            ssCol+=4;
+            if(ssCol > data.cols -8){
+                ssCol = 4;
+            }
+            return tryPlaceSpaceship(data,ssCol+=4 ,6);
+        }
 
-	function tryPlaceFence(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 3) {
-			c = col || fenceLocation;
-			r = row || data.rows - 15;
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c, r+1]);
-			fenceLocation += 5;
-			if (fenceLocation > data.cols - 2) {
-				fenceLocation = 0;
-			}
-		}
-		return pixels;
-	}
+        function createPop(){
+            counter++;
+            //popCol += 4;
+            if(popCol > data.cols -8){
+                popCol = 0;
+                popRow -= 5;
+                if(popRow < 50){
+                    popRow = 90;
+                }
+            }
+            return tryPlacePop(data,popCol +=4 ,popRow);
+        }
 
-	function tryPlaceGlider(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 5) {
-			c = col || getRnd(0, data.cols - 3);
-			r = row || getRnd(0, data.rows - 3);
-			pixels.push([c, r]);
-			pixels.push([c+1, r]);
-			pixels.push([c+2, r]);
-			pixels.push(getRnd(0, 1) === 0 ? [c, r+1] : [c+2, r+1]);
-			pixels.push([c+1, r+2]);
-		}
-		return pixels;
-	}
 
-	function tryPlaceSpaceship(data, col, row) {
-		var pixels = [];
-		var r, c;
-		if (data.budget >= 9) {
-			c = col || getRnd(0, data.cols - 4);
-			r = row || 0;
-			if (c < data.cols / 2) {
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c+3, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c+3, r+2]);
-				pixels.push([c+3, r+3]);
-				pixels.push([c, r+4]);
-				pixels.push([c+2, r+4]);
-			} else {
-				pixels.push([c, r]);
-				pixels.push([c+1, r]);
-				pixels.push([c+2, r]);
-				pixels.push([c, r+1]);
-				pixels.push([c+3, r+1]);
-				pixels.push([c, r+2]);
-				pixels.push([c, r+3]);
-				pixels.push([c+1, r+4]);
-				pixels.push([c+3, r+4]);
-			}
-		}
-		return pixels;
-	}
 
-	// cbs ---------------------------------------------------------------------------------------------------------------
+        if (data.generation === 1) {
+            counter = 0;
+            popCol = 0;
+            ssCol = 0;
+            popRow = 70;
+        }
 
-	var cb1 = function cb1(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-      fenceLocation = 0;
-		}
-		if (data.generation < 200) {
-			plan = ['spaceship'];
-		} else if (data.generation < 440) {
-			plan = ['fence'];
-		} else {
-			plan = ['spaceship', 'glider', 'mine', 'fence'];
-		}
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'fence') {
-			pixels = tryPlaceFence(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
 
-	var cb2 = function cb2(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['mine', 'glider'];
-		if (plan[planIndex] === 'mine') {
-			pixels = tryPlaceMine(data);
-		} else if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+        if(counter < 100){
+            return createPop();
+        }
 
-	var cb3 = function cb3(data) {
-		var pixels = [];
-		var plan;
-		if (data.generation === 1) {
-			planIndex = 0;
-			fenceLocation = 0;
-		}
-		plan = ['glider', 'spaceship'];
-		if (plan[planIndex] === 'glider') {
-			pixels = tryPlaceGlider(data);
-		} else if (plan[planIndex] === 'spaceship') {
-			pixels = tryPlaceSpaceship(data, null, 0);
-		}
-		if (pixels.length > 0) {
-			planIndex = (planIndex + 1) % plan.length;
-		}
-		return pixels;
-	};
+        if(counter < 400){
+            return createSS();
+        }
 
-	// init --------------------------------------------------------------------------------------------------------------
+        counter = 0;
 
-	var planIndex = 0;
-	var fenceLocation = 0;
-	var cbs = [cb1, cb2, cb3];
-	setTimeout(function registerArmy() {
-		window.registerArmy({
-			name: 'PIRATES',
-			icon: 'pirate',
-			cb: cbs[getRnd(0, cbs.length-1)]
-		});
-	}, 0);
+        return tryPlaceGlider(data);
+    }
+
+    function tryPlaceGlider(data) {
+        var pixels = [];
+        var r, c;
+        if (data.budget >= 5) {
+            c = Math.floor(Math.random() * (data.cols - 2));
+            r = 5;
+            pixels.push([c, r]);
+            pixels.push([c+1, r]);
+            pixels.push([c+2, r]);
+            pixels.push( Math.floor(Math.random()*2) === 0 ? [c, r+1] : [c+2, r+1]);
+            pixels.push([c+1, r+2]);
+        }
+        return pixels;
+    }
+
+
+
+    function tryPlacePop(data, c, r) {
+        var pixels = [];
+        pixels.push([c, r]);
+        pixels.push([c+1, r]);
+        pixels.push([c+2, r]);
+        pixels.push([c+1, r+1]);
+        pixels.push([c, r+2]);
+        return pixels;
+    }
+    function tryPlaceSpaceship(data, c, r) {
+
+        var pixels = [];
+        if (data.budget >= 9) {
+            if (c < data.cols / 2) {
+                pixels.push([c+1, r]);
+                pixels.push([c+2, r]);
+                pixels.push([c+3, r]);
+                pixels.push([c, r+1]);
+                pixels.push([c+3, r+1]);
+                pixels.push([c+3, r+2]);
+                pixels.push([c+3, r+3]);
+                pixels.push([c, r+4]);
+                pixels.push([c+2, r+4]);
+            } else {
+                pixels.push([c, r]);
+                pixels.push([c+1, r]);
+                pixels.push([c+2, r]);
+                pixels.push([c, r+1]);
+                pixels.push([c+3, r+1]);
+                pixels.push([c, r+2]);
+                pixels.push([c, r+3]);
+                pixels.push([c+1, r+4]);
+                pixels.push([c+3, r+4]);
+            }
+        }
+        return pixels;
+    }
+
 
 })();
+
+
