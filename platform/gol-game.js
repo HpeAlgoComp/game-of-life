@@ -5,7 +5,6 @@
 		var that = this;
 
 		that.init = function init(settings) {
-			var m;
 			_dbg('init()');
 			that.settings = settings;
 			that.htmlHelper = new GolHtmlHelper();
@@ -84,47 +83,11 @@
 			that.htmlHelper.markSrcLines(that.srcIndices);
 		};
 
-		that.startTournament = function startTournament() {
-		_dbg('startTournament()');
-		that.settings.gameMode = that.settings.gameModes.ALL_VS_ALL;
-		var prevTournament= localStorage.getItem("TournamentRoundResualt");
-	    that.tournament = {};
-	    that.tournament.size = that.srcIndices.length;
-	    that.tournament.size = 16;
-	    if (that.tournament.size > 2) {
-		    that.tournament.rounds = {};
-		    that.tournament.runningTournament = true;
-		    that.tournament.firstArmyIndex = 0;
-		    that.tournament.secoundArmyIndex = 0;
-		    if (prevTournament != null && prevTournament != undefined) that.tournament = JSON.parse(prevTournament);
-		    that.startTournamentRound();
-	    }
-		};
-
 		that.startStrategyDemo = function startStrategyDemo() {
 			_dbg('startStrategyDemo()');
 			that.settings.gameMode = that.settings.gameModes.STRATEGY_DEMO;
 			that.htmlHelper.fadeInLoadSourcesPanel();
 			that.htmlHelper.markSrcLines(that.srcIndices);
-		};
-
-		that.startTournamentRound = function startTournamentRound() {
-	    console.log(JSON.stringify(that.tournament));
-	    localStorage.setItem("TournamentRoundResualt", JSON.stringify(that.tournament));
-	    if (that.tournament.secoundArmyIndex < (that.tournament.size-1)) {
-        that.tournament.secoundArmyIndex++
-	    }
-	    else {
-        that.tournament.firstArmyIndex++;
-        that.tournament.secoundArmyIndex = that.tournament.firstArmyIndex + 1;
-        if (that.tournament.secoundArmyIndex >= that.tournament.size) {
-            that.tournament.runningTournament = false;
-            return;
-        }
-	    }
-	    that.srcIndices[0] = that.tournament.firstArmyIndex;
-	    that.srcIndices[1] = that.tournament.secoundArmyIndex;
-	    loadSources();
 		};
 
 		that.toggleSrc = function toggleSrc(srcInput) {
@@ -439,18 +402,6 @@
 			that.playSound(that.endGameSound);
 			winnerIndex = (that.armies[0].power > that.armies[1].power) ? 0 : 1;
 			that.htmlHelper.endGame(that.armies, winnerIndex /*that.roundWins*/);
-			if (that.tournament != null && that.tournament!=undefined && that.tournament.runningTournament) {
-				that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name].winner = that.armies[winnerIndex].name;
-			  that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name]['roundWins '+that.armies[0].name] = that.roundWins[0];
-			  that.tournament.rounds[that.armies[0].name + '-' + that.armies[1].name]['roundWins ' + that.armies[1].name] = that.roundWins[1];
-			  if (that.tournament[that.armies[winnerIndex].name] == null || that.tournament[that.armies[winnerIndex].name] == undefined) {
-				  that.tournament[that.armies[winnerIndex].name] = 0;
-			  }
-			  that.tournament[that.armies[winnerIndex].name]++;
-			  that.init(that.settings);
-			  that.startGame(true);
-			  that.startTournamentRound();
-			}
 		};
 
 		that.getNewPixels = function getNewPixels() {
