@@ -42,6 +42,7 @@
 				{file: 'battlestar_galactica.mp3', volume: 1},
 				{file: 'blade_runner.mp3', volume: 1}
 			];
+			that.musicPlaying = false;
 			window.startGame = that.startGame;
 			window.startSingleGame = that.startSingleGame;						
 			window.startStrategyDemo = that.startStrategyDemo;
@@ -64,7 +65,9 @@
 		that.startGame = function startGame() {
 			_dbg('startGame()');
 			that.settings.gameMode = that.settings.gameModes.AUTO_START;
-			that.startMusic();
+			setTimeout(function() {
+				that.startMusic();
+			}, 3000);
 			that.waitForArmies();
 		};
 
@@ -73,7 +76,7 @@
 			that.settings.gameMode = that.settings.gameModes.SINGLE_GAME;
 			that.htmlHelper.fadeInLoadSourcesPanel();
 			that.htmlHelper.markSrcLines(that.srcIndices);
-			that.startMusic();
+			//that.startMusic();
 		};
 
 		that.startAllVsAll = function startAllVsAll() {
@@ -103,6 +106,10 @@
 			}
 			that.htmlHelper.markSrcLines(that.srcIndices);
 			that.playSound(that.selectSourceSound);
+			if (!that.musicPlaying) {
+				that.startMusic();
+				that.musicPlaying = true;
+			}
 		};
 
 		that.loadSources = function loadSources() {
